@@ -8,5 +8,5 @@ class GithubBrokerApplication
 
 @Suppress("SpreadOperator")
 fun main(args: Array<String>) {
-	runApplication<GithubBrokerApplication>(*args)
+    runApplication<GithubBrokerApplication>(*args)
 }

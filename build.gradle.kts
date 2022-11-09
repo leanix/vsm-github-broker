@@ -24,6 +24,15 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
+detekt {
+	autoCorrect = true
+	parallel = true
+	buildUponDefaultConfig = true
+	dependencies {
+		detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
+	}
+}
+
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
