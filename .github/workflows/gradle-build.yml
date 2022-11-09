@@ -33,7 +33,7 @@ jobs:
   create-docker-image:
     name: create-docker-${{ github.run_number }}
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2
 
