@@ -1,1 +1,1 @@
-rootProject.name = "githubbroker"
+rootProject.name = "VSM GitHub Broker"
