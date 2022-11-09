@@ -1,4 +1,4 @@
-name: gradle-build
+name: Build and publish docker image
 
 concurrency:
   group: gradle-build-${{ github.ref }}
@@ -27,21 +27,16 @@ jobs:
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
+        continue-on-error: false
         with:
           arguments: build
 
-  create-docker-image:
-    name: create-docker-${{ github.run_number }}
-    runs-on: ubuntu-latest
-    needs: [ gradle-ci ]
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v2
-
       - uses: leanix/secrets-action@master
+        if: github.ref == 'refs/heads/main'
         with:
           secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
 
       - uses: leanix/release-docker-image-action@master
+        if: github.ref == 'refs/heads/main'
         with:
           registry: acr-public
