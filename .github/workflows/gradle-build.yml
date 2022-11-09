@@ -13,7 +13,7 @@ on:
 
 jobs:
   gradle-ci:
-    name: Build and test
+    name: Build, test and publish docker image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
