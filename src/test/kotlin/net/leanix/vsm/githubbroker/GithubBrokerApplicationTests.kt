@@ -6,9 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class GithubBrokerApplicationTests {
 
-	@Test
+    @Test
     @Suppress("EmptyFunctionBlock")
-	fun contextLoads() {
-	}
-
+    fun contextLoads() {
+    }
 }
