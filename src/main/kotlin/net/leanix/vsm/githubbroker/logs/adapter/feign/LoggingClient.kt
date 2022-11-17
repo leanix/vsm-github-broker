@@ -1,7 +1,7 @@
 package net.leanix.vsm.githubbroker.logs.adapter.feign
 
-import net.leanix.vsm.githubbroker.logs.adapter.data.AdminRequest
-import net.leanix.vsm.githubbroker.logs.adapter.data.StatusRequest
+import net.leanix.vsm.githubbroker.logs.adapter.feign.data.AdminRequest
+import net.leanix.vsm.githubbroker.logs.adapter.feign.data.StatusRequest
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping

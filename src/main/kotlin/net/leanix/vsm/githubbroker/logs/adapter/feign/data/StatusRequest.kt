@@ -1,4 +1,4 @@
-package net.leanix.vsm.githubbroker.logs.adapter.data
+package net.leanix.vsm.githubbroker.logs.adapter.feign.data
 
 import net.leanix.vsm.githubbroker.logs.domain.LogStatus
 import java.util.UUID
