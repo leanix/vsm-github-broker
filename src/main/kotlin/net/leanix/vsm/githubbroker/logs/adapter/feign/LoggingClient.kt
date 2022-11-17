@@ -1,7 +1,7 @@
-package net.leanix.vsm.githubbroker.adapter.output.client
+package net.leanix.vsm.githubbroker.logs.adapter.feign
 
-import net.leanix.vsm.githubbroker.adapter.dto.AdminRequest
-import net.leanix.vsm.githubbroker.adapter.dto.StatusRequest
+import net.leanix.vsm.githubbroker.logs.adapter.data.AdminRequest
+import net.leanix.vsm.githubbroker.logs.adapter.data.StatusRequest
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody
 )
 interface LoggingClient {
     @PostMapping(value = ["/status"], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun statusLog(@RequestBody request: StatusRequest)
+    fun sendStatusLog(@RequestBody request: StatusRequest)
 
     @PostMapping(value = ["/admin"], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun adminLog(@RequestBody request: AdminRequest)
+    fun sendAdminLog(@RequestBody request: AdminRequest)
 }

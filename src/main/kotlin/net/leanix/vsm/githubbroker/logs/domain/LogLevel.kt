@@ -1,4 +1,4 @@
-package net.leanix.vsm.githubbroker.adapter.domain
+package net.leanix.vsm.githubbroker.logs.domain
 
 enum class LogLevel {
     INFO,

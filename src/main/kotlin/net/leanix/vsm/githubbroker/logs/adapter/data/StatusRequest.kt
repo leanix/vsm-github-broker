@@ -1,6 +1,6 @@
-package net.leanix.vsm.githubbroker.adapter.dto
+package net.leanix.vsm.githubbroker.logs.adapter.data
 
-import net.leanix.vsm.githubbroker.adapter.domain.LogStatus
+import net.leanix.vsm.githubbroker.logs.domain.LogStatus
 import java.util.UUID
 import javax.validation.constraints.NotNull
 
