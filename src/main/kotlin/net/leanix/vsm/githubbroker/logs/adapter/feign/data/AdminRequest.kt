@@ -1,6 +1,6 @@
 package net.leanix.vsm.githubbroker.logs.adapter.feign.data
 
-import net.leanix.vsm.githubbroker.logs.domain.LogAdmin
+import net.leanix.vsm.githubbroker.logs.domain.AdminLog
 import net.leanix.vsm.githubbroker.logs.domain.LogLevel
 import java.util.UUID
 import javax.validation.constraints.NotNull
@@ -18,15 +18,14 @@ data class AdminRequest(
     val message: String?
 ) {
     companion object {
-        fun fromDomain(admin: LogAdmin): AdminRequest  {
+        fun fromDomain(admin: AdminLog): AdminRequest {
             return AdminRequest(
                 runId = admin.runId,
-                        configurationId = admin.configurationId,
-                        subject = admin.subject,
-                        level = admin.level,
-                        message = admin.message,
+                configurationId = admin.configurationId,
+                subject = admin.subject,
+                level = admin.level,
+                message = admin.message,
             )
         }
     }
-
 }

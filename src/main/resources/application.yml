@@ -1,1 +1,4 @@
-
+leanix:
+  vsm:
+    event-broker:
+      base-url: https://${APP_HOST:localhost:8080}
