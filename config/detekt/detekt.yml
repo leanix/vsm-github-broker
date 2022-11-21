@@ -1,0 +1,35 @@
+complexity:
+  LargeClass:
+    active: true
+    excludes: [ '**/test/**' ]
+  LongMethod:
+    active: true
+    excludes: [ '**/test/**' ]
+  LongParameterList:
+    active: true
+    excludes: [ '**/test/**' ]
+
+naming:
+  FunctionNaming:
+    active: true
+    excludes: [ '**/test/**' ]
+  InvalidPackageDeclaration:
+    active: false
+
+style:
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    active: true
+    maxLineLength: 130
+  FunctionOnlyReturningConstant:
+    active: true
+  ReturnCount:
+    active: false
+  UnusedPrivateMember:
+    active: false
+
+empty-blocks:
+  EmptyFunctionBlock:
+    active: true
+    excludes: [ '**/test/**' ]
