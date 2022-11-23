@@ -11,6 +11,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients
 @EnableConfigurationProperties(VsmProperties::class)
 class GithubBrokerApplication
 
-fun main(vararg args: String) {
-    runApplication<GithubBrokerApplication>(*args)
+fun main() {
+    runApplication<GithubBrokerApplication>()
 }
