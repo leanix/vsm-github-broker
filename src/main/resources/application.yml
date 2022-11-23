@@ -1,24 +1,12 @@
 
 leanix:
   vsm:
-    base-url: https://${APP_HOST:localhost:8080}
+    base-url:  https://${LEANIX_REGION}.leanix.net/
     event-broker:
-      base-url: ${leanix.vsm.base-url}
+      base-url: https://${LEANIX_REGION}.leanix.net/
     connector:
       api-token: ${LEANIX_API_TOKEN}
       user-token: ${LEANIX_USER_TOKEN}
-      config-name: ${CONFIGURATION_NAME:git-on-prem-config}
+      config-name: ${CONFIGURATION_NAME}
     auth:
-      client-id: vsm-canopy
-      client-secret: go6IJyZUqGRymTxH2Kb3xeZesv4h8TlbO9et8ku8
-      grant-type: client_credentials
-      access-token-uri: https://test-svc-1.leanix.net/services/mtm/v1
-server:
-  port: 8081
-security:
-  oauth2:
-    client:
-      access-token-uri: https://test-svc-1.leanix.net/services/mtm/v1/oauth2/token
-      client-id: vsm-canopy
-      client-secret: go6IJyZUqGRymTxH2Kb3xeZesv4h8TlbO9et8ku8
-      grant-type: client_credentials
+      access-token-uri: https://${LEANIX_REGION}.leanix.net/services/mtm/v1

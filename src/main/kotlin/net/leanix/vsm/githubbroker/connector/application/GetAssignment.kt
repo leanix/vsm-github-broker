@@ -2,7 +2,7 @@ package net.leanix.vsm.githubbroker.connector.application
 
 import net.leanix.vsm.githubbroker.connector.adapter.feign.FeignAssignmentProvider
 import net.leanix.vsm.githubbroker.connector.domain.AssignmentProvider
-import net.leanix.vsm.githubbroker.connector.properties.VsmProperties
+import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

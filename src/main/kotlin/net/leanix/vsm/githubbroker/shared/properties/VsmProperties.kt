@@ -1,4 +1,4 @@
-package net.leanix.vsm.githubbroker.connector.properties
+package net.leanix.vsm.githubbroker.shared.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
