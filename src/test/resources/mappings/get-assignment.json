@@ -1,0 +1,13 @@
+{
+  "request": {
+    "url": "/assignment/github-on-prem-repository-connector/git-on-prem-config",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"runId\": \"caa2e4d7-c413-4c58-b236-8c35c9607def\",\"configurationId\": \"e3ea8e1a-98b9-4fb0-9560-79960ffed4a0\",\"phase\": \"FULL\",\"connectorConfiguration\": [{\"id\": \"name\",\"value\": \"value\",\"type\": \"String\"}]}"
+  }
+}

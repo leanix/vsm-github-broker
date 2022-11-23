@@ -1,0 +1,14 @@
+leanix:
+  vsm:
+    base-url: http://localhost:6666
+    event-broker:
+      base-url: http://localhost:6666
+    connector:
+      api-token: api-token
+      user-token: user-token
+      config-name: git-on-prem-config
+    auth:
+      client-id: vsm-canopy
+      client-secret: go6IJyZUqGRymTxH2Kb3xeZesv4h8TlbO9et8ku8
+      grant-type: client_credentials
+      access-token-uri: http://localhost:6666/services/mtm/v1
