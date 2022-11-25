@@ -7,6 +7,7 @@ import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.Repos
 import net.leanix.vsm.githubbroker.connector.domain.GithubRepositoryProvider
 import net.leanix.vsm.githubbroker.connector.domain.PagedRepositories
 import net.leanix.vsm.githubbroker.connector.domain.Repository
+import net.leanix.vsm.githubbroker.shared.exception.VsmException
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -70,8 +71,8 @@ class GraphqlGithubRepositoryProvider(private val vsmProperties: VsmProperties) 
                 )
             )
         } else {
-            logger.info("github no repos found")
-            Result.failure(RuntimeException("No Data found"))
+            logger.info("Zero repositories found")
+            Result.failure(VsmException.NoRepositoriesFound())
         }
     }
 }
