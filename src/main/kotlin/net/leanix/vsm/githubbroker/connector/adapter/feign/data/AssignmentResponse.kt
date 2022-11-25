@@ -5,13 +5,17 @@ import java.util.*
 
 data class AssignmentResponse(
     val runId: UUID,
-    val configurationId: UUID
+    val configurationId: UUID,
+    val connectorConfiguration: List<ConfigField>
 ) {
 
     fun toDomain(): Assignment {
+        val organizationName = connectorConfiguration.first { it.id == "orgName" }
+
         return Assignment(
             runId = runId,
-            configurationId = configurationId
+            configurationId = configurationId,
+            organizationName = organizationName.value as String
         )
     }
 }

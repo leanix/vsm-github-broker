@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "2.7.5"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
+    id("com.expediagroup.graphql") version "6.3.0"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
 }
@@ -20,16 +21,24 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-graphql")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.springframework.security:spring-security-oauth2-client")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
+    implementation("com.expediagroup:graphql-kotlin-spring-client:6.3.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     testImplementation("com.ninja-squad:springmockk:3.1.1")
+
+    developmentOnly("io.netty:netty-resolver-dns-native-macos:4.1.84.Final") {
+        artifact {
+            classifier = "osx-aarch_64"
+        }
+    }
 }
 
 dependencyManagement {
@@ -56,4 +65,12 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+graphql {
+    client {
+        schemaFile = file("${project.projectDir}/src/main/resources/schemas/github_schema.graphql")
+        packageName = "net.leanix.githubbroker.connector.adapter.graphql.data"
+        queryFileDirectory = "${project.projectDir}/src/main/resources/queries"
+    }
 }

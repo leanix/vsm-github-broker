@@ -14,7 +14,10 @@ private const val FAILED_TO_SEND_STATUS_LOG = "Failed to send Status Log"
 private const val FAILED_TO_SEND_ADMIN_LOG = "Failed to send Admin Log"
 
 @Component
-class FeignLogProvider(private val loggingClient: LoggingClient) : LogProvider {
+class FeignLogProvider(
+    private val loggingClient: LoggingClient,
+    private val statusLogClient: StatusLogClient
+) : LogProvider {
 
     private val logger: Logger = LoggerFactory.getLogger(FeignLogProvider::class.java)
 
@@ -29,7 +32,7 @@ class FeignLogProvider(private val loggingClient: LoggingClient) : LogProvider {
 
     override fun sendStatusLog(statusLog: StatusLog) {
         try {
-            loggingClient.sendStatusLog(StatusRequest.fromDomain(statusLog))
+            statusLogClient.sendStatusLog(StatusRequest.fromDomain(statusLog))
         } catch (e: FeignException) {
             val message = "$FAILED_TO_SEND_STATUS_LOG, ${e.message}"
             logger.error(message)

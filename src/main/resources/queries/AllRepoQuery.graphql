@@ -1,0 +1,17 @@
+query AllRepoQuery($orgName: String!, $pageCount: Int!, $cursor: String) {
+    organization(login: $orgName) {
+        repositories(first: $pageCount, after: $cursor) {
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+            nodes {
+                id
+                name
+                description
+                url
+                isArchived
+            }
+        }
+    }
+}

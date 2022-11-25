@@ -4,10 +4,6 @@ leanix:
   vsm:
     base-url: http://localhost:8080
     event-broker:
-      base-url: ${leanix.vsm.base-url}
-    connector:
-      api-token: ${LEANIX_API_TOKEN}
-      user-token: ${LEANIX_USER_TOKEN}
-      config-name: ${CONFIGURATION_NAME}
+      base-url: http://localhost:8083
     auth:
-      access-token-uri: https://test-svc-1.leanix.net/services/mtm/v1
+      access-token-uri: https://de.leanix.net/services/mtm/v1

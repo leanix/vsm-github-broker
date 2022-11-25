@@ -8,5 +8,7 @@ import org.springframework.boot.context.properties.ConstructorBinding
 data class VsmProperties(
     val apiToken: String,
     val userToken: String,
-    val configName: String
+    val configName: String,
+    val githubToken: String,
+    val githubUrl: String
 )
