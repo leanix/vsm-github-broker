@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody
     url = "\${leanix.vsm.event-broker.base-url}"
 )
 interface LoggingClient {
-    @PostMapping(value = ["/status"], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(value = ["/logs/status"], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun sendStatusLog(@RequestBody request: StatusRequest)
 
-    @PostMapping(value = ["/admin"], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(value = ["/logs/admin"], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun sendAdminLog(@RequestBody request: AdminRequest)
 }
