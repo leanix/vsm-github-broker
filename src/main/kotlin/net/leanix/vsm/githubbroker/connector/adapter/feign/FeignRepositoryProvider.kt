@@ -4,6 +4,7 @@ import net.leanix.vsm.githubbroker.connector.adapter.feign.data.ServiceRequest
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.Repository
 import net.leanix.vsm.githubbroker.connector.domain.RepositoryProvider
+import net.leanix.vsm.githubbroker.shared.Constants.GITHUB_ENTERPRISE
 import org.springframework.stereotype.Component
 
 @Component
@@ -13,7 +14,7 @@ class FeignRepositoryProvider(private val serviceClient: ServiceClient) : Reposi
         val service = ServiceRequest(
             id = repository.id,
             runId = assignment.runId,
-            source = "source",
+            source = GITHUB_ENTERPRISE,
             name = repository.name,
             description = repository.description,
             url = repository.url,
