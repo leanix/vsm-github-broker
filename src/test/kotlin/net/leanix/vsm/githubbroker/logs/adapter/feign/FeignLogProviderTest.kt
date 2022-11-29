@@ -37,8 +37,8 @@ internal class FeignLogProviderTest {
             status = LogStatus.IN_PROGRESS,
             message = "Success"
         )
-        every { loggingClient.sendStatusLog(any()) } returns Unit
+        every { statusLogClient.sendStatusLog(any()) } returns Unit
         feignLogProvider.sendStatusLog(statusLog)
-        verify(exactly = 1) { loggingClient.sendStatusLog(any()) }
+        verify(exactly = 1) { statusLogClient.sendStatusLog(any()) }
     }
 }

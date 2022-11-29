@@ -16,7 +16,11 @@ class InitialStateTest {
     fun `it should get the assignment`() {
         WireMock.verify(
             1,
-            getRequestedFor(urlEqualTo("/assignment/github-enterprise-repository-connector/git-on-prem-config"))
+            getRequestedFor(
+                urlEqualTo(
+                    "/assignment?integrationName=github-enterprise-repository-connector&configurationName=git-on-prem-config"
+                )
+            )
         )
         WireMock.verify(1, postRequestedFor(urlEqualTo("/api/graphql")))
         WireMock.verify(3, postRequestedFor(urlEqualTo("/services")))

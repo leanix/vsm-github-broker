@@ -1,6 +1,6 @@
 {
   "request": {
-    "url": "/assignment/github-enterprise-repository-connector/git-on-prem-config",
+    "url": "/assignment?integrationName=github-enterprise-repository-connector&configurationName=git-on-prem-config",
     "method": "GET"
   },
   "response": {
