@@ -15,7 +15,7 @@ class InitialStateRunner(private val repositoriesService: RepositoriesService) :
             logger.info("Started get initial state")
             repositoriesService.getAllRepositories()
         }.onFailure {
-            logger.error("Failed to get initial state")
+            logger.error("Failed to get initial state", it)
         }
     }
 }

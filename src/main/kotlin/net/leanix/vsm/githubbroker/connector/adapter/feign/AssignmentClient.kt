@@ -4,7 +4,7 @@ import net.leanix.vsm.githubbroker.connector.adapter.feign.data.AssignmentRespon
 import net.leanix.vsm.githubbroker.shared.auth.adapter.feign.config.FeignClientConfiguration
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
 
 @FeignClient(
     name = "assignmentClient",
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable
 )
 interface AssignmentClient {
 
-    @GetMapping("/assignment/{integrationName}/{configurationName}")
+    @GetMapping("/assignment")
     fun getAssignment(
-        @PathVariable("integrationName") integrationName: String,
-        @PathVariable("configurationName") configurationName: String
+        @RequestParam("integrationName") integrationName: String,
+        @RequestParam("configurationName") configurationName: String
     ): AssignmentResponse
 }
