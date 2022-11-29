@@ -7,7 +7,7 @@ leanix:
     connector:
       api-token: ${LEANIX_API_TOKEN}
       user-token: ${LEANIX_USER_TOKEN}
-      config-name: ${CONFIGURATION_NAME}
+      config-name: ${LEANIX_CONFIGURATION_NAME}
       github-token: ${GITHUB_TOKEN}
       github-url: ${GITHUB_URL}
     auth:
