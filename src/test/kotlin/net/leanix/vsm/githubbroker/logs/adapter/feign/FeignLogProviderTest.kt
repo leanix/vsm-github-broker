@@ -13,7 +13,8 @@ import java.util.UUID
 internal class FeignLogProviderTest {
 
     private val loggingClient = mockk<LoggingClient>()
-    private val feignLogProvider = FeignLogProvider(loggingClient)
+    private val statusLogClient = mockk<StatusLogClient>()
+    private val feignLogProvider = FeignLogProvider(loggingClient, statusLogClient)
 
     @Test
     fun `sending admin log should call correct client`() {
