@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam
 )
 interface AssignmentClient {
 
-    @GetMapping("/assignment")
+    @GetMapping("/broker/assignment")
     fun getAssignment(
         @RequestParam("integrationName") integrationName: String,
         @RequestParam("configurationName") configurationName: String
