@@ -18,7 +18,9 @@ class InitialStateTest {
             1,
             getRequestedFor(
                 urlEqualTo(
-                    "/assignment?integrationName=github-enterprise-repository-connector&configurationName=git-on-prem-config"
+                    "/broker/assignment?" +
+                        "integrationName=github-enterprise-repository-connector" +
+                        "&configurationName=git-on-prem-config"
                 )
             )
         )
