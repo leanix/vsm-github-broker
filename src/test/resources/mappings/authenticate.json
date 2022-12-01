@@ -1,0 +1,13 @@
+{
+  "request": {
+    "url": "/services/mtm/v1/oauth2/token",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"scope\": \"\",\"expired\": false,\"access_token\": \"eyJraWQiOiJmYjE0YjhhNjg4ZTg4MWM5NzI0MzE5ZDlhYzhmYzBjNyIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1NDdlYjg3NC1jYjQ2LTRlMTEtYWNlOC04OTQ5MzZiY2I0MjEuOTQ2NTU5NzlAdGVjaG5pY2FsdXNlcnMubGVhbml4LmxvY2FsIiwicHJpbmNpcGFsIjp7ImlkIjoiOWQwZmQxZjUtOTYwZi00YTljLTk4YzQtODkyZDQzMDZjODRmIiwidXNlcm5hbWUiOiI1NDdlYjg3NC1jYjQ2LTRlMTEtYWNlOC04OTQ5MzZiY2I0MjEuOTQ2NTU5NzlAdGVjaG5pY2FsdXNlcnMubGVhbml4LmxvY2FsIiwicm9sZSI6IkFDQ09VTlRVU0VSIiwic3RhdHVzIjoiQUNUSVZFIiwiYWNjb3VudCI6eyJpZCI6ImRjMWZkOTcyLTg0MTUtNGQwOS04NmQ5LTI0MGQ5MGY5ZmMwNSIsIm5hbWUiOiJsZWFuaXgifSwicGVybWlzc2lvbiI6eyJpZCI6IjIzNGZjNWYzLTc2ODItNGUxYy1iNjY0LTg1YzdkYjkwZDhkNSIsIndvcmtzcGFjZUlkIjoiNTQ3ZWI4NzQtY2I0Ni00ZTExLWFjZTgtODk0OTM2YmNiNDIxIiwid29ya3NwYWNlTmFtZSI6InRlYW1jaWRlciIsInJvbGUiOiJBRE1JTiIsImN1c3RvbWVyUm9sZXMiOm51bGwsImFjY2Vzc0NvbnRyb2xFbnRpdGllcyI6bnVsbCwic3RhdHVzIjoiQUNUSVZFIiwiYXNVc2VyIjpudWxsfX0sImlzcyI6Imh0dHBzOi8vZGUtc3ZjLmxlYW5peC5uZXQiLCJqdGkiOiJlYjJiZmFkMC1kYmFmLTQzMTMtOWU0OC0yNjZlYmViMmQxMWYiLCJleHAiOjE2NjEzNTUyNDUsImluc3RhbmNlVXJsIjoiaHR0cHM6Ly9kZS5sZWFuaXgubmV0In0.undRaDgVJwZYZDUzj5lyVHihUSqqx9mjN_3is3UR-KSi5qUJMngLoaF_p7Gjs3_12Q61Tb0derSNqHevj4gprLYii7N9GDPkciFbdOONqmebgePNq1Yz5chu3h8UnOI0c_dnOBPu9Hl_3EF6k0oWCReVNEcwffGtSa3J6RvGXsQBL49ZboKHrwGrLS83Ba4k9MfC4VwydiGCXERHmaqJUV0u5VbDWGo7dEtle3vKKMha4VxMotTcvQUrWELgh9gWd4AlZ17iHSbZ1X1oVpFQAwxTL_iN1uV8UJPaKpnm0Ztlh2zExD0h5CwjwqwfUnU8lf9xlrZL5YY9Iy36AwUFGw\",\"token_type\": \"bearer\",\"expires_in\": 3599}"
+  }
+}

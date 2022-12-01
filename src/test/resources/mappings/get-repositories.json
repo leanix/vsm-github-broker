@@ -1,0 +1,13 @@
+{
+  "request": {
+    "url": "/api/graphql",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"data\": {\"organization\": {\"repositories\": {\"pageInfo\": {\"endCursor\": \"Y3Vyc29yOnYyOpED\",\"hasNextPage\": false},\"nodes\": [{\"id\": \"MDEwOlJlcG9zaXRvcnkx\",\"name\": \"internal\",\"description\": \"Internal Repo\",\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/internal\",\"isArchived\": false},{\"id\": \"MDEwOlJlcG9zaXRvcnky\",\"name\": \"private\",\"description\": null,\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/private\",\"isArchived\": false},{\"id\": \"MDEwOlJlcG9zaXRvcnkz\",\"name\": \"public\",\"description\": null,\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/public\",\"isArchived\": false}]}}}}"
+  }
+}

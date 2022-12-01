@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class LoggingService(
-    private val logProvider: LogProvider,
+    private val logProvider: LogProvider
 ) {
     private val logger: Logger = LoggerFactory.getLogger(LoggingService::class.java)
 

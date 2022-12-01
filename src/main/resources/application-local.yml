@@ -1,0 +1,9 @@
+server:
+  port: 8085
+leanix:
+  vsm:
+    base-url: http://localhost:8080
+    event-broker:
+      base-url: http://localhost:8083
+    auth:
+      access-token-uri: https://de.leanix.net/services/mtm/v1
