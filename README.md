@@ -32,7 +32,7 @@ You can run the docker container by providing the relevant configuration:
 ```console
 docker run --restart=always \
            -p 8080:8080 \
-           -e LEANIX_REGION=us \
+           -e LEANIX_DOMAIN=leanix.leanix.net \
            -e LEANIX_API_TOKEN=leanix-token \
            -e LEANIX_USER_TOKEN=leanix-user \
            -e LEANIX_CONFIGURATION_NAME=configuration-name \
