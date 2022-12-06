@@ -19,11 +19,9 @@ To use the Broker client with a GitHub Enterprise deployment, run `docker pull a
 
 - `LEANIX_REGION` - the LeanIX region, obtained from your LeanIX settings view (leanix.net).
 - `LEANIX_API_TOKEN` - the LeanIX token, obtained from your LeanIX settings view (leanix.net).
-- `LEANIX_USER_TOKEN` - the LeanIX USER, obtained from your LeanIX settings view (leanix.net).
 - `LEANIX_CONFIGURATION_NAME` - the LeanIX configuration, obtained from your LeanIX settings view (leanix.net).
 - `GITHUB_TOKEN` - a personal access token with full `repo`, `read:org` and `admin:repo_hook` scopes.
 - `GITHUB_URL` - the hostname of your GitHub Enterprise deployment, such as `ghe.domain.com`.
-- `CLIENT_URL` - the full URL of the Broker client as it will be accessible by your GitHub Enterprise deployment webhooks, such as `http://vsm-broker.client:8080`
 
 #### Command-line arguments
 
