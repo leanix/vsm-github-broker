@@ -38,3 +38,16 @@ docker run --restart=always \
            -e GITHUB_TOKEN=secret-github-token \
            -e GITHUB_URL=ghe.domain.com \
        acr-public/vsm-github-broker
+```
+
+### Troubleshooting
+
+#### Using amd64 Images on Apple M1
+
+Just run the container by providing the following command:
+
+```console
+docker run --platform linux/amd64 \
+           ...
+       acr-public/vsm-github-broker
+```
