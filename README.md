@@ -34,9 +34,7 @@ docker run --restart=always \
            -p 8080:8080 \
            -e LEANIX_DOMAIN=leanix.leanix.net \
            -e LEANIX_API_TOKEN=leanix-token \
-           -e LEANIX_USER_TOKEN=leanix-user \
            -e LEANIX_CONFIGURATION_NAME=configuration-name \
            -e GITHUB_TOKEN=secret-github-token \
            -e GITHUB_URL=ghe.domain.com \
-           -e CLIENT_URL=http://vsm-broker.client:8080 \
        acr-public/vsm-github-broker
