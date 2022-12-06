@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 
 @Component
-class GraphqlGithubRepositoryProvider(private val vsmProperties: VsmProperties) : GithubRepositoryProvider {
+class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepositoryProvider {
 
     private val logger: Logger = LoggerFactory.getLogger(GraphqlGithubRepositoryProvider::class.java)
 
