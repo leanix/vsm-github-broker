@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConfigurationProperties(prefix = "leanix.vsm.connector")
 data class VsmProperties(
     val apiToken: String,
-    val userToken: String,
     val configName: String,
     val githubToken: String,
     val githubUrl: String

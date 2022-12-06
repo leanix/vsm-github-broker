@@ -1,5 +1,6 @@
 package net.leanix.vsm.githubbroker.shared.auth.application
 
+import net.leanix.vsm.githubbroker.shared.Constants.API_USER
 import net.leanix.vsm.githubbroker.shared.auth.adapter.feign.AuthClient
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.springframework.stereotype.Service
@@ -20,6 +21,6 @@ class GetBearerToken(
 
     private fun getBasicAuthHeader(): String =
         "Basic " + Base64.getEncoder().encodeToString(
-            "${vsmProperties.userToken}:${vsmProperties.apiToken}".toByteArray()
+            "$API_USER:${vsmProperties.apiToken}".toByteArray()
         )
 }
