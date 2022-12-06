@@ -3,7 +3,7 @@
 VSM GitHub Broker is used to establish the communication between VSM SaaS Application and GitHub Enterprise on premise
 deployments that are not publicly accessible from the internet.
 
-VSM GitHub Broker runs on customers' premises, connects to GitHub Enterprise deployments and transmits the necessary 
+VSM GitHub Broker runs on customers' premises, connects to GitHub Enterprise deployments and transmits the necessary
 data to VSM SaaS Application.
 
 ### VSM GitHub Broker Diagram
@@ -12,7 +12,7 @@ data to VSM SaaS Application.
 
 ## Usage
 
-The VSM GitHub Broker is published as a Docker image. The configuration is performed with environment variables as 
+The VSM GitHub Broker is published as a Docker image. The configuration is performed with environment variables as
 described below.
 
 To use the Broker client with a GitHub Enterprise deployment, run `docker pull acr-public/vsm-github-broker` tag. The following environment variables are mandatory to configure the Broker client:
@@ -32,12 +32,12 @@ You can run the docker container by providing the relevant configuration:
 ```console
 docker run --restart=always \
            -p 8080:8080 \
-           -e LEANIX_DOMAIN=leanix.leanix.net \
-           -e LEANIX_API_TOKEN=leanix-token \
-           -e LEANIX_CONFIGURATION_NAME=configuration-name \
-           -e GITHUB_TOKEN=secret-github-token \
-           -e GITHUB_URL=ghe.domain.com \
-       acr-public/vsm-github-broker
+           -e LEANIX_DOMAIN=<region>-vsm.leanix.net \
+           -e LEANIX_API_TOKEN=<technical_user-token>\
+           -e LEANIX_CONFIGURATION_NAME=<config-name>\
+           -e GITHUB_TOKEN=<secret-github-token> \
+           -e GITHUB_URL=<GitHub Ent URL(ghe.domain.com)> \
+        leanixacrpublic.azurecr.io/vsm-github-broker
 ```
 
 ### Troubleshooting
@@ -49,5 +49,5 @@ Just run the container by providing the following command:
 ```console
 docker run --platform linux/amd64 \
            ...
-       acr-public/vsm-github-broker
+        leanixacrpublic.azurecr.io/vsm-github-broker
 ```
