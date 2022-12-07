@@ -47,6 +47,9 @@ dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
     }
+    dependencies {
+        dependency("com.google.guava:guava:24.1.1")
+    }
 }
 
 detekt {
