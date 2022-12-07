@@ -49,6 +49,7 @@ dependencyManagement {
     }
     dependencies {
         dependency("com.google.guava:guava:24.1.1")
+        dependency("io.ktor:ktor-client-apache:2.1.3")
     }
 }
 
