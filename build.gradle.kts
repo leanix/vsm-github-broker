@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.7.5"
+    id("org.springframework.boot") version "2.7.6"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("com.expediagroup.graphql") version "6.3.0"
@@ -43,7 +43,7 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.2")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
     }
 }
 
