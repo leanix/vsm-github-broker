@@ -48,7 +48,7 @@ dependencyManagement {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
     }
     dependencies {
-        dependency("com.google.guava:guava:24.1.1")
+        dependency("com.google.guava:guava:24.1.1-jre")
         dependency("io.ktor:ktor-client-apache:2.1.3")
     }
 }
