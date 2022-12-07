@@ -18,6 +18,7 @@ repositories {
 }
 
 ext["snakeyaml.version"] = "1.33"
+ext["guava.version"] = "24.1.1"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -35,7 +36,7 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     testImplementation("com.ninja-squad:springmockk:3.1.1")
 
-    developmentOnly("io.netty:netty-resolver-dns-native-macos:4.1.84.Final") {
+    developmentOnly("io.netty:netty-resolver-dns-native-macos:4.1.85.Final") {
         artifact {
             classifier = "osx-aarch_64"
         }
