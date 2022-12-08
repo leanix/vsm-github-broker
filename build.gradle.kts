@@ -5,8 +5,8 @@ plugins {
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("com.expediagroup.graphql") version "6.3.1"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
+    kotlin("jvm") version "1.7.22"
+    kotlin("plugin.spring") version "1.7.22"
 }
 
 group = "net.leanix.vsm"
@@ -18,7 +18,6 @@ repositories {
 }
 
 ext["snakeyaml.version"] = "1.33"
-ext["guava.version"] = "24.1.1"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -48,7 +47,8 @@ dependencyManagement {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
     }
     dependencies {
-        dependency("com.google.guava:guava:24.1.1-jre")
+        dependency("com.google.guava:guava:30.0-jre")
+        dependency("com.google.protobuf:protobuf-java:3.21.7")
         dependency("io.ktor:ktor-client-apache:2.1.3")
     }
 }
