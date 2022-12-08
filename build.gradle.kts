@@ -5,8 +5,8 @@ plugins {
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("com.expediagroup.graphql") version "6.3.1"
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.spring") version "1.6.21"
 }
 
 group = "net.leanix.vsm"
@@ -50,6 +50,7 @@ dependencyManagement {
         dependency("com.google.guava:guava:30.0-jre")
         dependency("com.google.protobuf:protobuf-java:3.21.7")
         dependency("io.ktor:ktor-client-apache:2.1.3")
+        dependency("org.codehaus.plexus:plexus-utils:3.0.24")
     }
 }
 
