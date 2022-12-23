@@ -1,0 +1,53 @@
+name: vsm-github-broker-code-coverage
+
+concurrency:
+  group: vsm-github-broker-code-coverage-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  vsm-github-broker-connector-ci:
+    name: Build and test VSM Github Broker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: LeanIX Secrets 🔒
+        uses: leanix/secrets-action@master
+        with:
+          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        id: gradle-build
+        continue-on-error: false
+        with:
+          arguments: build
+          build-root-directory: .
+
+      - name: Add coverage to PR
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.3
+        with:
+          paths: ${{ github.workspace }}/build/jacocoXml/jacocoTestReport.xml
+          token: ${{secrets.GITHUB_TOKEN}}
+          min-coverage-overall: 40
+          min-coverage-changed-files: 60
+          title: VSM Github Broker Code Coverage
+          update-comment: true
+
+      - name: Get the Coverage info
+        run: |
+          echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
+          echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"

@@ -7,6 +7,7 @@ plugins {
     id("com.expediagroup.graphql") version "6.3.1"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
+    jacoco
 }
 
 group = "net.leanix.vsm"
@@ -79,5 +80,18 @@ graphql {
         schemaFile = file("${project.projectDir}/src/main/resources/schemas/github_schema.graphql")
         packageName = "net.leanix.githubbroker.connector.adapter.graphql.data"
         queryFileDirectory = "${project.projectDir}/src/main/resources/queries"
+    }
+}
+
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)
+        xml.outputLocation.set(File("${project.buildDir}/jacocoXml/jacocoTestReport.xml"))
     }
 }
