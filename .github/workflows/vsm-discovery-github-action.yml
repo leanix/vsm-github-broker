@@ -1,0 +1,37 @@
+name: Generate and register service
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  post-deploy:
+    name: Post Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inject secret store credentials
+        uses: leanix/secrets-action@master
+        with:
+          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK temurin 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run gradlew cyclonedxBom task
+        uses: gradle/gradle-build-action@v2
+        with:
+          build-root-directory: .
+          arguments: cyclonedxBom
+
+      - name: VSM discovery
+        uses: leanix/vsm-discovery-github-action@v1.0.0
+        with:
+          api-token: ${{ secrets.VSM_LEANIX_API_TOKEN }}
