@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - features/CID-1196/add-vsm-discovery-github-action
   workflow_dispatch:
 
 jobs:
