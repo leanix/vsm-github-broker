@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("com.expediagroup.graphql") version "6.3.1"
+    id("org.cyclonedx.bom") version "1.7.2"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     jacoco
@@ -86,6 +87,10 @@ graphql {
 tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.cyclonedxBom {
+    setDestination(project.file("."))
 }
 
 tasks.jacocoTestReport {
