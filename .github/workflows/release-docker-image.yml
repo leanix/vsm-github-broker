@@ -52,8 +52,19 @@ jobs:
           username: ${{ env.ACR_PUBLIC_USERNAME }}
           password: ${{ env.ACR_PUBLIC_PASSWORD }}
 
+      - name: Setup ssh
+        uses: webfactory/ssh-agent@v0.4.1
+        if: (steps.tag-action.outputs.tag != '')
+        with:
+          ssh-private-key: ${{ env.CI_GITHUB_SSH_PRIVATE_KEY }}
+          ssh-auth-sock: ${{ env.SSH_AUTH_SOCK }}
+
       - name: Build and push image to Azure public registry
         if: (steps.tag-action.outputs.tag != '')
-        run: |
-          docker build . -t ${{ env.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
-          docker push ${{ env.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: Dockerfile
+          tags: ${{ env.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
+          push: true
+          ssh: default=${{ env.SSH_AUTH_SOCK }}
