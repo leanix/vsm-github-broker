@@ -55,5 +55,5 @@ jobs:
       - name: Build and push image to Azure public registry
         if: (steps.tag-action.outputs.tag != '')
         run: |
-          docker build . -t ${{ secrets.acr-public-login }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
-          docker push ${{ secrets.acr-public-login }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
+          docker build . -t ${{ secrets.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
+          docker push ${{ secrets.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
