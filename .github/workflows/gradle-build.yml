@@ -1,4 +1,4 @@
-name: Build and publish docker image
+name: Build and test
 
 concurrency:
   group: gradle-build-${{ github.ref }}
@@ -30,13 +30,3 @@ jobs:
         continue-on-error: false
         with:
           arguments: build
-
-      - uses: leanix/secrets-action@master
-        if: github.ref == 'refs/heads/main'
-        with:
-          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
-
-      - uses: leanix/release-docker-image-action@master
-        if: github.ref == 'refs/heads/main'
-        with:
-          registry: acr-public

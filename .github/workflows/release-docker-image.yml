@@ -1,0 +1,53 @@
+name: Release Docker Image
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    if: github.event.pull_request.merged
+
+    steps:
+      - name: Inject secret store credentials
+        uses: leanix/secrets-action@master
+        with:
+          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
+
+      - name: Tag next version
+        id: tag-action
+        uses: K-Phoen/semver-release-action@master
+        with:
+          release_branch: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        continue-on-error: false
+        with:
+          arguments: build
+
+      - name: Login to Azure registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.acr-public-login }}
+          username: ${{ secrets.acr-public-username }}
+          password: ${{ secrets.acr-public-password }}
+
+      - name: Build and push image to Azure public registry
+        run: |
+          docker build . -t ${{ secrets.acr-public-login }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
+          docker push ${{ secrets.acr-public-login }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
