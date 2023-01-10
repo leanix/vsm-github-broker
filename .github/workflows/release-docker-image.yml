@@ -48,12 +48,12 @@ jobs:
         uses: azure/docker-login@v1
         if: (steps.tag-action.outputs.tag != '')
         with:
-          login-server: ${{ secrets.ACR_PUBLIC_LOGIN }}
-          username: ${{ secrets.ACR_PUBLIC_USERNAME }}
-          password: ${{ secrets.ACR_PUBLIC_PASSWORD }}
+          login-server: ${{ env.ACR_PUBLIC_LOGIN }}
+          username: ${{ env.ACR_PUBLIC_USERNAME }}
+          password: ${{ env.ACR_PUBLIC_PASSWORD }}
 
       - name: Build and push image to Azure public registry
         if: (steps.tag-action.outputs.tag != '')
         run: |
-          docker build . -t ${{ secrets.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
-          docker push ${{ secrets.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
+          docker build . -t ${{ env.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
+          docker push ${{ env.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
