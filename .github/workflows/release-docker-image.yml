@@ -12,42 +12,48 @@ jobs:
     if: github.event.pull_request.merged
 
     steps:
-      - name: Inject secret store credentials
-        uses: leanix/secrets-action@master
-        with:
-          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
-
       - name: Tag next version
         id: tag-action
         uses: K-Phoen/semver-release-action@master
         with:
           release_branch: main
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Inject secret store credentials
+        uses: leanix/secrets-action@master
+        if: (steps.tag-action.outputs.tag != '')
+        with:
+          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
 
       - name: Checkout
         uses: actions/checkout@v3
+        if: (steps.tag-action.outputs.tag != '')
 
       - name: Setup Java
         uses: actions/setup-java@v3
+        if: (steps.tag-action.outputs.tag != '')
         with:
           distribution: 'temurin'
           java-version: '17'
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
+        if: (steps.tag-action.outputs.tag != '')
         continue-on-error: false
         with:
           arguments: build
 
       - name: Login to Azure registry
         uses: azure/docker-login@v1
+        if: (steps.tag-action.outputs.tag != '')
         with:
-          login-server: ${{ secrets.acr-public-login }}
-          username: ${{ secrets.acr-public-username }}
-          password: ${{ secrets.acr-public-password }}
+          login-server: ${{ secrets.ACR_PUBLIC_LOGIN }}
+          username: ${{ secrets.ACR_PUBLIC_USERNAME }}
+          password: ${{ secrets.ACR_PUBLIC_PASSWORD }}
 
       - name: Build and push image to Azure public registry
+        if: (steps.tag-action.outputs.tag != '')
         run: |
-          docker build . -t ${{ secrets.acr-public-login }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
-          docker push ${{ secrets.acr-public-login }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
+          docker build . -t ${{ secrets.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
+          docker push ${{ secrets.ACR_PUBLIC_LOGIN }}/vsm-github-broker:${{ steps.tag-action.outputs.tag }}
