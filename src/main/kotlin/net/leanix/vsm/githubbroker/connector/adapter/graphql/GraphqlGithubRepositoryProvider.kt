@@ -3,10 +3,14 @@ package net.leanix.vsm.githubbroker.connector.adapter.graphql
 import com.expediagroup.graphql.client.spring.GraphQLWebClient
 import kotlinx.coroutines.runBlocking
 import net.leanix.githubbroker.connector.adapter.graphql.data.AllRepoQuery
+import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.LanguageEdge
 import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.RepositoryConnection
+import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.RepositoryTopic
 import net.leanix.vsm.githubbroker.connector.domain.GithubRepositoryProvider
+import net.leanix.vsm.githubbroker.connector.domain.Language
 import net.leanix.vsm.githubbroker.connector.domain.PagedRepositories
 import net.leanix.vsm.githubbroker.connector.domain.Repository
+import net.leanix.vsm.githubbroker.connector.domain.Topic
 import net.leanix.vsm.githubbroker.shared.exception.VsmException
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.Logger
@@ -65,7 +69,9 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
                             name = repository.name,
                             description = repository.description,
                             archived = repository.isArchived,
-                            url = repository.url
+                            url = repository.url,
+                            languages = parseLanguage(repository.languages?.edges) as List<Language>?,
+                            topics = parseTopics(repository.repositoryTopics.nodes) as List<Topic>?
                         )
                     }
                 )
@@ -74,5 +80,30 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
             logger.info("Zero repositories found")
             Result.failure(VsmException.NoRepositoriesFound())
         }
+    }
+
+    private fun parseTopics(nodes: List<RepositoryTopic?>?): List<Topic?>? {
+        val topics = nodes?.map { repositoryTopic: RepositoryTopic? ->
+            repositoryTopic?.topic?.let {
+                Topic(
+                    it.id,
+                    it.name
+                )
+            }
+        }
+        return topics
+    }
+
+    private fun parseLanguage(edges: List<LanguageEdge?>?): List<Language?>? {
+        val languages = edges?.map { languageEdge: LanguageEdge? ->
+            languageEdge?.node?.let {
+                Language(
+                    it.id,
+                    it.name,
+                    languageEdge.size
+                )
+            }
+        }
+        return languages
     }
 }
