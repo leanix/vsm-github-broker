@@ -40,11 +40,40 @@ docker run --restart=always \
 
 ### Troubleshooting
 
+#### Using over a http proxy system
+
+Add the following properties on the command:
+
+```console
+docker run 
+           ...
+           -e JAVA_OPTS="-Dhttp.proxyHost=<HTTP_HOST> -Dhttp.proxyHost=<HTTP_PORT> -Dhttp.proxyUser=<PROXY_USER> -Dhttp.proxyPassword=<PROXY_PASS> -Dhttps.proxyHost=<HTTPS_HOST> -Dhttps.proxyHost=<HTTPS_PORT> -Dhttps.proxyUser=<PROXY_USER> -Dhttps.proxyPassword=<PROXY_PASS>" \
+        leanixacrpublic.azurecr.io/vsm-github-broker
+```
+
+#### Using over SSL Intercepting proxy
+
+Build your own docker image adding the certificate:
+
+```console
+FROM leanixacrpublic.azurecr.io/vsm-github-broker
+
+
+USER root
+
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+COPY YOUR-CERTIFICATE-HERE /usr/local/share/ca-certificates/YOUR-CERTIFICATE-HERE
+RUN update-ca-certificates
+
+```
+
+
 #### Using amd64 Images on Apple M1
 
 Just run the container by providing the following command:
 
 ```console
+
 docker run --platform linux/amd64 \
            ...
         leanixacrpublic.azurecr.io/vsm-github-broker
