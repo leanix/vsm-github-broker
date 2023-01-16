@@ -8,7 +8,7 @@ import net.leanix.vsm.githubbroker.shared.Constants.GITHUB_ENTERPRISE
 import org.springframework.stereotype.Component
 
 @Component
-class FeignTopicProvider(private val topicClient: TopicClient) : TopicProvider {
+class FeignTopicProvider(private val vsmClient: VsmClient) : TopicProvider {
 
     override fun save(topic: Topic, assignment: Assignment) {
         val topicToBeSaved = TopicRequest(
@@ -19,6 +19,6 @@ class FeignTopicProvider(private val topicClient: TopicClient) : TopicProvider {
             organizationName = assignment.organizationName
         )
 
-        topicClient.saveTopic(topicToBeSaved)
+        vsmClient.saveTopic(topicToBeSaved)
     }
 }

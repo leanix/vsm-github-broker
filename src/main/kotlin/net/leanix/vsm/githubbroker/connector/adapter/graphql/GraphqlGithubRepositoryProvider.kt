@@ -25,7 +25,7 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
     private val logger: Logger = LoggerFactory.getLogger(GraphqlGithubRepositoryProvider::class.java)
 
     private val client = GraphQLWebClient(
-        url = vsmProperties.githubUrl + "/api/graphql",
+        url = vsmProperties.githubUrl + "/graphql",
         builder = WebClient.builder()
             .defaultHeaders {
                 it.set(HttpHeaders.AUTHORIZATION, "Bearer ${vsmProperties.githubToken}")
@@ -40,7 +40,7 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
                 cursor = cursor
             )
         )
-        logger.info("started get all repos")
+        logger.info("Getting next page of repositories")
         return runBlocking {
             kotlin.runCatching {
                 client.execute(query)
@@ -70,8 +70,8 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
                             description = repository.description,
                             archived = repository.isArchived,
                             url = repository.url,
-                            languages = parseLanguage(repository.languages?.edges) as List<Language>?,
-                            topics = parseTopics(repository.repositoryTopics.nodes) as List<Topic>?
+                            languages = parseLanguage(repository.languages?.edges),
+                            topics = parseTopics(repository.repositoryTopics.nodes)
                         )
                     }
                 )
@@ -82,28 +82,30 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
         }
     }
 
-    private fun parseTopics(nodes: List<RepositoryTopic?>?): List<Topic?>? {
-        val topics = nodes?.map { repositoryTopic: RepositoryTopic? ->
-            repositoryTopic?.topic?.let {
-                Topic(
-                    it.id,
-                    it.name
-                )
+    private fun parseTopics(nodes: List<RepositoryTopic?>?): List<Topic>? {
+        return if (!nodes.isNullOrEmpty()){
+            nodes.filterNotNull().map { repositoryTopic: RepositoryTopic ->
+                repositoryTopic.let {
+                    Topic(
+                        it.topic.id,
+                        it.topic.name,
+                    )
+                }
             }
-        }
-        return topics
+        } else null
     }
 
-    private fun parseLanguage(edges: List<LanguageEdge?>?): List<Language?>? {
-        val languages = edges?.map { languageEdge: LanguageEdge? ->
-            languageEdge?.node?.let {
-                Language(
-                    it.id,
-                    it.name,
-                    languageEdge.size
-                )
+    private fun parseLanguage(edges: List<LanguageEdge?>?): List<Language>? {
+        return if (!edges.isNullOrEmpty()){
+            edges.filterNotNull().map { languageEdge: LanguageEdge ->
+                languageEdge.node.let {
+                    Language(
+                        it.id,
+                        it.name,
+                        languageEdge.size
+                    )
+                }
             }
-        }
-        return languages
+        } else null
     }
 }

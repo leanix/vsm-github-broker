@@ -8,7 +8,7 @@ import net.leanix.vsm.githubbroker.shared.Constants.GITHUB_ENTERPRISE
 import org.springframework.stereotype.Component
 
 @Component
-class FeignLanguageProvider(private val languageClient: LanguageClient) : LanguageProvider {
+class FeignLanguageProvider(private val vsmClient: VsmClient) : LanguageProvider {
 
     override fun save(language: Language, assignment: Assignment) {
         val languageToBeSaved = LanguageRequest(
@@ -19,6 +19,6 @@ class FeignLanguageProvider(private val languageClient: LanguageClient) : Langua
             organizationName = assignment.organizationName
         )
 
-        languageClient.saveLanguage(languageToBeSaved)
+        vsmClient.saveLanguage(languageToBeSaved)
     }
 }

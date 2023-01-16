@@ -8,7 +8,7 @@ import net.leanix.vsm.githubbroker.shared.Constants.GITHUB_ENTERPRISE
 import org.springframework.stereotype.Component
 
 @Component
-class FeignRepositoryProvider(private val serviceClient: ServiceClient) : RepositoryProvider {
+class FeignRepositoryProvider(private val serviceClient: VsmClient) : RepositoryProvider {
 
     override fun save(repository: Repository, assignment: Assignment) {
         val service = ServiceRequest(
@@ -18,7 +18,9 @@ class FeignRepositoryProvider(private val serviceClient: ServiceClient) : Reposi
             name = repository.name,
             description = repository.description,
             url = repository.url,
-            archived = repository.archived
+            archived = repository.archived,
+            languages = repository.languages,
+            labels = repository.topics
         )
 
         serviceClient.saveService(service)
