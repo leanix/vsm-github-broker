@@ -13,7 +13,6 @@ import java.util.Locale
 
 @Service
 class RepositoriesService(
-    private val assignmentService: AssignmentService,
     private val repositoryService: RepositoryService,
     private val githubRepositoryProvider: GithubRepositoryProvider,
     private val loggingService: LoggingService,
@@ -22,14 +21,8 @@ class RepositoriesService(
 
     private val logger = LoggerFactory.getLogger(RepositoriesService::class.java)
 
-    fun getAllRepositories() {
-        assignmentService
-            .get()
-            .map { getRepositoriesPaginated(it) }
-            .onFailure {
-                // TODO send status log here?
-                logger.error(it.message)
-            }
+    fun getAllRepositories(assignment: Assignment) {
+        getRepositoriesPaginated(assignment)
     }
 
     private fun getRepositoriesPaginated(assignment: Assignment) {

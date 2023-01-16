@@ -38,6 +38,12 @@ docker run --restart=always \
         leanixacrpublic.azurecr.io/vsm-github-broker
 ```
 
+#### Webhook configuration
+
+The Broker client exposes a webhook endpoint that can be used to receive events from GitHub Enterprise. The webhook is registered automatically when the Broker client starts up. 
+
+> Note: Make sure to use a unique GitHub token for each Broker client instance. This ensures maximum security and prevents the Broker client from receiving events from other GitHub Enterprise deployments.
+
 ### Troubleshooting
 
 #### Using over a http proxy system
