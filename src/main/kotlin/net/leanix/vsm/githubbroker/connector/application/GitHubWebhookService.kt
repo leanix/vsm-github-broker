@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service
 
 @Service
 class GitHubWebhookService(
-    private val gitHubClient: GitHubClient,
-    private val vsmProperties: VsmProperties
+    private val vsmProperties: VsmProperties,
+    private val gitHubClient: GitHubClient
 ) {
 
     private val logger = LoggerFactory.getLogger(GitHubWebhookService::class.java)
 
     fun registerWebhook(orgName: String) {
-        // todo add tests
         runCatching {
             val hooks = gitHubClient.getHooks(orgName)
             hooks.forEach {
