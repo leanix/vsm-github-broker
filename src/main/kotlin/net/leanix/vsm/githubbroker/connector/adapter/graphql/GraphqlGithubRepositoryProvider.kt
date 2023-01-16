@@ -25,7 +25,7 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
     private val logger: Logger = LoggerFactory.getLogger(GraphqlGithubRepositoryProvider::class.java)
 
     private val client = GraphQLWebClient(
-        url = vsmProperties.githubUrl + "/graphql",
+        url = vsmProperties.githubUrl + "/api/graphql",
         builder = WebClient.builder()
             .defaultHeaders {
                 it.set(HttpHeaders.AUTHORIZATION, "Bearer ${vsmProperties.githubToken}")
