@@ -69,15 +69,15 @@ class GitHubWebhookServiceTest {
 
         service.registerWebhook("dummy")
 
-        verify(exactly = 2) { gitHubClientMock.deleteHook("dummy", any()) }
-        verify(exactly = 1) { gitHubClientMock.createHook("dummy", any()) }
+        verify(exactly = 2) { gitHubClientMock.deleteHook(any(), any()) }
+        verify(exactly = 1) { gitHubClientMock.createHook(any(), any()) }
     }
 
     @Test
     fun `When a hook is not present it should not delete the hook but create a new hook`() {
         every {
             gitHubClientMock.getHooks("dummy")
-        } throws RuntimeException("Not found")
+        } throws RuntimeException("Not found[404]")
 
         every { gitHubClientMock.createHook("dummy", any()) } returns GitHubWebhookResponse(
             id = "13",
@@ -93,6 +93,6 @@ class GitHubWebhookServiceTest {
         service.registerWebhook("dummy")
 
         verify(exactly = 0) { gitHubClientMock.deleteHook(any(), any()) }
-        verify(exactly = 1) { gitHubClientMock.createHook("dummy", any()) }
+        verify(exactly = 1) { gitHubClientMock.createHook(any(), any()) }
     }
 }
