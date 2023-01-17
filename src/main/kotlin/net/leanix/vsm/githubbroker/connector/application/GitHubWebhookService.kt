@@ -18,23 +18,14 @@ class GitHubWebhookService(
     fun registerWebhook(orgName: String) {
         logger.info("Initializing webhooks registration steps. orgName: $orgName")
 
-        runCatching {
-            val hooks = gitHubClient.getHooks(orgName)
-            hooks.forEach {
-                logger.info("Deleting hook to ensure unique change events: ${it.id}")
-                gitHubClient.deleteHook(orgName, it.id)
-            }
-        }.onFailure {
-            if (it.message?.contains("404") == true) {
-                logger.info("No hooks identified. Attempting to create a new one. orgName: $orgName")
-            } else {
-                logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
-                return
-            }
-        }
+        cleanHooks(orgName)
 
         logger.info("registering webhooks")
 
+        createHook(orgName)
+    }
+
+    private fun createHook(orgName: String) {
         kotlin.runCatching {
             gitHubClient.createHook(
                 orgName,
@@ -49,10 +40,27 @@ class GitHubWebhookService(
         }.onFailure {
             logger.warn(
                 "Failed to register webhook. Please check the logs for more details. " +
-                    "Until then real time updates are not available. Error: ${it.message}"
+                        "Until then real time updates are not available. Error: ${it.message}"
             )
         }.onSuccess {
             logger.info("Successfully registered webhook. Real time updates are now available. Hook id: ${it.id}")
+        }
+    }
+
+    private fun cleanHooks(orgName: String) {
+        runCatching {
+            val hooks = gitHubClient.getHooks(orgName)
+            hooks.forEach {
+                logger.info("Deleting hook to ensure unique change events: ${it.id}")
+                gitHubClient.deleteHook(orgName, it.id)
+            }
+        }.onFailure {
+            if (it.message?.contains("404") == true) {
+                logger.info("No hooks identified. Attempting to create a new one. orgName: $orgName")
+            } else {
+                logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
+                return
+            }
         }
     }
 }
