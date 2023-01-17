@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import org.awaitility.Awaitility.await
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
@@ -24,10 +25,12 @@ class InitialStateTest {
                 )
             )
         )
-        WireMock.verify(1, postRequestedFor(urlEqualTo("/api/graphql")))
-        WireMock.verify(2, postRequestedFor(urlEqualTo("/services")))
-        WireMock.verify(3, postRequestedFor(urlEqualTo("/languages")))
-        WireMock.verify(2, postRequestedFor(urlEqualTo("/topics")))
-        WireMock.verify(1, postRequestedFor(urlEqualTo("/logs/admin")))
+        await().untilAsserted {
+            WireMock.verify(1, postRequestedFor(urlEqualTo("/api/graphql")))
+            WireMock.verify(2, postRequestedFor(urlEqualTo("/services")))
+            WireMock.verify(3, postRequestedFor(urlEqualTo("/languages")))
+            WireMock.verify(2, postRequestedFor(urlEqualTo("/topics")))
+            WireMock.verify(1, postRequestedFor(urlEqualTo("/logs/admin")))
+        }
     }
 }
