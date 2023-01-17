@@ -3,6 +3,7 @@ package net.leanix.vsm.githubbroker.connector.application
 import net.leanix.vsm.githubbroker.connector.adapter.feign.GitHubClient
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.Config
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.GitHubWebhookRequest
+import net.leanix.vsm.githubbroker.shared.exception.VsmException
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -25,7 +26,10 @@ class GitHubWebhookService(
                 logger.info("No hooks identified. Attempting to create a new one. orgName: $orgName")
             } else {
                 logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
-                return
+                throw VsmException.WebhookRegistrationFailed(
+                    "Failed to initialise webhooks state for $orgName." +
+                        " Hint: Make sure PAT is valid. Error: ${it.message}"
+                )
             }
         }
 
@@ -36,7 +40,12 @@ class GitHubWebhookService(
         }.onFailure {
             logger.warn(
                 "Failed to register webhook. Please check the logs for more details. " +
-                        "Until then real time updates are not available. Error: ${it.message}"
+                    "Until then real time updates are not available. Error: ${it.message}"
+            )
+            throw VsmException.WebhookRegistrationFailed(
+                "Failed to register webhook. Real time updates are unavailable. " +
+                    "Hint: Make sure PAT is valid. Hint: Make sure PAT has necessary scopes (admin:org_hook)." +
+                    " Error: ${it.message}"
             )
         }.onSuccess {
             logger.info("Successfully registered webhook. Real time updates are now available.")
