@@ -8,7 +8,11 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
 @Service
-class RepositoryService(private val repositoryProvider: RepositoryProvider) {
+class RepositoryService(
+    private val repositoryProvider: RepositoryProvider,
+    private val languageService: LanguageService,
+    private val topicService: TopicService
+) {
 
     private val logger = LoggerFactory.getLogger(RepositoryService::class.java)
 
@@ -18,6 +22,18 @@ class RepositoryService(private val repositoryProvider: RepositoryProvider) {
             repositoryProvider.save(repository, assignment)
         }.onFailure {
             logger.error("Failed save service", it)
+        }
+
+        kotlin.runCatching {
+            repository.languages?.forEach { language -> languageService.save(language, assignment) }
+        }.onFailure {
+            logger.error("Failed save languages", it)
+        }
+
+        kotlin.runCatching {
+            repository.topics?.forEach { topic -> topicService.save(topic, assignment) }
+        }.onFailure {
+            logger.error("Failed save topics", it)
         }
     }
 }

@@ -13,9 +13,9 @@ class TopicService(private val topicProvider: TopicProvider) {
     private val logger = LoggerFactory.getLogger(TopicService::class.java)
 
     @Async
-    fun save(topics: List<Topic>, assignment: Assignment) {
+    fun save(topic: Topic, assignment: Assignment) {
         kotlin.runCatching {
-            topics.map { topic -> topicProvider.save(topic, assignment) }
+            topicProvider.save(topic, assignment)
         }.onFailure {
             logger.error("Failed save service", it)
         }

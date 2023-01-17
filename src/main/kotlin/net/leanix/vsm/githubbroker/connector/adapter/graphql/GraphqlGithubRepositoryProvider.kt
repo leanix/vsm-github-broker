@@ -83,7 +83,7 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
     }
 
     private fun parseTopics(nodes: List<RepositoryTopic?>?): List<Topic>? {
-        return if (!nodes.isNullOrEmpty()){
+        return if (!nodes.isNullOrEmpty()) {
             nodes.filterNotNull().map { repositoryTopic: RepositoryTopic ->
                 repositoryTopic.let {
                     Topic(
@@ -96,7 +96,7 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
     }
 
     private fun parseLanguage(edges: List<LanguageEdge?>?): List<Language>? {
-        return if (!edges.isNullOrEmpty()){
+        return if (!edges.isNullOrEmpty()) {
             edges.filterNotNull().map { languageEdge: LanguageEdge ->
                 languageEdge.node.let {
                     Language(

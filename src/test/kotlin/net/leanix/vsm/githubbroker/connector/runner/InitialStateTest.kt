@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 
-@SpringBootTest(properties = [])
+@SpringBootTest
 @AutoConfigureWireMock(port = 6666)
 class InitialStateTest {
 
@@ -26,8 +26,8 @@ class InitialStateTest {
         )
         WireMock.verify(1, postRequestedFor(urlEqualTo("/api/graphql")))
         WireMock.verify(2, postRequestedFor(urlEqualTo("/services")))
+        WireMock.verify(3, postRequestedFor(urlEqualTo("/languages")))
         WireMock.verify(2, postRequestedFor(urlEqualTo("/topics")))
-        WireMock.verify(0, postRequestedFor(urlEqualTo("/languages")))
         WireMock.verify(1, postRequestedFor(urlEqualTo("/logs/admin")))
     }
 }

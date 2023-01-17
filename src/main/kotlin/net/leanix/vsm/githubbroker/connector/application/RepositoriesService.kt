@@ -15,8 +15,6 @@ import java.util.Locale
 class RepositoriesService(
     private val assignmentService: AssignmentService,
     private val repositoryService: RepositoryService,
-    private val languageService: LanguageService,
-    private val topicService: TopicService,
     private val githubRepositoryProvider: GithubRepositoryProvider,
     private val loggingService: LoggingService,
     private val messageSource: MessageSource
@@ -49,8 +47,6 @@ class RepositoriesService(
             repositories
                 .forEach {
                     repositoryService.save(it, assignment)
-                    it.languages?.let { languages -> languageService.save(languages, assignment) }
-                    it.topics?.let { topics -> topicService.save(topics, assignment) }
                 }
             cursor = repos.cursor
         } while (repos.hasNextPage)

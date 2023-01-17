@@ -13,9 +13,9 @@ class LanguageService(private val languageProvider: LanguageProvider) {
     private val logger = LoggerFactory.getLogger(LanguageService::class.java)
 
     @Async
-    fun save(languages: List<Language>, assignment: Assignment) {
+    fun save(language: Language, assignment: Assignment) {
         kotlin.runCatching {
-            languages.map { language -> languageProvider.save(language, assignment) }
+            languageProvider.save(language, assignment)
         }.onFailure {
             logger.error("Failed save service", it)
         }
