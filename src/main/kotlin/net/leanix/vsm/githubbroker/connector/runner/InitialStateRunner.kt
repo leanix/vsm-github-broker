@@ -17,16 +17,15 @@ class InitialStateRunner(
 ) : ApplicationRunner {
     private val logger: Logger = LoggerFactory.getLogger(InitialStateRunner::class.java)
     override fun run(args: ApplicationArguments?) {
-        val assignment = assignmentService.getAssignment()
-        logger.info("Started get initial state")
         kotlin.runCatching {
+            val assignment = assignmentService.getAssignment()
+            logger.info("Started get initial state")
+
             repositoriesService.getAllRepositories(assignment)
+
+            gitHubWebhookService.registerWebhook(assignment.organizationName)
         }.onFailure {
             logger.error("Failed to get initial state", it)
         }
-
-        logger.info("Initializing webhooks registration steps")
-        val orgName = assignment.organizationName
-        gitHubWebhookService.registerWebhook(orgName)
     }
 }
