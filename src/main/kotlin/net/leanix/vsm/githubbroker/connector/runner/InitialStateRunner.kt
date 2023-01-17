@@ -23,6 +23,7 @@ class InitialStateRunner(
 
             repositoriesService.getAllRepositories(assignment)
 
+            logger.info("Initializing webhooks registration steps")
             gitHubWebhookService.registerWebhook(assignment.organizationName)
         }.onFailure {
             logger.error("Failed to get initial state", it)
