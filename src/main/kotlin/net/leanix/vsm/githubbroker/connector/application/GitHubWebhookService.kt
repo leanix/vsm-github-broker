@@ -25,7 +25,7 @@ class GitHubWebhookService(
                 gitHubClient.deleteHook(orgName, it.id)
             }
         }.onFailure {
-            if(it.message?.contains("404") == true) {
+            if (it.message?.contains("404") == true) {
                 logger.info("No hooks identified. Attempting to create a new one. orgName: $orgName")
             } else {
                 logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
