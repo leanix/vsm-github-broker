@@ -18,42 +18,8 @@ class GitHubWebhookService(
     fun registerWebhook(orgName: String) {
         logger.info("Initializing webhooks registration steps. orgName: $orgName")
 
-        cleanHooks(orgName)
-
-        logger.info("registering webhooks")
-
-        createHook(orgName)
-    }
-
-    private fun createHook(orgName: String) {
-        kotlin.runCatching {
-            gitHubClient.createHook(
-                orgName,
-                GitHubWebhookRequest(
-                    events = listOf("push"),
-                    config = Config(
-                        url = vsmProperties.githubUrl,
-                        contentType = "json"
-                    )
-                )
-            )
-        }.onFailure {
-            logger.warn(
-                "Failed to register webhook. Please check the logs for more details. " +
-                        "Until then real time updates are not available. Error: ${it.message}"
-            )
-        }.onSuccess {
-            logger.info("Successfully registered webhook. Real time updates are now available. Hook id: ${it.id}")
-        }
-    }
-
-    private fun cleanHooks(orgName: String) {
         runCatching {
-            val hooks = gitHubClient.getHooks(orgName)
-            hooks.forEach {
-                logger.info("Deleting hook to ensure unique change events: ${it.id}")
-                gitHubClient.deleteHook(orgName, it.id)
-            }
+            cleanHooks(orgName)
         }.onFailure {
             if (it.message?.contains("404") == true) {
                 logger.info("No hooks identified. Attempting to create a new one. orgName: $orgName")
@@ -61,6 +27,42 @@ class GitHubWebhookService(
                 logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
                 return
             }
+        }
+
+        logger.info("registering webhooks")
+
+        kotlin.runCatching {
+            createHook(orgName)
+        }.onFailure {
+            logger.warn(
+                "Failed to register webhook. Please check the logs for more details. " +
+                        "Until then real time updates are not available. Error: ${it.message}"
+            )
+        }.onSuccess {
+            logger.info("Successfully registered webhook. Real time updates are now available.")
+        }
+    }
+
+    private fun createHook(orgName: String) {
+        val hook = gitHubClient.createHook(
+            orgName,
+            GitHubWebhookRequest(
+                events = listOf("push"),
+                config = Config(
+                    url = vsmProperties.githubUrl,
+                    contentType = "json"
+                )
+            )
+        )
+
+        logger.info("Successfully created hook. hook: ${hook.id}")
+    }
+
+    private fun cleanHooks(orgName: String) {
+        val hooks = gitHubClient.getHooks(orgName)
+        hooks.forEach {
+            logger.info("Deleting hook to ensure unique change events: ${it.id}")
+            gitHubClient.deleteHook(orgName, it.id)
         }
     }
 }
