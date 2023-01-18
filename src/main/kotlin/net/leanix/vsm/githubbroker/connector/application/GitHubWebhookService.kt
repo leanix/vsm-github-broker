@@ -71,7 +71,11 @@ class GitHubWebhookService(
         val hooks = gitHubClient.getHooks(orgName)
         hooks.forEach {
             logger.info("Deleting hook to ensure unique change events: ${it.id}")
-            gitHubClient.deleteHook(orgName, it.id)
+            kotlin.runCatching {
+                gitHubClient.deleteHook(orgName, it.id)
+            }.onFailure { e ->
+                logger.info("Failed to delete hook. Hook Id: ${it.id}. Error: ${e.message}")
+            }
         }
     }
 }
