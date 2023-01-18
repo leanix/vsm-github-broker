@@ -9,6 +9,6 @@ leanix:
       user-token: ${LEANIX_USER_TOKEN}
       config-name: ${LEANIX_CONFIGURATION_NAME}
       github-token: ${GITHUB_TOKEN}
-      github-url: ${GITHUB_URL}
+      github-url: ${GITHUB_URL:https://api.github.com}
     auth:
       access-token-uri: https://${LEANIX_DOMAIN}/services/mtm/v1
