@@ -1,0 +1,14 @@
+
+leanix:
+  vsm:
+    base-url:  https://${LEANIX_DOMAIN}/services/vsm-canopy/v1
+    event-broker:
+      base-url: ${leanix.vsm.base-url}/vsm-events-broker
+    connector:
+      api-token: ${LEANIX_API_TOKEN}
+      user-token: ${LEANIX_USER_TOKEN}
+      config-name: ${LEANIX_CONFIGURATION_NAME}
+      github-token: ${GITHUB_TOKEN}
+      github-url: ${GITHUB_URL:https://api.github.com}
+    auth:
+      access-token-uri: https://${LEANIX_DOMAIN}/services/mtm/v1

@@ -1,0 +1,13 @@
+{
+  "request": {
+    "url": "/services/mtm/v1/oauth2/token",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"scope\": \"\",\"expired\": false,\"access_token\": \"dummyToken\",\"token_type\": \"bearer\",\"expires_in\": 3599}"
+  }
+}
