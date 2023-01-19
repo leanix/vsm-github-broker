@@ -8,4 +8,5 @@ sealed class VsmException(message: String? = null) : RuntimeException(message) {
 
     class ParsePayloadFailed(message: String?) : VsmException(message)
     class WebhookEventOrActionNotSupported(message: String) : VsmException(message)
+    class WebhookEventValidationFailed(message: String) : VsmException(message)
 }

@@ -11,6 +11,7 @@ import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
 import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
 import net.leanix.vsm.githubbroker.shared.exception.VsmException
+import net.leanix.vsm.githubbroker.shared.exception.VsmException.WebhookEventValidationFailed
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async
@@ -42,7 +43,7 @@ class GitHubWebhookService(
                 logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
                 throw VsmException.WebhookRegistrationFailed(
                     "Failed to initialise webhooks state for $orgName." +
-                            " Hint: Make sure PAT is valid. Error: ${it.message}"
+                        " Hint: Make sure PAT is valid. Error: ${it.message}"
                 )
             }
         }
@@ -54,12 +55,12 @@ class GitHubWebhookService(
         }.onFailure {
             logger.warn(
                 "Failed to register webhook. Please check the logs for more details. " +
-                        "Until then real time updates are not available. Error: ${it.message}"
+                    "Until then real time updates are not available. Error: ${it.message}"
             )
             throw VsmException.WebhookRegistrationFailed(
                 "Failed to register webhook. Real time updates are unavailable. " +
-                        "Hint: Make sure PAT is valid. Hint: Make sure PAT has necessary scopes (admin:org_hook)." +
-                        " Error: ${it.message}"
+                    "Hint: Make sure PAT is valid. Hint: Make sure PAT has necessary scopes (admin:org_hook)." +
+                    " Error: ${it.message}"
             )
         }.onSuccess {
             logger.info("Successfully registered webhook. Real time updates are now available.")
@@ -80,7 +81,6 @@ class GitHubWebhookService(
 
         logger.info("Successfully created hook. hook: ${hook.id}")
     }
-
 
     private fun cleanHooks(orgName: String) {
         val hooks = gitHubClient.getHooks(orgName)
@@ -121,7 +121,7 @@ class GitHubWebhookService(
             Result.success(Unit)
         } else {
             val message = "invalid api token: $apiToken or organization: $organization"
-            throw  RuntimeException(message)
+            throw WebhookEventValidationFailed(message)
         }
     }
 }
