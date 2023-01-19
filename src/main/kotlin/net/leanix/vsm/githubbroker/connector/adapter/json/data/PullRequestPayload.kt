@@ -7,4 +7,4 @@ data class PullRequestPayload(
     @JsonProperty("pull_request")
     val pullRequest: PullRequestData,
     val repository: RepositoryData
-) : BaseGitHubPayload()
+) : BaseGitHubPayload
