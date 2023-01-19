@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 
 @SpringBootTest
-@AutoConfigureWireMock(port = 6666)
+@AutoConfigureWireMock(port = 0)
 class InitialStateTest {
 
     @Test
