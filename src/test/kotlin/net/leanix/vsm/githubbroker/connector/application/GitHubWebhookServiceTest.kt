@@ -6,6 +6,7 @@ import io.mockk.verify
 import net.leanix.vsm.githubbroker.connector.adapter.feign.GitHubClient
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.Config
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.GitHubWebhookResponse
+import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -14,8 +15,13 @@ class GitHubWebhookServiceTest {
 
     private val gitHubClientMock = mockk<GitHubClient>()
     private val vsmPropertiesMock = mockk<VsmProperties>()
+    private val assignmentService = mockk<AssignmentService>()
+    private val webhookParseProvider = mockk<WebhookParseProvider>()
+    private val repositoryService  = mockk<RepositoryService>()
 
-    private val service = GitHubWebhookService(vsmPropertiesMock, gitHubClientMock)
+    private val service = GitHubWebhookService(
+        vsmPropertiesMock, gitHubClientMock, assignmentService, webhookParseProvider, repositoryService
+    )
 
     @BeforeEach
     fun init() {

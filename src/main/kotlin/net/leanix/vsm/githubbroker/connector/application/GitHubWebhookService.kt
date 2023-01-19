@@ -1,8 +1,13 @@
 package net.leanix.vsm.githubbroker.connector.application
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import net.leanix.vsm.githubbroker.connector.adapter.feign.GitHubClient
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.Config
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.GitHubWebhookRequest
+import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
 import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
 import net.leanix.vsm.githubbroker.shared.exception.VsmException
@@ -10,7 +15,6 @@ import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
-import java.lang.RuntimeException
 import java.util.UUID
 
 @Service
@@ -18,10 +22,13 @@ class GitHubWebhookService(
     private val vsmProperties: VsmProperties,
     private val gitHubClient: GitHubClient,
     private val assignmentService: AssignmentService,
-    private val webhookParseProvider: WebhookParseProvider
+    private val webhookParseProvider: WebhookParseProvider,
+    private val repositoryService: RepositoryService
 ) : BaseConnectorService() {
 
     private val logger = LoggerFactory.getLogger(GitHubWebhookService::class.java)
+    private val mapper = jacksonObjectMapper()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     fun registerWebhook(orgName: String) {
         logger.info("Initializing webhooks registration steps. orgName: $orgName")
@@ -90,26 +97,31 @@ class GitHubWebhookService(
     @Async
     fun consumeWebhookEvent(eventType: WebhookEventType, apiToken: String, payload: String) {
         logger.info("new webhook event received: $eventType")
-        validateRequest(apiToken)
-            .onSuccess {
-                kotlin.runCatching {
-                    assignmentService.getAssignment()
-                }
-                    .map { webhookParseProvider.parsePayload(eventType, payload, it) }
-            }
-    }
 
-    private fun validateRequest(apiToken: String): Result<Unit> {
-        return if (apiToken == vsmProperties.apiToken) {
-            logger.info("api token valid")
-            Result.success(Unit)
-        } else {
-            val message = "invalid api token: $apiToken"
+        kotlin.runCatching {
+            val assignment = assignmentService.getAssignment()
+            validateRequest(apiToken, payload, assignment)
+                .let {
+                    val repository = webhookParseProvider.parsePayload(eventType, payload, assignment)
+                    repositoryService.save(repository, assignment)
+                    logInfoMessages("vsm.repos.imported", emptyArray(), assignment)
+                }
+        }.onFailure {
             logFailedStatus(
                 runId = UUID.randomUUID(),
-                message = message
+                message = it.message ?: "empty message"
             )
-            Result.failure(RuntimeException(message))
+        }
+    }
+
+    private fun validateRequest(apiToken: String, payload: String, assignment: Assignment) {
+        val organization = mapper.readValue<JsonNode>(payload).get("organization").get("login").asText()
+        if (apiToken == vsmProperties.apiToken && assignment.organizationName == organization) {
+            logger.info("api token and organization are valid")
+            Result.success(Unit)
+        } else {
+            val message = "invalid api token: $apiToken or organization: $organization"
+            throw  RuntimeException(message)
         }
     }
 }
