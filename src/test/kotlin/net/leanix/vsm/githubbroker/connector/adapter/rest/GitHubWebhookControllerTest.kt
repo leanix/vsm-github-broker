@@ -38,7 +38,6 @@ class GitHubWebhookControllerTest {
 
         @Test
         fun `it should not save service when token is invalid`() {
-
             val request = this::class.java.classLoader.getResource(
                 "requests/github-event-repository-created-payload.json"
             )!!.readText()
@@ -58,9 +57,8 @@ class GitHubWebhookControllerTest {
 
         @Test
         fun `it should not save service when org is not supported invalid`() {
-
             val apiToken = "api-token"
-            val organization = "super-repo"
+            val organization = "not-supported-repo"
             val request = this::class.java.classLoader.getResource(
                 "requests/github-event-not-support-org-payload.json"
             )!!.readText()
@@ -75,8 +73,11 @@ class GitHubWebhookControllerTest {
 
             Thread.sleep(2000)
             WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
-            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/log/connector-status"))
-                .withRequestBody(WireMock.containing("invalid api token: $apiToken or organization: $organization")))
+            WireMock.verify(
+                1,
+                WireMock.postRequestedFor(WireMock.urlEqualTo("/log/connector-status"))
+                    .withRequestBody(WireMock.containing("invalid api token: $apiToken or organization: $organization"))
+            )
         }
     }
 
@@ -118,9 +119,54 @@ class GitHubWebhookControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isAccepted)
 
             Thread.sleep(2000)
-            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/services"))
-                .withRequestBody(WireMock.containing("\"description\":\"add new description\"")))
+            WireMock.verify(
+                1,
+                WireMock.postRequestedFor(WireMock.urlEqualTo("/services"))
+                    .withRequestBody(WireMock.containing("\"description\":\"add new description\""))
+            )
             WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+        }
+    }
+
+    @Nested
+    @DisplayName("PullRequest Event Tests")
+    inner class PullRequestEventTests {
+
+        @Test
+        fun `it should receive an pull request event with action closed with success`() {
+            val request = this::class.java.classLoader.getResource(
+                "requests/github-event-pullrequest-closed-payload.json"
+            )!!.readText()
+
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/github/api-token/webhook")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(request)
+                    .header("X-Github-Event", "pull_request")
+            )
+                .andExpect(MockMvcResultMatchers.status().isAccepted)
+
+            Thread.sleep(2000)
+            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
+            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+        }
+
+        @Test
+        fun `it should receive an pull request event with action closed and not merged with success`() {
+            val request = this::class.java.classLoader.getResource(
+                "requests/github-event-pullrequest-closed-not-merged-payload.json"
+            )!!.readText()
+
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/github/api-token/webhook")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(request)
+                    .header("X-Github-Event", "pull_request")
+            )
+                .andExpect(MockMvcResultMatchers.status().isAccepted)
+
+            Thread.sleep(2000)
+            WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
         }
     }
 }
