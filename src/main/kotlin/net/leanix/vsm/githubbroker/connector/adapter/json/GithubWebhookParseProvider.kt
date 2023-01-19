@@ -10,6 +10,8 @@ import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.Repository
 import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
 import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
+import net.leanix.vsm.githubbroker.shared.exception.VsmException.ParsePayloadFailed
+import net.leanix.vsm.githubbroker.shared.exception.VsmException.WebhookEventOrActionNotSupported
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -40,7 +42,7 @@ class GithubWebhookParseProvider : WebhookParseProvider {
             .map { parseRepositoryDataPayload(it.repository) }
             .onFailure {
                 logger.error("error parser gh payload", it)
-                throw it
+                throw ParsePayloadFailed(it.message)
             }.getOrThrow()
     }
 
@@ -54,7 +56,7 @@ class GithubWebhookParseProvider : WebhookParseProvider {
                 if (it.action == "closed" && it.pullRequest.isMerged()) {
                     parseRepositoryDataPayload(it.repository)
                 } else {
-                    throw RuntimeException("")
+                    throw WebhookEventOrActionNotSupported("Pull Request Event not supported")
                 }
             }
             .onFailure {
