@@ -115,7 +115,7 @@
     "default_branch": "main"
   },
   "organization": {
-    "login": "super-repo",
+    "login": "not-supported-repo",
     "id": 122525461,
     "node_id": "O_kgDOB02XFQ",
     "url": "https://api.github.com/orgs/super-repo",

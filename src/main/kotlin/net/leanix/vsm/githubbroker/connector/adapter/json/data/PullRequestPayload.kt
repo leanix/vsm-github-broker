@@ -6,5 +6,5 @@ data class PullRequestPayload(
     override var action: String,
     @JsonProperty("pull_request")
     val pullRequest: PullRequestData,
-    val repository: RepositoryPayload
+    val repository: RepositoryData
 ) : BaseGitHubPayload()

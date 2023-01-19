@@ -3,6 +3,7 @@ package net.leanix.vsm.githubbroker.connector.adapter.json
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import net.leanix.vsm.githubbroker.connector.adapter.json.data.PullRequestPayload
 import net.leanix.vsm.githubbroker.connector.adapter.json.data.RepositoryData
 import net.leanix.vsm.githubbroker.connector.adapter.json.data.RepositoryPayload
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
@@ -31,7 +32,7 @@ class GithubWebhookParseProvider : WebhookParseProvider {
     }
 
     private fun parseRepositoryPayload(
-        payload: String,
+        payload: String
     ): Repository {
         return kotlin.runCatching {
             mapper.readValue<RepositoryPayload>(payload)
@@ -44,15 +45,27 @@ class GithubWebhookParseProvider : WebhookParseProvider {
     }
 
     private fun parsePullRequestPayload(
-        payload: String,
+        payload: String
     ): Repository {
-        TODO()
+        return kotlin.runCatching {
+            mapper.readValue<PullRequestPayload>(payload)
+        }
+            .map {
+                if (it.action == "closed" && it.pullRequest.isMerged()) {
+                    parseRepositoryDataPayload(it.repository)
+                } else {
+                    throw RuntimeException("")
+                }
+            }
+            .onFailure {
+                logger.error("error parser gh payload", it)
+                throw it
+            }.getOrThrow()
     }
 
     private fun parseRepositoryDataPayload(repositoryData: RepositoryData): Repository {
-
         if (!repositoryData.topics.isNullOrEmpty() || repositoryData.language != null) {
-            //TODO get languages and topics
+            // TODO get languages and topics
         }
         return Repository(
             id = repositoryData.id,
