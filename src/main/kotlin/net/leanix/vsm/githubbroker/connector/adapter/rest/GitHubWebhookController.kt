@@ -25,18 +25,12 @@ class GitHubWebhookController(private val gitHubWebhookService: GitHubWebhookSer
         @RequestHeader("X-Github-Event") eventType: String,
         @RequestBody payload: String
     ) {
-
         kotlin.runCatching {
             WebhookEventType.valueOf(eventType.uppercase())
-        } .onSuccess {
+        }.onSuccess {
             gitHubWebhookService.consumeWebhookEvent(it, apiToken, payload)
         }.onFailure {
             logger.warn("Event Type not supported: $eventType")
         }
-
     }
-}
-
-inline fun <reified T : Enum<T>> enumContains(name: String): Boolean {
-    return enumValues<T>().any { it.name == name}
 }

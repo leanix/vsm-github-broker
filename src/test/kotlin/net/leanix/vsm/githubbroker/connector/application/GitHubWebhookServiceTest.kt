@@ -17,10 +17,14 @@ class GitHubWebhookServiceTest {
     private val vsmPropertiesMock = mockk<VsmProperties>()
     private val assignmentService = mockk<AssignmentService>()
     private val webhookParseProvider = mockk<WebhookParseProvider>()
-    private val repositoryService  = mockk<RepositoryService>()
+    private val repositoryService = mockk<RepositoryService>()
 
     private val service = GitHubWebhookService(
-        vsmPropertiesMock, gitHubClientMock, assignmentService, webhookParseProvider, repositoryService
+        vsmPropertiesMock,
+        gitHubClientMock,
+        assignmentService,
+        webhookParseProvider,
+        repositoryService
     )
 
     @BeforeEach
@@ -32,7 +36,6 @@ class GitHubWebhookServiceTest {
 
     @Test
     fun `When a hook is already present it should delete the hook and create a new hook`() {
-
         every {
             gitHubClientMock.getHooks("dummy")
         } returns listOf(
@@ -43,7 +46,7 @@ class GitHubWebhookServiceTest {
                 events = listOf("push"),
                 config = Config(
                     url = "https://dummy.com",
-                    contentType = "json",
+                    contentType = "json"
                 )
             ),
             GitHubWebhookResponse(
@@ -53,7 +56,7 @@ class GitHubWebhookServiceTest {
                 events = listOf("push"),
                 config = Config(
                     url = "https://dummy-1.com",
-                    contentType = "json",
+                    contentType = "json"
                 )
             )
 
@@ -69,7 +72,7 @@ class GitHubWebhookServiceTest {
             events = listOf("push"),
             config = Config(
                 url = "https://dummy.com",
-                contentType = "json",
+                contentType = "json"
             )
         )
 
@@ -92,7 +95,7 @@ class GitHubWebhookServiceTest {
             events = listOf("push"),
             config = Config(
                 url = "https://dummy.com",
-                contentType = "json",
+                contentType = "json"
             )
         )
 
