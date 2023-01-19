@@ -3,16 +3,23 @@ package net.leanix.vsm.githubbroker.connector.application
 import net.leanix.vsm.githubbroker.connector.adapter.feign.GitHubClient
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.Config
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.GitHubWebhookRequest
+import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
+import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
 import net.leanix.vsm.githubbroker.shared.exception.VsmException
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.LoggerFactory
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
+import java.lang.RuntimeException
+import java.util.UUID
 
 @Service
 class GitHubWebhookService(
     private val vsmProperties: VsmProperties,
-    private val gitHubClient: GitHubClient
-) {
+    private val gitHubClient: GitHubClient,
+    private val assignmentService: AssignmentService,
+    private val webhookParseProvider: WebhookParseProvider
+) : BaseConnectorService() {
 
     private val logger = LoggerFactory.getLogger(GitHubWebhookService::class.java)
 
@@ -28,7 +35,7 @@ class GitHubWebhookService(
                 logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
                 throw VsmException.WebhookRegistrationFailed(
                     "Failed to initialise webhooks state for $orgName." +
-                        " Hint: Make sure PAT is valid. Error: ${it.message}"
+                            " Hint: Make sure PAT is valid. Error: ${it.message}"
                 )
             }
         }
@@ -40,12 +47,12 @@ class GitHubWebhookService(
         }.onFailure {
             logger.warn(
                 "Failed to register webhook. Please check the logs for more details. " +
-                    "Until then real time updates are not available. Error: ${it.message}"
+                        "Until then real time updates are not available. Error: ${it.message}"
             )
             throw VsmException.WebhookRegistrationFailed(
                 "Failed to register webhook. Real time updates are unavailable. " +
-                    "Hint: Make sure PAT is valid. Hint: Make sure PAT has necessary scopes (admin:org_hook)." +
-                    " Error: ${it.message}"
+                        "Hint: Make sure PAT is valid. Hint: Make sure PAT has necessary scopes (admin:org_hook)." +
+                        " Error: ${it.message}"
             )
         }.onSuccess {
             logger.info("Successfully registered webhook. Real time updates are now available.")
@@ -67,6 +74,7 @@ class GitHubWebhookService(
         logger.info("Successfully created hook. hook: ${hook.id}")
     }
 
+
     private fun cleanHooks(orgName: String) {
         val hooks = gitHubClient.getHooks(orgName)
         hooks.forEach {
@@ -76,6 +84,32 @@ class GitHubWebhookService(
             }.onFailure { e ->
                 logger.info("Failed to delete hook. Hook Id: ${it.id}. Error: ${e.message}")
             }
+        }
+    }
+
+    @Async
+    fun consumeWebhookEvent(eventType: WebhookEventType, apiToken: String, payload: String) {
+        logger.info("new webhook event received: $eventType")
+        validateRequest(apiToken)
+            .onSuccess {
+                kotlin.runCatching {
+                    assignmentService.getAssignment()
+                }
+                    .map { webhookParseProvider.parsePayload(eventType, payload, it) }
+            }
+    }
+
+    private fun validateRequest(apiToken: String): Result<Unit> {
+        return if (apiToken == vsmProperties.apiToken) {
+            logger.info("api token valid")
+            Result.success(Unit)
+        } else {
+            val message = "invalid api token: $apiToken"
+            logFailedStatus(
+                runId = UUID.randomUUID(),
+                message = message
+            )
+            Result.failure(RuntimeException(message))
         }
     }
 }
