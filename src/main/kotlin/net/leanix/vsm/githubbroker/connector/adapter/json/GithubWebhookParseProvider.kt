@@ -74,7 +74,8 @@ class GithubWebhookParseProvider : WebhookParseProvider {
             name = repositoryData.name,
             description = repositoryData.description,
             url = repositoryData.url,
-            archived = repositoryData.archived
+            archived = repositoryData.archived,
+            visibility = repositoryData.visibility.lowercase()
         )
     }
 }

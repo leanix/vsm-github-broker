@@ -11,6 +11,7 @@ query AllRepoQuery($orgName: String!, $pageCount: Int!, $cursor: String) {
                 description
                 url
                 isArchived
+                visibility
             }
         }
     }

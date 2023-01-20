@@ -9,5 +9,6 @@ data class ServiceRequest(
     val name: String,
     val description: String?,
     val url: String?,
-    val archived: Boolean?
+    val archived: Boolean?,
+    val visibility: String?
 )
