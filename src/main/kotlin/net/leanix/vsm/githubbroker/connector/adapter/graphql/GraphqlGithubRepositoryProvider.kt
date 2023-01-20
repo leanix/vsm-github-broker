@@ -65,7 +65,8 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
                             name = repository.name,
                             description = repository.description,
                             archived = repository.isArchived,
-                            url = repository.url
+                            url = repository.url,
+                            visibility = repository.visibility.name.lowercase()
                         )
                     }
                 )

@@ -8,6 +8,6 @@
     "headers": {
       "Content-Type": "application/json"
     },
-    "body": "{\"data\": {\"organization\": {\"repositories\": {\"pageInfo\": {\"endCursor\": \"Y3Vyc29yOnYyOpED\",\"hasNextPage\": false},\"nodes\": [{\"id\": \"MDEwOlJlcG9zaXRvcnkx\",\"name\": \"internal\",\"description\": \"Internal Repo\",\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/internal\",\"isArchived\": false},{\"id\": \"MDEwOlJlcG9zaXRvcnky\",\"name\": \"private\",\"description\": null,\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/private\",\"isArchived\": false},{\"id\": \"MDEwOlJlcG9zaXRvcnkz\",\"name\": \"public\",\"description\": null,\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/public\",\"isArchived\": false}]}}}}"
+    "body": "{\"data\": {\"organization\": {\"repositories\": {\"pageInfo\": {\"endCursor\": \"Y3Vyc29yOnYyOpED\",\"hasNextPage\": false},\"nodes\": [{\"id\": \"MDEwOlJlcG9zaXRvcnkx\",\"name\": \"internal\",\"description\": \"Internal Repo\",\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/internal\",\"isArchived\": false, \"visibility\": \"PRIVATE\"},{\"id\": \"MDEwOlJlcG9zaXRvcnky\",\"name\": \"private\",\"description\": null,\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/private\",\"isArchived\": false, \"visibility\": \"PRIVATE\"},{\"id\": \"MDEwOlJlcG9zaXRvcnkz\",\"name\": \"public\",\"description\": null,\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/public\",\"isArchived\": false, \"visibility\": \"PUBLIC\"}]}}}}"
   }
 }

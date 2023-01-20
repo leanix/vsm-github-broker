@@ -18,7 +18,8 @@ class FeignRepositoryProvider(private val serviceClient: ServiceClient) : Reposi
             name = repository.name,
             description = repository.description,
             url = repository.url,
-            archived = repository.archived
+            archived = repository.archived,
+            visibility = repository.visibility
         )
 
         serviceClient.saveService(service)
