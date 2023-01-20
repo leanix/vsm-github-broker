@@ -45,4 +45,21 @@ open class BaseConnectorService {
             )
         )
     }
+
+    fun logFailedMessages(code: String, arguments: Array<Any>, assignment: Assignment) {
+        val message = messageSource.getMessage(
+            code,
+            arguments,
+            Locale.ENGLISH
+        )
+        loggingService.sendAdminLog(
+            AdminLog(
+                runId = assignment.runId,
+                configurationId = assignment.configurationId,
+                subject = LogLevel.ERROR.toString(),
+                level = LogLevel.ERROR,
+                message = message
+            )
+        )
+    }
 }
