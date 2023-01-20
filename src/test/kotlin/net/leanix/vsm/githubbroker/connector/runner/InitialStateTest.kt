@@ -4,16 +4,28 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 
-@SpringBootTest
+@SpringBootTest(properties = ["application.runner.enabled=false"])
 @AutoConfigureWireMock(port = 0)
 class InitialStateTest {
 
+    @Autowired
+    private lateinit var initialStateRunner: InitialStateRunner
+
+    @BeforeEach
+    fun setup() {
+        WireMock.resetAllRequests()
+    }
+
     @Test
     fun `it should get the assignment`() {
+        initialStateRunner.run(null)
+        Thread.sleep(2000)
         WireMock.verify(
             1,
             getRequestedFor(
