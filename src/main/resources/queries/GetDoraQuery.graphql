@@ -1,0 +1,26 @@
+query getReposPullRequestsData($repoIds: [ID!]!, $pullReqPageCount: Int!, $cursor: String) {
+    nodes(ids: $repoIds) {
+        id
+        __typename
+        ... on Repository {
+            name
+            defaultBranchRef {
+                name
+            }
+            pullRequests(first: $pullReqPageCount, states: [MERGED], after: $cursor,  orderBy: {direction: DESC, field: UPDATED_AT}) {
+                totalCount
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                }
+                nodes {
+                    id
+                    baseRefName
+                    headRefName
+                    mergedAt
+                    headRefOid
+                }
+            }
+        }
+    }
+}
