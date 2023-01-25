@@ -12,6 +12,9 @@ data to VSM SaaS Application.
 
 ## Usage
 
+> ⚠️ This integration is currently in early access mode. See the details on what this means [here](https://docs-vsm.leanix.net/docs/release-stages). Feel free to open an issue should you hit a problem.
+
+
 The VSM GitHub Broker is published as a Docker image. The configuration is performed with environment variables as
 described below.
 
@@ -38,13 +41,48 @@ docker run --restart=always \
         leanixacrpublic.azurecr.io/vsm-github-broker
 ```
 
+#### Webhook configuration
+
+The Broker client exposes a webhook endpoint that can be used to receive events from GitHub Enterprise. The webhook is registered automatically when the Broker client starts up. 
+
+> Note: Make sure to use a unique GitHub token for each Broker client instance. This ensures maximum security and prevents the Broker client from receiving events from other GitHub Enterprise deployments.
+
 ### Troubleshooting
+
+#### Using over a http proxy system
+
+Add the following properties on the command:
+
+```console
+docker run 
+           ...
+           -e JAVA_OPTS="-Dhttp.proxyHost=<HTTP_HOST> -Dhttp.proxyPort=<HTTP_PORT> -Dhttp.proxyUser=<PROXY_USER> -Dhttp.proxyPassword=<PROXY_PASS> -Dhttps.proxyHost=<HTTPS_HOST> -Dhttps.proxyPort=<HTTPS_PORT> -Dhttps.proxyUser=<PROXY_USER> -Dhttps.proxyPassword=<PROXY_PASS>" \
+        leanixacrpublic.azurecr.io/vsm-github-broker
+```
+
+#### Using over SSL Intercepting proxy
+
+Build your own docker image adding the certificate:
+
+```console
+FROM leanixacrpublic.azurecr.io/vsm-github-broker
+
+
+USER root
+
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+COPY YOUR-CERTIFICATE-HERE /usr/local/share/ca-certificates/YOUR-CERTIFICATE-HERE
+RUN update-ca-certificates
+
+```
+
 
 #### Using amd64 Images on Apple M1
 
 Just run the container by providing the following command:
 
 ```console
+
 docker run --platform linux/amd64 \
            ...
         leanixacrpublic.azurecr.io/vsm-github-broker

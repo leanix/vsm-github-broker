@@ -15,14 +15,14 @@ class AssignmentService(
 
     private val logger = LoggerFactory.getLogger(AssignmentService::class.java)
 
-    fun get(): Result<Assignment> {
+    fun getAssignment(): Assignment {
         return assignmentProvider.getAssignment(
             Constants.GITHUB_ENTERPRISE_CONNECTOR,
             vsmProperties.configName
         ).onFailure {
-            logger.error("failed to retrieve assignment: ", it)
+            logger.error("Failed to retrieve assignment: ", it)
         }.onSuccess {
             logger.info("Assignment retrieved with success: ${it.runId}")
-        }
+        }.getOrThrow()
     }
 }
