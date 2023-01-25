@@ -8,7 +8,12 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
 @Service
-class RepositoryService(private val repositoryProvider: RepositoryProvider) {
+class RepositoryService(
+    private val repositoryProvider: RepositoryProvider,
+    private val languageService: LanguageService,
+    private val topicService: TopicService,
+    private val doraService: DoraService
+) {
 
     private val logger = LoggerFactory.getLogger(RepositoryService::class.java)
 
@@ -19,5 +24,9 @@ class RepositoryService(private val repositoryProvider: RepositoryProvider) {
         }.onFailure {
             logger.error("Failed save service", it)
         }
+
+        repository.languages?.forEach { language -> languageService.save(language, assignment) }
+        repository.topics?.forEach { topic -> topicService.save(topic, assignment) }
+        doraService.generateDoraEvents(repository, assignment)
     }
 }

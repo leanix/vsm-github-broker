@@ -1,0 +1,30 @@
+query getPullRequestCommits($pullReqId: ID!, $initialCommitPageCount: Int!, $cursor: String) {
+    node(id: $pullReqId) {
+        id
+        __typename
+        ... on PullRequest {
+            headRefName
+            commits(first: $initialCommitPageCount, after: $cursor) {
+                totalCount
+                pageInfo {
+                    hasNextPage
+                    endCursor
+                }
+                nodes {
+                    commit {
+                        committedDate
+                        oid
+                        id
+                        author {
+                            name
+                            email
+                            user {
+                                login
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
