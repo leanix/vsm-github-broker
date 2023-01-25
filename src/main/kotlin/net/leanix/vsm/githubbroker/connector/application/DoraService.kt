@@ -5,6 +5,7 @@ import net.leanix.vsm.githubbroker.connector.domain.DoraProvider
 import net.leanix.vsm.githubbroker.connector.domain.GithubRepositoryProvider
 import net.leanix.vsm.githubbroker.connector.domain.Repository
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -17,9 +18,12 @@ class DoraService(
 
     private val logger = LoggerFactory.getLogger(DoraService::class.java)
 
+    @Value("\${leanix.vsm.dora.total-days:30}")
+    val totalDoraDays: Long = 0
+
     @Async
     fun generateDoraEvents(repository: Repository, assignment: Assignment) {
-        val last30Days = LocalDate.now().minusDays(30).toString()
+        val last30Days = LocalDate.now().minusDays(totalDoraDays).toString()
         githubRepositoryProvider.getDora(repository, last30Days)
             .map {
                 if (it.isEmpty()) {

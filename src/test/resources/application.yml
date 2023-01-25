@@ -4,6 +4,7 @@ leanix:
     event-broker:
       base-url: http://localhost:6666
     dora:
+      total-days: 999999
       base-url: http://localhost:6666/dora
     connector:
       api-token: api-token
