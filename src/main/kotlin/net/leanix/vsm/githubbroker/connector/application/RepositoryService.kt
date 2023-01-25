@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service
 class RepositoryService(
     private val repositoryProvider: RepositoryProvider,
     private val languageService: LanguageService,
-    private val topicService: TopicService
+    private val topicService: TopicService,
+    private val doraService: DoraService
 ) {
 
     private val logger = LoggerFactory.getLogger(RepositoryService::class.java)
@@ -24,16 +25,8 @@ class RepositoryService(
             logger.error("Failed save service", it)
         }
 
-        kotlin.runCatching {
-            repository.languages?.forEach { language -> languageService.save(language, assignment) }
-        }.onFailure {
-            logger.error("Failed save languages", it)
-        }
-
-        kotlin.runCatching {
-            repository.topics?.forEach { topic -> topicService.save(topic, assignment) }
-        }.onFailure {
-            logger.error("Failed save topics", it)
-        }
+        repository.languages?.forEach { language -> languageService.save(language, assignment) }
+        repository.topics?.forEach { topic -> topicService.save(topic, assignment) }
+        doraService.generateDoraEvents(repository, assignment)
     }
 }

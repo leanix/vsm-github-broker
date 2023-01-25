@@ -1,7 +1,13 @@
 {
   "request": {
     "url": "/api/graphql",
-    "method": "POST"
+    "method": "POST",
+    "bodyPatterns" : [{
+      "matchesJsonPath" : {
+        "expression": "$.query",
+        "contains": "AllRepoQuery"
+      }
+    }]
   },
   "response": {
     "status": 200,

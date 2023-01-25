@@ -30,7 +30,7 @@ You can run the docker container by providing the relevant configuration:
 ```console
 docker run --restart=always \
            -p 8080:8080 \
-           -e LEANIX_DOMAIN=<region>-vsm.leanix.net \
+           -e LEANIX_REGION=<region> \
            -e LEANIX_API_TOKEN=<technical_user-token>\
            -e LEANIX_CONFIGURATION_NAME=<config-name>\
            -e GITHUB_TOKEN=<secret-github-token> \

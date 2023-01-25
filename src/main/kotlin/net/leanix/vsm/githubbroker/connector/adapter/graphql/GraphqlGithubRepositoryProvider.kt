@@ -1,11 +1,15 @@
 package net.leanix.vsm.githubbroker.connector.adapter.graphql
 
 import com.expediagroup.graphql.client.spring.GraphQLWebClient
+import com.expediagroup.graphql.client.types.GraphQLClientRequest
+import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import kotlinx.coroutines.runBlocking
 import net.leanix.githubbroker.connector.adapter.graphql.data.AllRepoQuery
 import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.LanguageEdge
 import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.RepositoryConnection
 import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.RepositoryTopic
+import net.leanix.vsm.githubbroker.connector.adapter.graphql.parser.GithubPullRequestParser
+import net.leanix.vsm.githubbroker.connector.domain.Dora
 import net.leanix.vsm.githubbroker.connector.domain.GithubRepositoryProvider
 import net.leanix.vsm.githubbroker.connector.domain.Language
 import net.leanix.vsm.githubbroker.connector.domain.PagedRepositories
@@ -32,6 +36,8 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
             }
     )
 
+    private val githubPullRequestParser = GithubPullRequestParser(client)
+
     override fun getAllRepositories(organizationName: String, cursor: String?): Result<PagedRepositories> {
         val query = AllRepoQuery(
             AllRepoQuery.Variables(
@@ -41,20 +47,18 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
             )
         )
         logger.info("Getting next page of repositories")
-        return runBlocking {
-            kotlin.runCatching {
-                client.execute(query)
-            }.fold(
-                {
-                    if (it.errors != null && it.errors?.isNotEmpty() == true) {
-                        Result.failure(RuntimeException("Error getting data"))
-                    } else {
-                        parseRepositories(it.data?.organization?.repositories)
-                    }
-                },
-                { Result.failure(it) }
-            )
-        }
+        return kotlin.runCatching {
+            executeQuery(query)
+        }.fold(
+            {
+                if (it.errors != null && it.errors?.isNotEmpty() == true) {
+                    Result.failure(RuntimeException("Error getting data"))
+                } else {
+                    parseRepositories(it.data?.organization?.repositories)
+                }
+            },
+            { Result.failure(it) }
+        )
     }
 
     private fun parseRepositories(repositories: RepositoryConnection?): Result<PagedRepositories> {
@@ -71,7 +75,8 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
                             archived = repository.isArchived,
                             url = repository.url,
                             languages = parseLanguage(repository.languages?.edges),
-                            topics = parseTopics(repository.repositoryTopics.nodes)
+                            topics = parseTopics(repository.repositoryTopics.nodes),
+                            defaultBranch = repository.defaultBranchRef?.name ?: "empty-branch"
                         )
                     }
                 )
@@ -82,17 +87,35 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
         }
     }
 
+    override fun getDora(repository: Repository, totalPassedDays: String): Result<List<Dora>> {
+        return kotlin.runCatching {
+            val requests = githubPullRequestParser.getPagedPullRequests(repository, totalPassedDays)
+            requests
+                .filter { it.mergeAt >= totalPassedDays }
+                .map {
+                    Dora(
+                        repositoryName = repository.name,
+                        pullRequest = it.copy(
+                            commits = githubPullRequestParser.getPullRequestsCommits(it)
+                        )
+                    )
+                }
+        }
+    }
+
     private fun parseTopics(nodes: List<RepositoryTopic?>?): List<Topic>? {
         return if (!nodes.isNullOrEmpty()) {
             nodes.filterNotNull().map { repositoryTopic: RepositoryTopic ->
                 repositoryTopic.let {
                     Topic(
                         it.topic.id,
-                        it.topic.name,
+                        it.topic.name
                     )
                 }
             }
-        } else null
+        } else {
+            null
+        }
     }
 
     private fun parseLanguage(edges: List<LanguageEdge?>?): List<Language>? {
@@ -106,6 +129,14 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
                     )
                 }
             }
-        } else null
+        } else {
+            null
+        }
+    }
+
+    private fun <T : Any> executeQuery(query: GraphQLClientRequest<T>): GraphQLClientResponse<T> {
+        return runBlocking {
+            client.execute(query)
+        }
     }
 }

@@ -3,6 +3,8 @@ leanix:
     base-url: http://localhost:6666
     event-broker:
       base-url: http://localhost:6666
+    dora:
+      base-url: http://localhost:6666/dora
     connector:
       api-token: api-token
       user-token: user-token

@@ -76,6 +76,7 @@ class RepositoriesService(
     }
 
     private fun logInfoMessages(message: String, assignment: Assignment) {
+        logger.info(message)
         loggingService.sendAdminLog(
             AdminLog(
                 runId = assignment.runId,
@@ -88,6 +89,7 @@ class RepositoriesService(
     }
 
     private fun logFailedMessages(message: String, assignment: Assignment) {
+        logger.error(message)
         loggingService.sendAdminLog(
             AdminLog(
                 runId = assignment.runId,

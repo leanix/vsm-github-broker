@@ -13,6 +13,9 @@ query AllRepoQuery($orgName: String!, $pageCount: Int!, $cursor: String) {
                 isArchived
                 isFork
                 isDisabled
+                defaultBranchRef {
+                    name
+                }
                 languages(first: 100){
                     edges{
                         size
