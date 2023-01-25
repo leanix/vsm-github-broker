@@ -39,6 +39,12 @@ class InitialStateTest {
                     .withRequestBody(WireMock.containing("GetReposPullRequestsQuery"))
 
             )
+            WireMock.verify(
+                2,
+                postRequestedFor(urlEqualTo("/api/graphql"))
+                    .withRequestBody(WireMock.containing("getPullRequestCommits"))
+
+            )
             WireMock.verify(2, postRequestedFor(urlEqualTo("/services")))
             WireMock.verify(3, postRequestedFor(urlEqualTo("/languages")))
             WireMock.verify(2, postRequestedFor(urlEqualTo("/topics")))

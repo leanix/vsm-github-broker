@@ -1,0 +1,16 @@
+{
+  "request" : {
+    "url" : "/api/graphql",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "matchesJsonPath" : {
+        "expression" : "$.query",
+        "contains" : "GetReposPullRequestsQuery"
+      }
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\n  \"data\": {\n    \"node\": {\n      \"__typename\": \"Repository\",\n      \"id\": \"MDEwOlJlcG9zaXRvcnkxNDY2OTg3Ng==\",\n      \"name\": \"new-repo-one\",\n      \"defaultBranchRef\": {\n        \"name\": \"main\"\n      },\n      \"pullRequests\": {\n        \"totalCount\": 1,\n        \"pageInfo\": {\n          \"endCursor\": \"Y3Vyc29yOnYyOpK5MjAxNS0xMS0xMVQxNzoyMTowMCswMTowMM4DARTk\",\n          \"hasNextPage\": false\n        },\n        \"nodes\": [\n          {\n            \"id\": \"MDExOlB1bGxSZXF1ZXN0NTA0MDI1MzI=\",\n            \"baseRefName\": \"main\",\n            \"headRefName\": \"feature/one\",\n            \"mergedAt\": \"2023-01-02T16:20:55Z\",\n            \"headRefOid\": \"31c72105cd4a1ef32c6fd4e1e351fbea00b9393b\"\n          }\n        ]\n      }\n    }\n  }\n}"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "request" : {
+    "url" : "/api/graphql",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "matchesJsonPath" : {
+        "expression" : "$.query",
+        "contains" : "getPullRequestCommits"
+      }
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\n  \"data\": {\n    \"node\": {\n      \"id\": \"MDExOlB1bGxSZXF1ZXN0NTA0MDI1MzI=\",\n      \"__typename\": \"PullRequest\",\n      \"headRefName\": \"feature/one\",\n      \"commits\": {\n        \"totalCount\": 2,\n        \"pageInfo\": {\n          \"hasNextPage\": false,\n          \"endCursor\": \"Mg\"\n        },\n        \"nodes\": [\n          {\n            \"commit\": {\n              \"committedDate\": \"2023-01-03T13:43:53Z\",\n              \"oid\": \"1cce2bfc9722d79d43dbbe39891e2278fe707ac5\",\n              \"id\": \"MDY6Q29tbWl0MTQ2Njk4NzY6MWNjZTJiZmM5NzIyZDc5ZDQzZGJiZTM5ODkxZTIyNzhmZTcwN2FjNQ==\",\n              \"author\": {\n                \"name\": \"Author\",\n                \"email\": \"author@leanix.net\",\n                \"user\": {\n                  \"login\": \"author\"\n                }\n              }\n            }\n          },\n          {\n            \"commit\": {\n              \"committedDate\": \"2023-01-03T16:19:41Z\",\n              \"oid\": \"31c72105cd4a1ef32c6fd4e1e351fbea00b9393b\",\n              \"id\": \"MDY6Q29tbWl0MTQ2Njk4NzY6MzFjNzIxMDVjZDRhMWVmMzJjNmZkNGUxZTM1MWZiZWEwMGI5MzkzYg==\",\n              \"author\": {\n                \"name\": \"Author\",\n                \"email\": \"author@leanix.net\",\n                \"user\": {\n                  \"login\": \"author\"\n                }\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}"
+  }
+}
