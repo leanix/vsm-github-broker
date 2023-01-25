@@ -1,13 +1,19 @@
 {
   "request": {
     "url": "/api/graphql",
-    "method": "POST"
+    "method": "POST",
+    "bodyPatterns" : [{
+      "matchesJsonPath" : {
+        "expression": "$.query",
+        "contains": "AllRepoQuery"
+      }
+    }]
   },
   "response": {
     "status": 200,
     "headers": {
       "Content-Type": "application/json"
     },
-    "body": "{\"data\": {\"organization\": {\"repositories\": {\"pageInfo\": {\"endCursor\": \"Y3Vyc29yOnYyOpED\",\"hasNextPage\": false},\"nodes\": [{\"id\": \"MDEwOlJlcG9zaXRvcnkx\",\"name\": \"internal\",\"description\": \"Internal Repo\",\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/internal\",\"isArchived\": false, \"visibility\": \"PRIVATE\"},{\"id\": \"MDEwOlJlcG9zaXRvcnky\",\"name\": \"private\",\"description\": null,\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/private\",\"isArchived\": false, \"visibility\": \"PRIVATE\"},{\"id\": \"MDEwOlJlcG9zaXRvcnkz\",\"name\": \"public\",\"description\": null,\"url\": \"https://cider-gh.northeurope.cloudapp.azure.com/leanix/public\",\"isArchived\": false, \"visibility\": \"PUBLIC\"}]}}}}"
+    "body": "{\"data\":{\"organization\":{\"repositories\":{\"pageInfo\":{\"endCursor\":\"Y3Vyc29yOnYyOpHOIyUhNA==\",\"hasNextPage\":false},\"nodes\":[{\"id\":\"R_kgDOIxW0IA\",\"name\":\"new-repo-one\",\"description\":\"AddDescription\",\"url\":\"https://github.com/hea-test-org/new-repo-one\",\"isArchived\":false,\"isFork\":false,\"isDisabled\":false,\"languages\":{\"edges\":[]},\"pullRequests\":{\"nodes\":[]},\"repositoryTopics\":{\"nodes\":[{\"topic\":{\"id\":\"MDU6VG9waWN0b3BpYzE=\",\"name\":\"topic1\"}},{\"topic\":{\"id\":\"MDU6VG9waWN0b3BpYzI=\",\"name\":\"topic2\"}}]}},{\"id\":\"R_kgDOIyUhNA\",\"name\":\"repo-two\",\"description\":null,\"url\":\"https://github.com/hea-test-org/repo-two\",\"isArchived\":false,\"isFork\":false,\"isDisabled\":false,\"languages\":{\"edges\":[{\"size\":2816,\"node\":{\"id\":\"MDg6TGFuZ3VhZ2UxNjk=\",\"name\":\"Scala\"}},{\"size\":908135,\"node\":{\"id\":\"MDg6TGFuZ3VhZ2UxNTE=\",\"name\":\"PHP\"}},{\"size\":27835,\"node\":{\"id\":\"MDg6TGFuZ3VhZ2U0MTc=\",\"name\":\"HTML\"}}]},\"pullRequests\":{\"nodes\":[]},\"repositoryTopics\":{\"nodes\":[]}}]}}}}"
   }
 }

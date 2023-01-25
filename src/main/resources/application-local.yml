@@ -5,5 +5,7 @@ leanix:
     base-url: http://localhost:8080
     event-broker:
       base-url: http://localhost:8083
+    dora:
+      base-url: http://localhost:8084
     auth:
-      access-token-uri: https://de.leanix.net/services/mtm/v1
+      access-token-uri: https://test-app-1.leanix.net/services/mtm/v1

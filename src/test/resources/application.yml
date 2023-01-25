@@ -1,13 +1,15 @@
 leanix:
   vsm:
-    base-url: http://localhost:${wiremock.server.port:6666}
+    base-url: http://localhost:6666
     event-broker:
-      base-url: http://localhost:${wiremock.server.port:6666}
+      base-url: http://localhost:6666
+    dora:
+      base-url: http://localhost:6666/dora
     connector:
       api-token: api-token
       user-token: user-token
       config-name: git-on-prem-config
       github-token: github-token
-      github-url: http://localhost:${wiremock.server.port:6666}
+      github-url: http://localhost:6666
     auth:
-      access-token-uri: http://localhost:${wiremock.server.port:6666}/services/mtm/v1
+      access-token-uri: http://localhost:6666/services/mtm/v1
