@@ -7,6 +7,7 @@ import net.leanix.vsm.githubbroker.connector.adapter.json.data.PullRequestPayloa
 import net.leanix.vsm.githubbroker.connector.adapter.json.data.RepositoryData
 import net.leanix.vsm.githubbroker.connector.adapter.json.data.RepositoryPayload
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
+import net.leanix.vsm.githubbroker.connector.domain.Language
 import net.leanix.vsm.githubbroker.connector.domain.Repository
 import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
 import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
@@ -75,7 +76,10 @@ class GithubWebhookParseProvider : WebhookParseProvider {
             description = repositoryData.description,
             url = repositoryData.url,
             archived = repositoryData.archived,
-            visibility = repositoryData.visibility.lowercase()
+            visibility = repositoryData.visibility.lowercase(),
+            defaultBranch = repositoryData.defaultBranch,
+            languages = emptyList(),
+            topics = emptyList()
         )
     }
 }

@@ -11,5 +11,7 @@ data class RepositoryData(
     val url: String,
     val visibility: String,
     val topics: List<String>?,
-    val language: String?
+    val language: String?,
+    @JsonProperty("default_branch")
+    val defaultBranch: String
 )
