@@ -1,6 +1,7 @@
 package net.leanix.vsm.githubbroker.connector.adapter.rest
 
 import com.github.tomakehurst.wiremock.client.WireMock
+import org.awaitility.kotlin.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -99,9 +100,10 @@ class GitHubWebhookControllerTest {
             )
                 .andExpect(MockMvcResultMatchers.status().isAccepted)
 
-            Thread.sleep(2000)
-            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
-            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+            await.untilAsserted {
+                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
+                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+            }
         }
 
         @Test
@@ -118,13 +120,16 @@ class GitHubWebhookControllerTest {
             )
                 .andExpect(MockMvcResultMatchers.status().isAccepted)
 
-            Thread.sleep(2000)
-            WireMock.verify(
-                1,
-                WireMock.postRequestedFor(WireMock.urlEqualTo("/services"))
-                    .withRequestBody(WireMock.containing("\"description\":\"add new description\""))
-            )
-            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+            await.untilAsserted {
+                WireMock.verify(
+                    1,
+                    WireMock.postRequestedFor(WireMock.urlEqualTo("/services"))
+                        .withRequestBody(WireMock.containing("\"description\":\"add new description\""))
+                )
+                WireMock.verify(3, WireMock.postRequestedFor(WireMock.urlEqualTo("/languages")))
+                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/topics")))
+                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+            }
         }
     }
 
@@ -146,9 +151,10 @@ class GitHubWebhookControllerTest {
             )
                 .andExpect(MockMvcResultMatchers.status().isAccepted)
 
-            Thread.sleep(2000)
-            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
-            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+            await.untilAsserted {
+                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
+                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+            }
         }
 
         @Test
@@ -165,8 +171,9 @@ class GitHubWebhookControllerTest {
             )
                 .andExpect(MockMvcResultMatchers.status().isAccepted)
 
-            Thread.sleep(2000)
-            WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
+            await.untilAsserted {
+                WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
+            }
         }
     }
 }

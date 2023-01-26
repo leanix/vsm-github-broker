@@ -1,6 +1,6 @@
 {
   "request": {
-    "url": "/services",
+    "url": "/services2",
     "method": "POST"
   },
   "response": {

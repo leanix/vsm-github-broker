@@ -1,0 +1,26 @@
+query GetLangTopicsQuery($repoId:ID!)
+{
+    node(id: $repoId ) {
+        id
+        __typename
+        ... on Repository {
+            languages(first: 100) {
+                edges {
+                    size
+                    node {
+                        id
+                        name
+                    }
+                }
+            }
+            repositoryTopics(first: 100) {
+                nodes {
+                    topic {
+                        id
+                        name
+                    }
+                }
+            }
+        }
+    }
+}

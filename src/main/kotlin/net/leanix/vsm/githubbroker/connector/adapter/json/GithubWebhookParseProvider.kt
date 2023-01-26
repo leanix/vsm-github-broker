@@ -7,7 +7,7 @@ import net.leanix.vsm.githubbroker.connector.adapter.json.data.PullRequestPayloa
 import net.leanix.vsm.githubbroker.connector.adapter.json.data.RepositoryData
 import net.leanix.vsm.githubbroker.connector.adapter.json.data.RepositoryPayload
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
-import net.leanix.vsm.githubbroker.connector.domain.Language
+import net.leanix.vsm.githubbroker.connector.domain.GithubRepositoryProvider
 import net.leanix.vsm.githubbroker.connector.domain.Repository
 import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
 import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
@@ -17,7 +17,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
-class GithubWebhookParseProvider : WebhookParseProvider {
+class GithubWebhookParseProvider(
+    private val githubRepositoryProvider: GithubRepositoryProvider
+) : WebhookParseProvider {
 
     private val mapper = jacksonObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -67,8 +69,12 @@ class GithubWebhookParseProvider : WebhookParseProvider {
     }
 
     private fun parseRepositoryDataPayload(repositoryData: RepositoryData): Repository {
-        if (!repositoryData.topics.isNullOrEmpty() || repositoryData.language != null) {
-            // TODO get languages and topics
+        val pair = if (!repositoryData.topics.isNullOrEmpty() || repositoryData.language != null) {
+            githubRepositoryProvider.getLanguagesAndTopics(repositoryData.id)
+                .onFailure { logger.error("error get language and topics", it) }
+                .getOrNull()
+        } else {
+            Pair(null, null)
         }
         return Repository(
             id = repositoryData.id,
@@ -78,8 +84,8 @@ class GithubWebhookParseProvider : WebhookParseProvider {
             archived = repositoryData.archived,
             visibility = repositoryData.visibility.lowercase(),
             defaultBranch = repositoryData.defaultBranch,
-            languages = emptyList(),
-            topics = emptyList()
+            languages = pair?.second,
+            topics = pair?.first
         )
     }
 }

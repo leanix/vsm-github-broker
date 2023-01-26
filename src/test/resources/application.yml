@@ -14,3 +14,7 @@ leanix:
       github-url: http://localhost:${wiremock.server.port:6666}
     auth:
       access-token-uri: http://localhost:${wiremock.server.port:6666}/services/mtm/v1
+
+application:
+  runner:
+    enabled: false

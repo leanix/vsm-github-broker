@@ -5,10 +5,11 @@ import com.expediagroup.graphql.client.types.GraphQLClientRequest
 import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import kotlinx.coroutines.runBlocking
 import net.leanix.githubbroker.connector.adapter.graphql.data.AllRepoQuery
-import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.LanguageEdge
+import net.leanix.githubbroker.connector.adapter.graphql.data.GetLangTopicsQuery
 import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.RepositoryConnection
-import net.leanix.githubbroker.connector.adapter.graphql.data.allrepoquery.RepositoryTopic
 import net.leanix.vsm.githubbroker.connector.adapter.graphql.parser.GithubPullRequestParser
+import net.leanix.vsm.githubbroker.connector.adapter.graphql.parser.LanguageParser
+import net.leanix.vsm.githubbroker.connector.adapter.graphql.parser.TopicParser
 import net.leanix.vsm.githubbroker.connector.domain.Dora
 import net.leanix.vsm.githubbroker.connector.domain.GithubRepositoryProvider
 import net.leanix.vsm.githubbroker.connector.domain.Language
@@ -22,7 +23,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
-
+import net.leanix.githubbroker.connector.adapter.graphql.`data`.getlangtopicsquery.Repository as LangTopicRepository
 @Component
 class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepositoryProvider {
 
@@ -75,8 +76,8 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
                             archived = repository.isArchived,
                             url = repository.url,
                             visibility = repository.visibility.name.lowercase(),
-                            languages = parseLanguage(repository.languages?.edges),
-                            topics = parseTopics(repository.repositoryTopics.nodes),
+                            languages = LanguageParser.parseRepoLanguages(repository.languages?.edges),
+                            topics = TopicParser.parseRepoTopic(repository.repositoryTopics.nodes),
                             defaultBranch = repository.defaultBranchRef?.name ?: "empty-branch"
                         )
                     }
@@ -104,34 +105,25 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
         }
     }
 
-    private fun parseTopics(nodes: List<RepositoryTopic?>?): List<Topic>? {
-        return if (!nodes.isNullOrEmpty()) {
-            nodes.filterNotNull().map { repositoryTopic: RepositoryTopic ->
-                repositoryTopic.let {
-                    Topic(
-                        it.topic.id,
-                        it.topic.name
-                    )
+    override fun getLanguagesAndTopics(repositoryId: String): Result<Pair<List<Topic>?, List<Language>?>> {
+        return kotlin.runCatching {
+            val query = GetLangTopicsQuery(
+                GetLangTopicsQuery.Variables(
+                    repoId = repositoryId
+                )
+            )
+            val response = executeQuery(query)
+            when {
+                !response.errors.isNullOrEmpty() -> {
+                    throw VsmException.GraphqlException(response.errors!!.map { it.message }.joinToString { it })
+                }
+                else -> {
+                    val repository = response.data!!.node as LangTopicRepository
+                    val languages = LanguageParser.parse(repository.languages?.edges)
+                    val topics = TopicParser.parse(repository.repositoryTopics.nodes)
+                    Pair(topics, languages)
                 }
             }
-        } else {
-            null
-        }
-    }
-
-    private fun parseLanguage(edges: List<LanguageEdge?>?): List<Language>? {
-        return if (!edges.isNullOrEmpty()) {
-            edges.filterNotNull().map { languageEdge: LanguageEdge ->
-                languageEdge.node.let {
-                    Language(
-                        it.id,
-                        it.name,
-                        languageEdge.size
-                    )
-                }
-            }
-        } else {
-            null
         }
     }
 
