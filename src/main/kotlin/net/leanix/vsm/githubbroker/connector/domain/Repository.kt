@@ -6,5 +6,8 @@ data class Repository(
     val description: String?,
     val url: String,
     val archived: Boolean?,
-    val visibility: String?
+    val visibility: String?,
+    val languages: List<Language>?,
+    val topics: List<Topic>?,
+    val defaultBranch: String
 )

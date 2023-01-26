@@ -3,6 +3,9 @@ leanix:
     base-url: http://localhost:${wiremock.server.port:6666}
     event-broker:
       base-url: http://localhost:${wiremock.server.port:6666}
+    dora:
+      total-days: 999999
+      base-url: http://localhost:${wiremock.server.port:6666}/dora
     connector:
       api-token: api-token
       user-token: user-token

@@ -11,7 +11,45 @@ query AllRepoQuery($orgName: String!, $pageCount: Int!, $cursor: String) {
                 description
                 url
                 isArchived
+                isFork
+                isDisabled
                 visibility
+                defaultBranchRef {
+                    name
+                }
+                languages(first: 100){
+                    edges{
+                        size
+                        node{
+                            id
+                            name
+                        }
+                    }
+                }
+                pullRequests(last:1){
+                    nodes{
+                        commits(last:1){
+                            nodes{
+                                commit{
+                                    author {
+                                        date
+                                        email
+                                        name
+                                    }
+                                    pushedDate
+                                }
+                            }
+                        }
+                    }
+                }
+                repositoryTopics(first: 100) {
+                    nodes {
+                        topic {
+                            id
+                            name
+                        }
+                    }
+                }
             }
         }
     }
