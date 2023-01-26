@@ -17,7 +17,7 @@ class TopicService(private val topicProvider: TopicProvider) {
         kotlin.runCatching {
             topicProvider.save(topic, assignment)
         }.onFailure {
-            logger.error("Failed save service", it)
+            logger.error("Failed save topic", it)
         }
     }
 }

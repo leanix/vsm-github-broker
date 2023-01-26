@@ -98,7 +98,7 @@ class GitHubWebhookService(
     fun consumeWebhookEvent(eventType: WebhookEventType, apiToken: String, payload: String) {
         logger.info("new webhook event received: $eventType")
 
-        kotlin.runCatching {
+        runCatching {
             val assignment = assignmentService.getAssignment()
             validateRequest(apiToken, payload, assignment)
                 .let {

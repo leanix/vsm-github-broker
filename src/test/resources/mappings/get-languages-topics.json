@@ -1,0 +1,19 @@
+{
+  "request": {
+    "url": "/api/graphql",
+    "method": "POST",
+    "bodyPatterns" : [{
+      "matchesJsonPath" : {
+        "expression": "$.query",
+        "contains": "GetLangTopicsQuery"
+      }
+    }]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"data\": {\"node\": {\"id\": \"node_id=\",\"__typename\": \"Repository\",\"languages\": {\"edges\": [{\"size\": 2816,\"node\": {\"id\": \"node_id1=\",\"name\": \"Scala\"}},{\"size\": 908135,\"node\": {\"id\": \"node_id2=\",\"name\": \"Kotlin\"}},{\"size\": 27835,\"node\": {\"id\": \"node_id3=\",\"name\": \"HTML\"}}]},\"repositoryTopics\": {\"nodes\": [{\"topic\": {\"id\": \"node_id4\",\"name\": \"intellectual-property-of-leanix\"}}]}}}}"
+  }
+}

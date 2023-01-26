@@ -17,7 +17,7 @@ class LanguageService(private val languageProvider: LanguageProvider) {
         kotlin.runCatching {
             languageProvider.save(language, assignment)
         }.onFailure {
-            logger.error("Failed save service", it)
+            logger.error("Failed save language", it)
         }
     }
 }
