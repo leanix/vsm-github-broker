@@ -22,7 +22,7 @@ open class BaseConnectorService {
 
     private val logger = LoggerFactory.getLogger(BaseConnectorService::class.java)
 
-    fun logFailedStatus(message: String, runId: UUID) {
+    fun logFailedStatus(message: String? = "empty message", runId: UUID) {
         logger.error(message)
         loggingService.sendStatusLog(
             StatusLog(runId, LogStatus.FAILED, message)
