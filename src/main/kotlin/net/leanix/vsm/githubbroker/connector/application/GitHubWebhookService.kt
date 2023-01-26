@@ -71,9 +71,9 @@ class GitHubWebhookService(
         val hook = gitHubClient.createHook(
             orgName,
             GitHubWebhookRequest(
-                events = listOf("push"),
+                events = listOf("push", "pull_request", "repository"),
                 config = Config(
-                    url = vsmProperties.githubUrl,
+                    url = "${vsmProperties.brokerUrl}/github/${vsmProperties.apiToken}/webhook",
                     contentType = "json"
                 )
             )
@@ -84,14 +84,16 @@ class GitHubWebhookService(
 
     private fun cleanHooks(orgName: String) {
         val hooks = gitHubClient.getHooks(orgName)
-        hooks.forEach {
-            logger.info("Deleting hook to ensure unique change events: ${it.id}")
-            kotlin.runCatching {
-                gitHubClient.deleteHook(orgName, it.id)
-            }.onFailure { e ->
-                logger.info("Failed to delete hook. Hook Id: ${it.id}. Error: ${e.message}")
+        hooks
+            .filter { it.config.url.contains(vsmProperties.apiToken) }
+            .forEach {
+                logger.info("Deleting hook to ensure unique change events: ${it.id}")
+                kotlin.runCatching {
+                    gitHubClient.deleteHook(orgName, it.id)
+                }.onFailure { e ->
+                    logger.info("Failed to delete hook. Hook Id: ${it.id}. Error: ${e.message}")
+                }
             }
-        }
     }
 
     @Async
@@ -101,27 +103,33 @@ class GitHubWebhookService(
         runCatching {
             val assignment = assignmentService.getAssignment()
             validateRequest(apiToken, payload, assignment)
-                .let {
+                .onSuccess {
                     val repository = webhookParseProvider.parsePayload(eventType, payload, assignment)
                     repositoryService.save(repository, assignment)
                     logInfoMessages("vsm.repos.imported", emptyArray(), assignment)
                 }
+                .onFailure {
+                    logFailedStatus(
+                        runId = assignment.runId,
+                        message = it.message
+                    )
+                }
         }.onFailure {
             logFailedStatus(
                 runId = UUID.randomUUID(),
-                message = it.message ?: "empty message"
+                message = it.message
             )
         }
     }
 
-    private fun validateRequest(apiToken: String, payload: String, assignment: Assignment) {
+    private fun validateRequest(apiToken: String, payload: String, assignment: Assignment): Result<Unit> {
         val organization = mapper.readValue<JsonNode>(payload).get("organization").get("login").asText()
-        if (apiToken == vsmProperties.apiToken && assignment.organizationName == organization) {
+        return if (apiToken == vsmProperties.apiToken && assignment.organizationName == organization) {
             logger.info("api token and organization are valid")
             Result.success(Unit)
         } else {
             val message = "invalid api token: $apiToken or organization: $organization"
-            throw WebhookEventValidationFailed(message)
+            Result.failure(WebhookEventValidationFailed(message))
         }
     }
 }
