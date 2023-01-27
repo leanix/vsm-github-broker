@@ -59,7 +59,7 @@ class GithubPullRequestParser(private val client: GraphQLWebClient) {
                 PullRequest(
                     id = pullRequest.id,
                     baseRefName = pullRequest.baseRefName,
-                    mergeAt = pullRequest.mergedAt!!
+                    mergedAt = pullRequest.mergedAt!!
                 )
             }
         } else {

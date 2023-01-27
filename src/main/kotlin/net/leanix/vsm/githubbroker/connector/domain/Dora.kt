@@ -8,7 +8,7 @@ data class Dora(
 data class PullRequest(
     val id: String,
     val baseRefName: String,
-    val mergeAt: String,
+    val mergedAt: String,
     val commits: List<Commit> = emptyList()
 ) {
     fun changeIds() = commits.map { it.id }
