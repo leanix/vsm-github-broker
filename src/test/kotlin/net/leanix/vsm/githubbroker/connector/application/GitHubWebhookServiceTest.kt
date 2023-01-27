@@ -30,8 +30,11 @@ class GitHubWebhookServiceTest {
     @BeforeEach
     fun init() {
         every {
-            vsmPropertiesMock.githubUrl
+            vsmPropertiesMock.brokerUrl
         } returns "https://api.github.com"
+        every {
+            vsmPropertiesMock.apiToken
+        } returns "token"
     }
 
     @Test
@@ -43,9 +46,9 @@ class GitHubWebhookServiceTest {
                 id = "12",
                 name = "web",
                 active = true,
-                events = listOf("push"),
+                events = listOf("push", "pull_request", "repository"),
                 config = Config(
-                    url = "https://dummy.com",
+                    url = "https://dummy.com/token/github/webhook",
                     contentType = "json"
                 )
             ),
@@ -53,9 +56,9 @@ class GitHubWebhookServiceTest {
                 id = "13",
                 name = "web",
                 active = true,
-                events = listOf("push"),
+                events = listOf("push", "pull_request", "repository"),
                 config = Config(
-                    url = "https://dummy-1.com",
+                    url = "https://dummy-1.com/token/github/webhook",
                     contentType = "json"
                 )
             )
@@ -92,7 +95,7 @@ class GitHubWebhookServiceTest {
             id = "13",
             name = "web",
             active = true,
-            events = listOf("push"),
+            events = listOf("push", "pull_request", "repository"),
             config = Config(
                 url = "https://dummy.com",
                 contentType = "json"

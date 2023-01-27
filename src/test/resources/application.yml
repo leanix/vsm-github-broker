@@ -12,6 +12,7 @@ leanix:
       config-name: git-on-prem-config
       github-token: github-token
       github-url: http://localhost:${wiremock.server.port:6666}
+      broker-url: http://localhost:${wiremock.server.port:6666}
     auth:
       access-token-uri: http://localhost:${wiremock.server.port:6666}/services/mtm/v1
 
