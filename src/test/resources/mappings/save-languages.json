@@ -1,0 +1,12 @@
+{
+  "request": {
+    "url": "/languages",
+    "method": "POST"
+  },
+  "response": {
+    "status": 202,
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
