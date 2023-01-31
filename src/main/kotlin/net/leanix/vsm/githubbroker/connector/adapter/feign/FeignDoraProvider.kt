@@ -42,7 +42,7 @@ class FeignDoraProvider(private val doraClient: DoraClient) : DoraProvider {
                 serviceName = dora.repositoryName,
                 data = DoraReleaseEventData(
                     changeIds = dora.pullRequest.changeIds(),
-                    releaseTime = dora.pullRequest.mergeAt
+                    releaseTime = dora.pullRequest.mergedAt
                 )
             )
             doraClient.saveReleaseEvent(releaseEventRequest)

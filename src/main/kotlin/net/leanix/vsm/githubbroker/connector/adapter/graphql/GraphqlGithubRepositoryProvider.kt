@@ -87,11 +87,11 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
         }
     }
 
-    override fun getDora(repository: Repository, totalPassedDays: String): Result<List<Dora>> {
+    override fun getDoraRawData(repository: Repository, periodInDays: String): Result<List<Dora>> {
         return kotlin.runCatching {
-            val requests = githubPullRequestParser.getPagedPullRequests(repository, totalPassedDays)
+            val requests = githubPullRequestParser.getPagedPullRequests(repository, periodInDays)
             requests
-                .filter { it.mergeAt >= totalPassedDays }
+                .filter { it.mergedAt >= periodInDays }
                 .map {
                     Dora(
                         repositoryName = repository.name,

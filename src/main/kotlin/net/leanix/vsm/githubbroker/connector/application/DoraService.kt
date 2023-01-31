@@ -24,7 +24,7 @@ class DoraService(
     @Async
     fun generateDoraEvents(repository: Repository, assignment: Assignment) {
         val last30Days = LocalDate.now().minusDays(totalDoraDays).toString()
-        githubRepositoryProvider.getDora(repository, last30Days)
+        githubRepositoryProvider.getDoraRawData(repository, last30Days)
             .map {
                 if (it.isEmpty()) {
                     logger.info(
