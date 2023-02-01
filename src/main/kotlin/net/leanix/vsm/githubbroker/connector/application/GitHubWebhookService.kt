@@ -104,7 +104,7 @@ class GitHubWebhookService(
     }
 
     @Async
-    fun consumeWebhookEvent(eventType: WebhookEventType, apiToken: String, payload: String) {
+    override fun consumeWebhookEvent(eventType: WebhookEventType, apiToken: String, payload: String) {
         logger.info("new webhook event received: $eventType")
 
         runCatching {

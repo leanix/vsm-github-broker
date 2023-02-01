@@ -1,6 +1,6 @@
 package net.leanix.vsm.githubbroker.connector.adapter.rest
 
-import net.leanix.vsm.githubbroker.connector.application.GitHubWebhookService
+import net.leanix.vsm.githubbroker.connector.application.WebhookService
 import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/github")
-class GitHubWebhookController(private val gitHubWebhookService: GitHubWebhookService) {
+class GitHubWebhookController(private val webhookService: WebhookService) {
 
     private val logger = LoggerFactory.getLogger(GitHubWebhookController::class.java)
 
@@ -28,7 +28,7 @@ class GitHubWebhookController(private val gitHubWebhookService: GitHubWebhookSer
         kotlin.runCatching {
             WebhookEventType.valueOf(eventType.uppercase())
         }.onSuccess {
-            gitHubWebhookService.consumeWebhookEvent(it, apiToken, payload)
+            webhookService.consumeWebhookEvent(it, apiToken, payload)
         }.onFailure {
             logger.warn("Event Type not supported: $eventType")
         }
