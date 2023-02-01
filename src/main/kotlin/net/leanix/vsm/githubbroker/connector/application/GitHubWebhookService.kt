@@ -1,37 +1,29 @@
 package net.leanix.vsm.githubbroker.connector.application
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import net.leanix.vsm.githubbroker.connector.adapter.feign.GitHubClient
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.Config
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.GitHubWebhookRequest
-import net.leanix.vsm.githubbroker.connector.domain.Assignment
-import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
-import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
 import net.leanix.vsm.githubbroker.shared.exception.VsmException
-import net.leanix.vsm.githubbroker.shared.exception.VsmException.WebhookEventValidationFailed
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.LoggerFactory
-import org.springframework.scheduling.annotation.Async
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
-import java.util.UUID
 
+@ConditionalOnProperty(
+    prefix = "leanix.vsm.webhook",
+    value = ["enabled"],
+    havingValue = "true",
+    matchIfMissing = false
+)
 @Service
 class GitHubWebhookService(
     private val vsmProperties: VsmProperties,
-    private val gitHubClient: GitHubClient,
-    private val assignmentService: AssignmentService,
-    private val webhookParseProvider: WebhookParseProvider,
-    private val repositoryService: RepositoryService
-) : BaseConnectorService() {
+    private val gitHubClient: GitHubClient
+) : WebhookService {
 
     private val logger = LoggerFactory.getLogger(GitHubWebhookService::class.java)
-    private val mapper = jacksonObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-    fun registerWebhook(orgName: String) {
+    override fun registerWebhook(orgName: String) {
         logger.info("Initializing webhooks registration steps. orgName: $orgName")
 
         runCatching {
@@ -71,9 +63,9 @@ class GitHubWebhookService(
         val hook = gitHubClient.createHook(
             orgName,
             GitHubWebhookRequest(
-                events = listOf("push", "pull_request", "repository"),
+                events = listOf("push"),
                 config = Config(
-                    url = "${vsmProperties.brokerUrl}/github/${vsmProperties.apiToken}/webhook",
+                    url = vsmProperties.githubUrl,
                     contentType = "json"
                 )
             )
@@ -84,52 +76,13 @@ class GitHubWebhookService(
 
     private fun cleanHooks(orgName: String) {
         val hooks = gitHubClient.getHooks(orgName)
-        hooks
-            .filter { it.config.url.contains(vsmProperties.apiToken) }
-            .forEach {
-                logger.info("Deleting hook to ensure unique change events: ${it.id}")
-                kotlin.runCatching {
-                    gitHubClient.deleteHook(orgName, it.id)
-                }.onFailure { e ->
-                    logger.info("Failed to delete hook. Hook Id: ${it.id}. Error: ${e.message}")
-                }
+        hooks.forEach {
+            logger.info("Deleting hook to ensure unique change events: ${it.id}")
+            kotlin.runCatching {
+                gitHubClient.deleteHook(orgName, it.id)
+            }.onFailure { e ->
+                logger.info("Failed to delete hook. Hook Id: ${it.id}. Error: ${e.message}")
             }
-    }
-
-    @Async
-    fun consumeWebhookEvent(eventType: WebhookEventType, apiToken: String, payload: String) {
-        logger.info("new webhook event received: $eventType")
-
-        runCatching {
-            val assignment = assignmentService.getAssignment()
-            validateRequest(apiToken, payload, assignment)
-                .onSuccess {
-                    val repository = webhookParseProvider.parsePayload(eventType, payload, assignment)
-                    repositoryService.save(repository, assignment)
-                    logInfoMessages("vsm.repos.imported", emptyArray(), assignment)
-                }
-                .onFailure {
-                    logFailedStatus(
-                        runId = assignment.runId,
-                        message = it.message
-                    )
-                }
-        }.onFailure {
-            logFailedStatus(
-                runId = UUID.randomUUID(),
-                message = it.message
-            )
-        }
-    }
-
-    private fun validateRequest(apiToken: String, payload: String, assignment: Assignment): Result<Unit> {
-        val organization = mapper.readValue<JsonNode>(payload).get("organization").get("login").asText()
-        return if (apiToken == vsmProperties.apiToken && assignment.organizationName == organization) {
-            logger.info("api token and organization are valid")
-            Result.success(Unit)
-        } else {
-            val message = "invalid api token: $apiToken or organization: $organization"
-            Result.failure(WebhookEventValidationFailed(message))
         }
     }
 }
