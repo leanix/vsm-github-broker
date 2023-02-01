@@ -1,5 +1,6 @@
 package net.leanix.vsm.githubbroker.connector.application
 
+import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
@@ -17,5 +18,9 @@ class NoWebhookService : WebhookService {
 
     override fun registerWebhook(orgName: String) {
         logger.info("no webhook")
+    }
+
+    override fun consumeWebhookEvent(eventType: WebhookEventType, apiToken: String, payload: String) {
+        logger.info("no webhook consumer")
     }
 }
