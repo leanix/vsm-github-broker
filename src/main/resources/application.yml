@@ -16,3 +16,5 @@ leanix:
       broker-url: ${BROKER_URL}
     auth:
       access-token-uri: https://${LEANIX_REGION}.leanix.net/services/mtm/v1
+    webhook:
+      enabled: true

@@ -23,8 +23,9 @@ To use the Broker client with a GitHub Enterprise deployment, run `docker pull a
 - `LEANIX_REGION` - the LeanIX region, obtained from your LeanIX settings view (leanix.net).
 - `LEANIX_API_TOKEN` - the LeanIX token, obtained from your LeanIX settings view (leanix.net).
 - `LEANIX_CONFIGURATION_NAME` - the LeanIX configuration, obtained from your LeanIX settings view (leanix.net).
-- `GITHUB_TOKEN` - a personal access token with full `repo`, `read:org` and `admin:repo_hook` scopes.
+- `GITHUB_TOKEN` - a personal access token with full `repo`, `read:org` and `admin:org_hook` scopes.
 - `GITHUB_URL` - the hostname of your GitHub Enterprise deployment, such as `ghe.domain.com`.
+- `BROKER_URL` - the full URL of the vsm client as it will be accessible by your GH Enterprise deployment webhooks, such as http://vsm.client:8080
 
 #### Command-line arguments
 
@@ -38,6 +39,7 @@ docker run --restart=always \
            -e LEANIX_CONFIGURATION_NAME=<config-name>\
            -e GITHUB_TOKEN=<secret-github-token> \
            -e GITHUB_URL=<GitHub Ent URL(ghe.domain.com)> \
+           -e BROKER_URL=http://vsm.client:8080 \
         leanixacrpublic.azurecr.io/vsm-github-broker
 ```
 
