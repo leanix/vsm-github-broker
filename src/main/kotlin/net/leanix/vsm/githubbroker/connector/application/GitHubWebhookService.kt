@@ -14,10 +14,17 @@ import net.leanix.vsm.githubbroker.shared.exception.VsmException
 import net.leanix.vsm.githubbroker.shared.exception.VsmException.WebhookEventValidationFailed
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import java.util.UUID
 
+@ConditionalOnProperty(
+    prefix = "leanix.vsm.webhook",
+    value = ["enabled"],
+    havingValue = "true",
+    matchIfMissing = false
+)
 @Service
 class GitHubWebhookService(
     private val vsmProperties: VsmProperties,
@@ -25,13 +32,13 @@ class GitHubWebhookService(
     private val assignmentService: AssignmentService,
     private val webhookParseProvider: WebhookParseProvider,
     private val repositoryService: RepositoryService
-) : BaseConnectorService() {
+) : WebhookService, BaseConnectorService() {
 
     private val logger = LoggerFactory.getLogger(GitHubWebhookService::class.java)
     private val mapper = jacksonObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-    fun registerWebhook(orgName: String) {
+    override fun registerWebhook(orgName: String) {
         logger.info("Initializing webhooks registration steps. orgName: $orgName")
 
         runCatching {
