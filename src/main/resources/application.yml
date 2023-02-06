@@ -1,20 +1,21 @@
 
 leanix:
+  base-url: https://${LEANIX_DOMAIN}/services
   vsm:
-    base-url:  https://${LEANIX_REGION}.leanix.net/services/vsm-canopy/v1
+    base-url:  ${leanix.base-url}/vsm-canopy/v1
     event-broker:
       base-url: ${leanix.vsm.base-url}/vsm-events-broker
     dora:
       total-days: 30
-      base-url: https://${LEANIX_REGION}-vsm.leanix.net/services/vsm/events/v1/dora
+      base-url: ${leanix.base-url}/vsm-dora-events/v1/dora
     connector:
       api-token: ${LEANIX_API_TOKEN}
       user-token: ${LEANIX_USER_TOKEN}
       config-name: ${LEANIX_CONFIGURATION_NAME}
       github-token: ${GITHUB_TOKEN}
       github-url: ${GITHUB_URL}
-      broker-url: ${BROKER_URL}
+      broker-url: ${BROKER_URL:""}
     auth:
-      access-token-uri: https://${LEANIX_REGION}.leanix.net/services/mtm/v1
+      access-token-uri: ${leanix.base-url}/mtm/v1
     webhook:
-      enabled: true
+      enabled: ${VSM_WEBHOOK:true}
