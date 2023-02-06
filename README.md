@@ -20,7 +20,7 @@ described below.
 
 To use the Broker client with a GitHub Enterprise deployment, run `docker pull acr-public/vsm-github-broker` tag. The following environment variables are mandatory to configure the Broker client:
 
-- `LEANIX_REGION` - the LeanIX region, obtained from your LeanIX settings view (leanix.net).
+- `LEANIX_DOMAIN` - the LeanIX domain, obtained from your LeanIX settings view (leanix.net).
 - `LEANIX_API_TOKEN` - the LeanIX token, obtained from your LeanIX settings view (leanix.net).
 - `LEANIX_CONFIGURATION_NAME` - the LeanIX configuration, obtained from your LeanIX settings view (leanix.net).
 - `GITHUB_TOKEN` - a personal access token with full `repo`, `read:org` and `admin:org_hook` scopes.
@@ -34,7 +34,7 @@ You can run the docker container by providing the relevant configuration:
 ```console
 docker run --restart=always \
            -p 8080:8080 \
-           -e LEANIX_REGION=<region> \
+           -e LEANIX_DOMAIN=<region>.leanix.net \
            -e LEANIX_API_TOKEN=<technical_user-token>\
            -e LEANIX_CONFIGURATION_NAME=<config-name>\
            -e GITHUB_TOKEN=<secret-github-token> \
