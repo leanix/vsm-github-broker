@@ -29,6 +29,13 @@ open class BaseConnectorService {
         )
     }
 
+    fun logInfoStatus(message: String? = "", runId: UUID) {
+        logger.info(message)
+        loggingService.sendStatusLog(
+            StatusLog(runId, LogStatus.IN_PROGRESS, message)
+        )
+    }
+
     fun logInfoMessages(code: String, arguments: Array<Any>, assignment: Assignment) {
         val message = messageSource.getMessage(
             code,
