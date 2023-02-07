@@ -18,7 +18,11 @@ class FeignRepositoryProvider(private val vsmClient: VsmClient) : RepositoryProv
             name = repository.name,
             description = repository.description,
             url = repository.url,
-            archived = repository.archived
+            archived = repository.archived,
+            visibility = repository.visibility,
+            languages = repository.languages,
+            labels = repository.topics,
+            contributors = emptyList()
         )
 
         vsmClient.saveService(service)

@@ -19,12 +19,12 @@ class DoraService(
     private val logger = LoggerFactory.getLogger(DoraService::class.java)
 
     @Value("\${leanix.vsm.dora.total-days:30}")
-    val totalDoraDays: Long = 0
+    val periodInDays: Long = 0
 
     @Async
     fun generateDoraEvents(repository: Repository, assignment: Assignment) {
-        val last30Days = LocalDate.now().minusDays(totalDoraDays).toString()
-        githubRepositoryProvider.getDoraRawData(repository, last30Days)
+        val periodInDaysInString = LocalDate.now().minusDays(periodInDays).toString()
+        githubRepositoryProvider.getDoraRawData(repository, periodInDaysInString)
             .map {
                 if (it.isEmpty()) {
                     logger.info(

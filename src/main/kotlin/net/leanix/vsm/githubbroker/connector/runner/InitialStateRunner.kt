@@ -11,8 +11,15 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 
+@ConditionalOnProperty(
+    prefix = "application.runner",
+    value = ["enabled"],
+    havingValue = "true",
+    matchIfMissing = true
+)
 @Component
 class InitialStateRunner(
     private val assignmentService: AssignmentService,
@@ -32,7 +39,8 @@ class InitialStateRunner(
                 logger.error("Failed to get initial state", e)
                 loggingService.sendStatusLog(
                     StatusLog(
-                        it.runId, LogStatus.FAILED,
+                        it.runId,
+                        LogStatus.FAILED,
                         "Failed to get initial state. Error: ${e.message}"
                     )
                 )

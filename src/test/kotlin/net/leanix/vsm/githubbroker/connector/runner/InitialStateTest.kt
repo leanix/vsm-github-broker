@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 
-@SpringBootTest
-@AutoConfigureWireMock(port = 6666)
+@SpringBootTest(properties = ["application.runner.enabled=true"])
+@AutoConfigureWireMock(port = 0)
 class InitialStateTest {
 
     @Test

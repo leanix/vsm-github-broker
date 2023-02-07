@@ -20,11 +20,12 @@ described below.
 
 To use the Broker client with a GitHub Enterprise deployment, run `docker pull acr-public/vsm-github-broker` tag. The following environment variables are mandatory to configure the Broker client:
 
-- `LEANIX_REGION` - the LeanIX region, obtained from your LeanIX settings view (leanix.net).
+- `LEANIX_DOMAIN` - the LeanIX domain, obtained from your LeanIX settings view (leanix.net).
 - `LEANIX_API_TOKEN` - the LeanIX token, obtained from your LeanIX settings view (leanix.net).
 - `LEANIX_CONFIGURATION_NAME` - the LeanIX configuration, obtained from your LeanIX settings view (leanix.net).
-- `GITHUB_TOKEN` - a personal access token with full `repo`, `read:org` and `admin:repo_hook` scopes.
+- `GITHUB_TOKEN` - a personal access token with full `repo`, `read:org` and `admin:org_hook` scopes.
 - `GITHUB_URL` - the hostname of your GitHub Enterprise deployment, such as `ghe.domain.com`.
+- `BROKER_URL` - the full URL of the vsm client as it will be accessible by your GH Enterprise deployment webhooks, such as http://vsm.client:8080
 
 #### Command-line arguments
 
@@ -33,17 +34,25 @@ You can run the docker container by providing the relevant configuration:
 ```console
 docker run --restart=always \
            -p 8080:8080 \
-           -e LEANIX_REGION=<region> \
+           -e LEANIX_DOMAIN=<region>.leanix.net \
            -e LEANIX_API_TOKEN=<technical_user-token>\
            -e LEANIX_CONFIGURATION_NAME=<config-name>\
            -e GITHUB_TOKEN=<secret-github-token> \
            -e GITHUB_URL=<GitHub Ent URL(ghe.domain.com)> \
+           -e BROKER_URL=http://vsm.client:8080 \
         leanixacrpublic.azurecr.io/vsm-github-broker
 ```
 
 #### Webhook configuration
 
-The Broker client exposes a webhook endpoint that can be used to receive events from GitHub Enterprise. The webhook is registered automatically when the Broker client starts up. 
+The Broker client exposes a webhook endpoint that can be used to receive events from GitHub Enterprise. The webhook is registered automatically when the Broker client starts up.
+
+```
+Disable webhook: To disable webhook you need to pass the following environment variable:
+           ...
+           -e VSM_WEBHOOK=false \
+        leanixacrpublic.azurecr.io/vsm-github-broker
+```
 
 > Note: Make sure to use a unique GitHub token for each Broker client instance. This ensures maximum security and prevents the Broker client from receiving events from other GitHub Enterprise deployments.
 
