@@ -12,6 +12,7 @@ class RepositoriesService(
 ) : BaseConnectorService() {
 
     fun getAllRepositories(assignment: Assignment) {
+        logInfoStatus(runId = assignment.runId)
         getRepositoriesPaginated(assignment)
     }
 
