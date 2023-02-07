@@ -29,10 +29,10 @@ open class BaseConnectorService {
         )
     }
 
-    fun logInfoStatus(message: String? = "", runId: UUID) {
+    fun logInfoStatus(message: String? = "", runId: UUID, status: LogStatus) {
         logger.info(message)
         loggingService.sendStatusLog(
-            StatusLog(runId, LogStatus.IN_PROGRESS, message)
+            StatusLog(runId, status, message)
         )
     }
 
