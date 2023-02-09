@@ -4,7 +4,8 @@ leanix:
   vsm:
     base-url:  ${leanix.base-url}/vsm-canopy/v1
     event-broker:
-      base-url: ${leanix.vsm.base-url}/vsm-events-broker
+#      base-url: ${leanix.vsm.base-url}/vsm-events-broker
+      base-url: http://localhost:8083
     dora:
       total-days: 30
       base-url: ${leanix.base-url}/vsm-dora-events/v1/dora
@@ -14,6 +15,7 @@ leanix:
       config-name: ${LEANIX_CONFIGURATION_NAME}
       github-token: ${GITHUB_TOKEN}
       github-url: ${GITHUB_URL}
+      github-version: ${GITHUB_VERSION:v3}
       broker-url: ${BROKER_URL:""}
     auth:
       access-token-uri: ${leanix.base-url}/mtm/v1

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 
 @FeignClient(
     name = "GitHubClient",
-    url = "\${leanix.vsm.connector.github-url}",
+    url = "\${leanix.vsm.connector.github-url}/api/\${leanix.vsm.connector.github-version}",
     configuration = [GitHubFeignClientConfiguration::class]
 )
 interface GitHubClient {
