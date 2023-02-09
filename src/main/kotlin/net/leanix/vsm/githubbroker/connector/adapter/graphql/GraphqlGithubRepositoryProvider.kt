@@ -44,7 +44,7 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
         val query = AllRepoQuery(
             AllRepoQuery.Variables(
                 orgName = organizationName,
-                pageCount = 1,
+                pageCount = 100,
                 cursor = cursor
             )
         )
