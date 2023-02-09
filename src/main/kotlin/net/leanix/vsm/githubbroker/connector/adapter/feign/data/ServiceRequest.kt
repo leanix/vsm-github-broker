@@ -13,6 +13,7 @@ data class ServiceRequest(
     val url: String?,
     val archived: Boolean?,
     val visibility: String?,
+    val organizationName: String,
     val languages: List<Language>? = null,
     val labels: List<Topic>? = null,
     val contributors: List<String>? = null
