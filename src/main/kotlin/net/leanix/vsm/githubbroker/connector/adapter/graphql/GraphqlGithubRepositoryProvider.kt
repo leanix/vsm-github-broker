@@ -17,6 +17,7 @@ import net.leanix.vsm.githubbroker.connector.domain.PagedRepositories
 import net.leanix.vsm.githubbroker.connector.domain.Repository
 import net.leanix.vsm.githubbroker.connector.domain.Topic
 import net.leanix.vsm.githubbroker.shared.exception.VsmException
+import net.leanix.vsm.githubbroker.shared.extensions.flatMap
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -50,16 +51,17 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
         logger.info("Getting next page of repositories")
         return kotlin.runCatching {
             executeQuery(query)
-        }.fold(
-            {
-                if (it.errors != null && it.errors?.isNotEmpty() == true) {
-                    Result.failure(RuntimeException("Error getting data"))
+        }.flatMap {
+            if (it.errors != null && it.errors?.isNotEmpty() == true) {
+                if (it.data?.organization == null) {
+                    Result.failure(VsmException.NoRepositoriesFound())
                 } else {
-                    parseRepositories(it.data?.organization?.repositories)
+                    Result.failure(RuntimeException("Error getting data"))
                 }
-            },
-            { Result.failure(it) }
-        )
+            } else {
+                parseRepositories(it.data?.organization?.repositories)
+            }
+        }
     }
 
     private fun parseRepositories(repositories: RepositoryConnection?): Result<PagedRepositories> {
