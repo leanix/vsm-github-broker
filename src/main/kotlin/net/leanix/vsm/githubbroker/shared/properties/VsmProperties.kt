@@ -10,5 +10,6 @@ data class VsmProperties(
     val configName: String,
     val githubToken: String,
     val githubUrl: String,
+    val githubVersion: String,
     val brokerUrl: String
 )
