@@ -61,7 +61,7 @@ full `repo` including `repo:status`, `repo_deployment`, `public_repo`, `repo:inv
 You can run the docker container by providing the relevant configuration:
 
 ```console
-docker run --restart=always \
+docker run --pull=always --restart=always \
            -p 8080:8080 \
            -e LEANIX_DOMAIN=<region>.leanix.net \
            -e LEANIX_API_TOKEN=<technical_user-token>\
@@ -78,7 +78,7 @@ docker run --restart=always \
 The vsm broker exposes an endpoint to listen to GitHub webhooks. This enables an near-to-realtime update of information in VSM. The broker automatically registers and manages the webhook when the broker initializes. By default this capability is switched on.
 
 ```
-docker run --restart=always \
+docker run --pull=always --restart=always \
            -p 8080:8080 \
            -e LEANIX_DOMAIN=<region>.leanix.net \
            -e LEANIX_API_TOKEN=<technical_user-token>\
