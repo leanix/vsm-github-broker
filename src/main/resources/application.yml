@@ -4,8 +4,7 @@ leanix:
   vsm:
     base-url:  ${leanix.base-url}/vsm-canopy/v1
     event-broker:
-#      base-url: ${leanix.vsm.base-url}/vsm-events-broker
-      base-url: http://localhost:8083
+      base-url: ${leanix.vsm.base-url}/vsm-events-broker
     dora:
       total-days: 30
       base-url: ${leanix.base-url}/vsm-dora-events/v1/dora
