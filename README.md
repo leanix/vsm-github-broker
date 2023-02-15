@@ -40,9 +40,9 @@ To use the Broker client with a GitHub Enterprise deployment, run `docker pull l
 - `LEANIX_API_TOKEN` - the LeanIX token, obtained from your admin panel. :warning: Make sure the api token has `ADMIN`rights. 
 - `LEANIX_CONFIGURATION_NAME` - the LeanIX configuration name. ❔in the current stage, you need to provide your GitHub organisation names to us, for us to create these configurations. We are working on a self-setup UI 🖥️
 - `GITHUB_TOKEN` - a [personal access token](#personal-access-token) with full `repo`, `read:org` and `admin:org_hook` scopes.
-- `GITHUB_URL` - the hostname of your GitHub Enterprise deployment, such as `https://ghe.domain.com`.
+- `GITHUB_URL` - the hostname of your GitHub Enterprise deployment, such as `https://ghe.domain.com`. This must include the protocol (http vs https) of the GitHub Enterprise deployment.
 - `BROKER_URL` - the full URL of the vsm client as it will be accessible by your GitHub Enterprise deployment webhooks, such as http://vsm.client:8080
-- `VSM_WEBHOOK` - a boolean switch to turn off the webhook capability of the broker. In this case, the broker wont place any webhook and will just run on a 1x day schedule. Default: `true`. 
+- `VSM_WEBHOOK` - a boolean switch to turn off the webhook capability of the broker. When set to false, the broker won't place any webhook and will just run on a 1x day schedule. Default: `true`. 
 
 > :bulb: We highly recommend to use the broker with webhooks for a much better & instant user experience, if you can.
 
@@ -68,7 +68,7 @@ docker run --pull=always --restart=always \
            -e LEANIX_CONFIGURATION_NAME=<config-name>\
            -e GITHUB_TOKEN=<secret-github-token> \
            -e GITHUB_URL=<GitHub Ent URL(https://ghe.domain.com)> \
-           -e BROKER_URL=http://my.vsm.broker.client:8080 \
+           -e BROKER_URL=<vsm-github-broker URL(http://my.vsm.broker.client:8080)> \
         leanixacrpublic.azurecr.io/vsm-github-broker
 ```
 
@@ -85,8 +85,7 @@ docker run --pull=always --restart=always \
            -e LEANIX_CONFIGURATION_NAME=<config-name>\
            -e GITHUB_TOKEN=<secret-github-token> \
            -e GITHUB_URL=<GitHub Ent URL(https://ghe.domain.com)> \
-           -e BROKER_URL=http://my.vsm.broker.client:8080 \
-           -e VSM_WEBHOOK=false \
+           -e BROKER_URL=<vsm-github-broker URL(http://my.vsm.broker.client:8080)> \
         leanixacrpublic.azurecr.io/vsm-github-broker
 ```
 
