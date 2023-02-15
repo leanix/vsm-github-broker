@@ -34,7 +34,7 @@ data to VSM SaaS Application.
 The VSM GitHub Broker is published as a Docker image. The configuration is performed with environment variables as
 described below.
 
-To use the Broker client with a GitHub Enterprise deployment, run `docker pull acr-public/vsm-github-broker` tag. The following environment variables are mandatory to configure the Broker client:
+To use the Broker client with a GitHub Enterprise deployment, run `docker pull leanixacrpublic.azurecr.io/vsm-github-broker` tag. The following environment variables are mandatory to configure the Broker client:
 
 - `LEANIX_DOMAIN` - the LeanIX domain, obtained from your LeanIX url (example if your workspace is located at `https://my-company.leanix.net` then the domain is `my-company`.
 - `LEANIX_API_TOKEN` - the LeanIX token, obtained from your admin panel. :warning: Make sure the api token has `ADMIN`rights. 
@@ -126,10 +126,12 @@ USER root
 
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 COPY YOUR-CERTIFICATE-HERE /usr/local/share/ca-certificates/YOUR-CERTIFICATE-HERE
-RUN update-ca-certificates
+RUN update-ca-certificates 
+RUN keytool -import -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts  -storepass changeit -noprompt -alias YOUR-CERTIFICATE-HERE -file /usr/local/share/ca-certificates/YOUR-CERTIFICATE-HERE
 
 ```
 
+> Note: You should add an additional COPY and the final RUN for each certificate you need to insert into the image.
 
 #### Using amd64 images on Apple M1
 
