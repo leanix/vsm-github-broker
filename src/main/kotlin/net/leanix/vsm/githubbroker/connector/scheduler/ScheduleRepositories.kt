@@ -13,7 +13,7 @@ class ScheduleRepositories(
     private val repositoriesService: RepositoriesService
 ) {
     private val logger: Logger = LoggerFactory.getLogger(ScheduleRepositories::class.java)
- 
+
     @Scheduled(cron = "\${leanix.vsm.schedule:0 0 4 * * *}")
     fun getAllRepositories() {
         kotlin.runCatching {
