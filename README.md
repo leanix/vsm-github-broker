@@ -77,6 +77,8 @@ docker run --pull=always --restart=always \
 
 The vsm broker exposes an endpoint to listen to GitHub webhooks. This enables an near-to-realtime update of information in VSM. The broker automatically registers and manages the webhook when the broker initializes. By default this capability is switched on.
 
+> Note: Complete data is freshly pulled from GitHub enterprise **every day at 4A.M**. Hence webhook can be optionally setup for real-time updates. Or else new data is refreshed on daily basis.
+
 ```
 docker run --pull=always --restart=always \
            -p 8080:8080 \
@@ -99,6 +101,7 @@ GitHub Event  | VSM Usage
 `repositories`  | Get updates from repositories to generate service metadata (e.g service name)
 `repositories imports`  | Discover new repositories
 `repo visibilty changes`  | Update the repos visibility (e.g. Acive > Archived)
+
 
 ### Troubleshooting
 
