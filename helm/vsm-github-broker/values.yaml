@@ -1,0 +1,12 @@
+image:
+  repository: leanixacrpublic.azurecr.io/vsm-github-broker
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 8080
+
+replicaCount: 1
+
+restartPolicy: Always
