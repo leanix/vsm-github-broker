@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vsm-github-broker
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: vsm-github-broker
+  template:
+    metadata:
+      labels:
+        app: vsm-github-broker
+    spec:
+      containers:
+        - name: vsm-github-broker
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+          env:
+            - name: LEANIX_DOMAIN
+              value: {{ .Values.env.LEANIX_DOMAIN }}
+            - name: LEANIX_API_TOKEN
+              value: {{ .Values.env.LEANIX_API_TOKEN }}
+            - name: LEANIX_CONFIGURATION_NAME
+              value: {{ .Values.env.LEANIX_CONFIGURATION_NAME }}
+            - name: GITHUB_TOKEN
+              value: {{ .Values.env.GITHUB_TOKEN }}
+            - name: GITHUB_URL
+              value: {{ .Values.env.GITHUB_URL }}
+            - name: BROKER_URL
+              value: {{ .Values.env.BROKER_URL }}
+            - name: VSM_WEBHOOK
+              value: {{ .Values.env.VSM_WEBHOOK }}
+      restartPolicy: {{ .Values.restartPolicy }}

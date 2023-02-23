@@ -3,10 +3,16 @@ image:
   tag: latest
   pullPolicy: Always
 
-service:
-  type: NodePort
-  port: 8080
-
 replicaCount: 1
 
 restartPolicy: Always
+
+env:
+  values:
+    LEANIX_DOMAIN: "{{ .Values.leanixDomain }}"
+    LEANIX_API_TOKEN: "{{ .Values.leanixApiToken }}"
+    LEANIX_CONFIGURATION_NAME: "{{ .Values.leanixConfigName }}"
+    GITHUB_TOKEN: "{{ .Values.githubToken }}"
+    GITHUB_URL: "{{ .Values.githubUrl }}"
+    BROKER_URL: "{{ .Values.brokerUrl }}"
+    VSM_WEBHOOK: "{{ .Values.vsmWebhook }}"
