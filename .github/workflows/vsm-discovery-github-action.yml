@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  README_DOCS_VERSION: '1.1.0'
+
 jobs:
   post-deploy:
     name: Post Deployment
@@ -35,3 +38,10 @@ jobs:
         uses: leanix/vsm-discovery-github-action@v1.0.0
         with:
           api-token: ${{ env.VSM_LEANIX_API_TOKEN }}
+
+      - name: Sync github-enterprise-connector.md docs
+        uses: readmeio/rdme@7.3.0
+        if: github.ref=='refs/heads/main'
+        continue-on-error: true
+        with:
+          rdme: docs ./docs --key=${{ secrets.README_DEVELOPERS_API_KEY }} --version=${{ env.README_DOCS_VERSION }}
