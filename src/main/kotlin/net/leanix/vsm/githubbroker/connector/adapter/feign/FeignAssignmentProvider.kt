@@ -6,10 +6,11 @@ import org.springframework.stereotype.Component
 
 @Component
 class FeignAssignmentProvider(private val assignmentClient: AssignmentClient) : AssignmentProvider {
-
-    override fun getAssignment(integrationName: String, configurationName: String): Result<Assignment> {
+    override fun getAssignments(integrationName: String): Result<List<Assignment>> {
         return kotlin.runCatching {
-            assignmentClient.getAssignment(integrationName, configurationName)
-        }.map { it.toDomain() }
+            assignmentClient.getAssignments(integrationName)
+        }.map { assignmentList ->
+            assignmentList.map { it.toDomain() }
+        }
     }
 }

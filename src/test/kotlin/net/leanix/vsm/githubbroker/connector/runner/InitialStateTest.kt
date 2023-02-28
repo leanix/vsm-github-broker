@@ -14,41 +14,40 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 class InitialStateTest {
 
     @Test
-    fun `it should get the assignment`() {
+    fun `it should get the assignments`() {
         await.untilAsserted {
             WireMock.verify(
                 1,
                 getRequestedFor(
                     urlEqualTo(
-                        "/broker/assignment?" +
-                            "integrationName=github-enterprise-repository-connector" +
-                            "&configurationName=git-on-prem-config"
+                        "/broker/assignments?" +
+                            "integrationName=github-enterprise-repository-connector"
                     )
                 )
             )
 
             WireMock.verify(
-                1,
+                2,
                 postRequestedFor(urlEqualTo("/api/graphql"))
                     .withRequestBody(WireMock.containing("AllRepoQuery"))
 
             )
             WireMock.verify(
-                2,
+                4,
                 postRequestedFor(urlEqualTo("/api/graphql"))
                     .withRequestBody(WireMock.containing("GetReposPullRequestsQuery"))
 
             )
             WireMock.verify(
-                2,
+                4,
                 postRequestedFor(urlEqualTo("/api/graphql"))
                     .withRequestBody(WireMock.containing("getPullRequestCommits"))
 
             )
-            WireMock.verify(2, postRequestedFor(urlEqualTo("/services")))
-            WireMock.verify(3, postRequestedFor(urlEqualTo("/languages")))
-            WireMock.verify(2, postRequestedFor(urlEqualTo("/topics")))
-            WireMock.verify(1, postRequestedFor(urlEqualTo("/logs/admin")))
+            WireMock.verify(4, postRequestedFor(urlEqualTo("/services")))
+            WireMock.verify(6, postRequestedFor(urlEqualTo("/languages")))
+            WireMock.verify(4, postRequestedFor(urlEqualTo("/topics")))
+            WireMock.verify(2, postRequestedFor(urlEqualTo("/logs/admin")))
         }
     }
 }

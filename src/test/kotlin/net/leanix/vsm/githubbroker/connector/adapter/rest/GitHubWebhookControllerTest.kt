@@ -53,7 +53,7 @@ class GitHubWebhookControllerTest {
 
             Thread.sleep(2000)
             WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
-            WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/log/connector-status")))
+            WireMock.verify(2, WireMock.postRequestedFor(WireMock.urlEqualTo("/log/connector-status")))
         }
 
         @Test
@@ -75,7 +75,7 @@ class GitHubWebhookControllerTest {
             Thread.sleep(2000)
             WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
             WireMock.verify(
-                1,
+                2,
                 WireMock.postRequestedFor(WireMock.urlEqualTo("/log/connector-status"))
                     .withRequestBody(WireMock.containing("invalid api token: $apiToken or organization: $organization"))
             )

@@ -100,7 +100,7 @@ GitHub Event  | VSM Usage
 `pushes`  | Generate DORA metrics
 `repositories`  | Get updates from repositories to generate service metadata (e.g service name)
 `repositories imports`  | Discover new repositories
-`repo visibilty changes`  | Update the repos visibility (e.g. Acive > Archived)
+`repo visibilty changes`  | Update the repos visibility (e.g. Active > Archived)
 
 
 ### Troubleshooting

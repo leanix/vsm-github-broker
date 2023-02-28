@@ -1,6 +1,6 @@
 {
   "request": {
-    "url": "/broker/assignment?integrationName=github-enterprise-repository-connector&configurationName=git-on-prem-config",
+    "url": "/broker/assignments?integrationName=github-enterprise-repository-connector",
     "method": "GET"
   },
   "response": {
@@ -8,6 +8,6 @@
     "headers": {
       "Content-Type": "application/json"
     },
-    "body": "{\"runId\": \"caa2e4d7-c413-4c58-b236-8c35c9607def\",\"configurationId\": \"e3ea8e1a-98b9-4fb0-9560-79960ffed4a0\",\"phase\": \"FULL\",\"connectorConfiguration\": [{\"id\": \"orgName\",\"value\": \"super-repo\",\"type\": \"String\"}]}"
+    "body": "[{\"runId\": \"caa2e4d7-c413-4c58-b236-8c35c9607def\",\"configurationId\": \"e3ea8e1a-98b9-4fb0-9560-79960ffed4a0\",\"phase\": \"FULL\",\"connectorConfiguration\": [{\"id\": \"orgName\",\"value\": \"super-repo\",\"type\": \"String\"}]}, {\"runId\": \"c0cc4759-92b0-4cc4-96d9-e5789a44cd45\",\"configurationId\": \"d0eb9ce6-50d6-4dad-8838-e98dd6ae8e86\",\"phase\": \"FULL\",\"connectorConfiguration\": [{\"id\": \"orgName\",\"value\": \"super-duper-repo\",\"type\": \"String\"}]}]"
   }
 }

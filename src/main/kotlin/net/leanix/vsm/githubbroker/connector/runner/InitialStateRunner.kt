@@ -30,16 +30,16 @@ class InitialStateRunner(
     private val logger: Logger = LoggerFactory.getLogger(InitialStateRunner::class.java)
     override fun run(args: ApplicationArguments?) {
         logger.info("Started get initial state")
-        getAssignment()?.let {
+        getAssignments()?.forEach { assignment ->
             kotlin.runCatching {
-                repositoriesService.getAllRepositories(it)
+                repositoriesService.getAllRepositories(assignment)
                 logger.info("Initializing webhooks registration steps")
-                webhookService.registerWebhook(it.organizationName)
+                webhookService.registerWebhook(assignment.organizationName)
             }.onFailure { e ->
                 logger.error("Failed to get initial state", e)
                 loggingService.sendStatusLog(
                     StatusLog(
-                        it.runId,
+                        assignment.runId,
                         LogStatus.FAILED,
                         "Failed to get initial state. Error: ${e.message}"
                     )
@@ -47,11 +47,11 @@ class InitialStateRunner(
             }
         }
     }
-    private fun getAssignment(): Assignment? {
+    private fun getAssignments(): List<Assignment>? {
         kotlin.runCatching {
-            return assignmentService.getAssignment()
+            return assignmentService.getAssignments()
         }.onFailure {
-            logger.error("Failed to get initial state. Assignment not found")
+            logger.error("Failed to get initial state. No assignment found for this workspace id")
         }
         return null
     }
