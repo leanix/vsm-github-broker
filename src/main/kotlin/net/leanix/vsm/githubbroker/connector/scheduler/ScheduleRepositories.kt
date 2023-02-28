@@ -17,9 +17,11 @@ class ScheduleRepositories(
     @Scheduled(cron = "\${leanix.vsm.schedule:0 0 4 * * *}")
     fun getAllRepositories() {
         kotlin.runCatching {
-            val assignment = assignmentService.getAssignment()
+            val assignmentList = assignmentService.getAssignments()
             logger.info("Started schedule")
-            repositoriesService.getAllRepositories(assignment)
+            assignmentList.forEach { assignment ->
+                repositoriesService.getAllRepositories(assignment)
+            }
         }.onFailure {
             logger.error("Schedule failed", it)
         }

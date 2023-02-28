@@ -108,19 +108,21 @@ class GitHubWebhookService(
         logger.info("new webhook event received: $eventType")
 
         runCatching {
-            val assignment = assignmentService.getAssignment()
-            validateRequest(apiToken, payload, assignment)
-                .onSuccess {
-                    val repository = webhookParseProvider.parsePayload(eventType, payload, assignment)
-                    repositoryService.save(repository, assignment)
-                    logInfoMessages("vsm.repos.imported", emptyArray(), assignment)
-                }
-                .onFailure {
-                    logFailedStatus(
-                        runId = assignment.runId,
-                        message = it.message
-                    )
-                }
+            val assignmentList = assignmentService.getAssignments()
+            assignmentList.forEach { assignment ->
+                validateRequest(apiToken, payload, assignment)
+                    .onSuccess {
+                        val repository = webhookParseProvider.parsePayload(eventType, payload, assignment)
+                        repositoryService.save(repository, assignment)
+                        logInfoMessages("vsm.repos.imported", emptyArray(), assignment)
+                    }
+                    .onFailure {
+                        logFailedStatus(
+                            runId = assignment.runId,
+                            message = it.message
+                        )
+                    }
+            }
         }.onFailure {
             logFailedStatus(
                 runId = UUID.randomUUID(),

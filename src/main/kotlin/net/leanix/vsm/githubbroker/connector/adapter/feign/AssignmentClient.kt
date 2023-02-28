@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam
     configuration = [MtmFeignClientConfiguration::class]
 )
 interface AssignmentClient {
-
-    @GetMapping("/broker/assignment")
-    fun getAssignment(
-        @RequestParam("integrationName") integrationName: String,
-        @RequestParam("configurationName") configurationName: String
-    ): AssignmentResponse
+    @GetMapping("/broker/assignments")
+    fun getAssignments(
+        @RequestParam("integrationName") integrationName: String
+    ): List<AssignmentResponse>
 }
