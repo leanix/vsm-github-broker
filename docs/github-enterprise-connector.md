@@ -1,3 +1,9 @@
+---
+title: GitHub Enterprise
+excerpt: Out-of-the-box Source Code Repository Integration
+category: 62b439a44f5a3e003566e740
+---
+
 ## Introduction
 
 > :bulb:**Early Access **
