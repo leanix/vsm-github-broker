@@ -110,7 +110,11 @@ This case applies if you want to manage your GitHub organizations in different c
 
 #### GitHub API Rate Limits
 
-:red-circle:**@ALFREDO: can you leave some tech comments here? I believe you can configure these things as GH admin**
+GitHub Enterprise comes with API rate limits by default.<br>
+The default rate limit is 60 requests per hour for unauthenticated requests and 5000 requests per hour for authenticated requests using a personal access token (PAT).<br>
+If face rate limit errors on the broker, you should consider increase the rate limit on your GitHub Enterprise instance configuration.<br>
+Please refer to [rate limit documentation](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting) for more information.
+
 
 > 👍 Scheduling
 >
