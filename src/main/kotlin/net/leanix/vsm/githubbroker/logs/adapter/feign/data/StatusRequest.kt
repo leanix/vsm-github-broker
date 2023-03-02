@@ -1,9 +1,9 @@
 package net.leanix.vsm.githubbroker.logs.adapter.feign.data
 
+import jakarta.validation.constraints.NotNull
 import net.leanix.vsm.githubbroker.logs.domain.LogStatus
 import net.leanix.vsm.githubbroker.logs.domain.StatusLog
 import java.util.UUID
-import javax.validation.constraints.NotNull
 
 data class StatusRequest(
     @field:NotNull(message = "Field \"runId\" cannot be empty")
