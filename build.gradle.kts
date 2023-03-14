@@ -100,3 +100,9 @@ tasks.jacocoTestReport {
         xml.outputLocation.set(File("${project.buildDir}/jacocoXml/jacocoTestReport.xml"))
     }
 }
+
+tasks.processResources {
+    doLast {
+        file("build/resources/main/gradle.properties").writeText("version=${project.version}")
+    }
+}
