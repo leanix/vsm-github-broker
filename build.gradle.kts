@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "net.leanix.vsm"
-version = "v0.1.7"
+version = "v1.1.2"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -24,7 +24,6 @@ ext["snakeyaml.version"] = "1.33"
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.springframework.security:spring-security-oauth2-client:5.7.5")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -36,6 +35,7 @@ dependencies {
     testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     testImplementation("com.ninja-squad:springmockk:3.1.1")
+    testImplementation("org.awaitility:awaitility-kotlin:4.2.0")
 
     developmentOnly("io.netty:netty-resolver-dns-native-macos:4.1.85.Final") {
         artifact {
@@ -98,5 +98,11 @@ tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
         xml.outputLocation.set(File("${project.buildDir}/jacocoXml/jacocoTestReport.xml"))
+    }
+}
+
+tasks.processResources {
+    doLast {
+        file("build/resources/main/gradle.properties").writeText("version=${project.version}")
     }
 }
