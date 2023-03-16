@@ -5,6 +5,7 @@ import java.util.*
 
 data class AssignmentResponse(
     val runId: UUID,
+    val workspaceId: UUID,
     val configurationId: UUID,
     val connectorConfiguration: List<ConfigField>
 ) {
@@ -14,6 +15,7 @@ data class AssignmentResponse(
 
         return Assignment(
             runId = runId,
+            workspaceId = workspaceId,
             configurationId = configurationId,
             organizationName = organizationName.value as String
         )

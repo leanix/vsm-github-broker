@@ -106,3 +106,9 @@ tasks.processResources {
         file("build/resources/main/gradle.properties").writeText("version=${project.version}")
     }
 }
+
+tasks.processResources {
+    doLast {
+        file("build/resources/main/gradle.properties").writeText("version=${project.version}")
+    }
+}

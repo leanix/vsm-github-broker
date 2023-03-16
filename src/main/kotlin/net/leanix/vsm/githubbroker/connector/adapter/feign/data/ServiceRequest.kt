@@ -7,6 +7,7 @@ import java.util.UUID
 data class ServiceRequest(
     val id: String,
     val runId: UUID,
+    val configurationId: UUID?,
     val source: String,
     val name: String,
     val description: String?,

@@ -1,5 +1,6 @@
 package net.leanix.vsm.githubbroker.connector.application
 
+import net.leanix.vsm.githubbroker.connector.adapter.feign.data.EventType.STATE
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.GithubRepositoryProvider
 import net.leanix.vsm.githubbroker.logs.domain.LogStatus
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Service
 @Service
 class RepositoriesService(
     private val repositoryService: RepositoryService,
-    private val githubRepositoryProvider: GithubRepositoryProvider
+    private val githubRepositoryProvider: GithubRepositoryProvider,
+
 ) : BaseConnectorService() {
 
     fun getAllRepositories(assignment: Assignment) {
@@ -31,7 +33,7 @@ class RepositoriesService(
             val repositories = repos.repositories
             totalRepos += repositories.size
             repositories
-                .forEach { repositoryService.save(it, assignment) }
+                .forEach { repositoryService.save(it, assignment, STATE) }
             cursor = repos.cursor
         } while (repos.hasNextPage)
         logInfoMessages("vsm.repos.total", arrayOf(totalRepos), assignment)
