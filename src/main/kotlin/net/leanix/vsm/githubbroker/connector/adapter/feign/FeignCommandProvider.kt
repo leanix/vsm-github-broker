@@ -1,6 +1,7 @@
 package net.leanix.vsm.githubbroker.connector.adapter.feign
 
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.CommandRequest
+import net.leanix.vsm.githubbroker.connector.adapter.feign.data.EventType.COMMAND
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.CommandEventAction
 import net.leanix.vsm.githubbroker.connector.domain.CommandProvider
@@ -11,7 +12,7 @@ class FeignCommandProvider(private val vsmClient: VsmClient) : CommandProvider {
 
     override fun sendCommand(assignment: Assignment, action: CommandEventAction) {
         val command = CommandRequest(
-            type = "command",
+            type = COMMAND.type,
             action = action.action,
             scope = buildScope(assignment)
         )
