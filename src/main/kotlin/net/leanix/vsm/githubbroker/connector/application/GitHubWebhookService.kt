@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import net.leanix.vsm.githubbroker.connector.adapter.feign.GitHubClient
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.Config
+import net.leanix.vsm.githubbroker.connector.adapter.feign.data.EventType
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.GitHubWebhookRequest
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
@@ -113,7 +114,7 @@ class GitHubWebhookService(
                 validateRequest(apiToken, payload, assignment)
                     .onSuccess {
                         val repository = webhookParseProvider.parsePayload(eventType, payload, assignment)
-                        repositoryService.save(repository, assignment)
+                        repositoryService.save(repository, assignment, EventType.CHANGE)
                         logInfoMessages("vsm.repos.imported", emptyArray(), assignment)
                     }
                     .onFailure {

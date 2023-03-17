@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.7.6"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id("org.springframework.boot") version "3.0.4"
+    id("io.spring.dependency-management") version "1.1.0"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("com.expediagroup.graphql") version "6.3.1"
     id("org.cyclonedx.bom") version "1.7.2"
@@ -30,11 +30,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
-    implementation("com.expediagroup:graphql-kotlin-spring-client:6.3.1")
+    implementation("com.expediagroup:graphql-kotlin-spring-client:6.4.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
-    testImplementation("com.ninja-squad:springmockk:3.1.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
     testImplementation("org.awaitility:awaitility-kotlin:4.2.0")
 
     developmentOnly("io.netty:netty-resolver-dns-native-macos:4.1.85.Final") {
@@ -46,7 +46,7 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2022.0.1")
     }
     dependencies {
         dependency("com.google.guava:guava:30.0-jre")

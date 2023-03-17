@@ -4,6 +4,8 @@ import net.leanix.vsm.githubbroker.connector.application.AssignmentService
 import net.leanix.vsm.githubbroker.connector.application.RepositoriesService
 import net.leanix.vsm.githubbroker.connector.application.WebhookService
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
+import net.leanix.vsm.githubbroker.connector.domain.CommandEventAction
+import net.leanix.vsm.githubbroker.connector.domain.CommandProvider
 import net.leanix.vsm.githubbroker.logs.application.LoggingService
 import net.leanix.vsm.githubbroker.logs.domain.LogStatus
 import net.leanix.vsm.githubbroker.logs.domain.StatusLog
@@ -25,7 +27,8 @@ class InitialStateRunner(
     private val assignmentService: AssignmentService,
     private val repositoriesService: RepositoriesService,
     private val webhookService: WebhookService,
-    private val loggingService: LoggingService
+    private val loggingService: LoggingService,
+    private val commandProvider: CommandProvider
 ) : ApplicationRunner {
     private val logger: Logger = LoggerFactory.getLogger(InitialStateRunner::class.java)
     override fun run(args: ApplicationArguments?) {
@@ -33,6 +36,7 @@ class InitialStateRunner(
         getAssignments()?.forEach { assignment ->
             kotlin.runCatching {
                 repositoriesService.getAllRepositories(assignment)
+                commandProvider.sendCommand(assignment, CommandEventAction.FINISHED)
                 logger.info("Initializing webhooks registration steps")
                 webhookService.registerWebhook(assignment.organizationName)
             }.onFailure { e ->
@@ -44,6 +48,7 @@ class InitialStateRunner(
                         "Failed to get initial state. Error: ${e.message}"
                     )
                 )
+                commandProvider.sendCommand(assignment, CommandEventAction.FAILED)
             }
         }
     }

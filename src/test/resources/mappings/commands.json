@@ -1,0 +1,12 @@
+{
+  "request": {
+    "url": "/commands",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

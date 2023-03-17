@@ -1,5 +1,6 @@
 package net.leanix.vsm.githubbroker.connector.adapter.feign
 
+import net.leanix.vsm.githubbroker.connector.adapter.feign.data.EventType
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.ServiceRequest
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.Repository
@@ -10,10 +11,11 @@ import org.springframework.stereotype.Component
 @Component
 class FeignRepositoryProvider(private val vsmClient: VsmClient) : RepositoryProvider {
 
-    override fun save(repository: Repository, assignment: Assignment) {
+    override fun save(repository: Repository, assignment: Assignment, eventType: EventType) {
         val service = ServiceRequest(
             id = repository.id,
             runId = assignment.runId,
+            configurationId = assignment.configurationId,
             source = GITHUB_ENTERPRISE,
             name = repository.name,
             description = repository.description,
@@ -26,6 +28,6 @@ class FeignRepositoryProvider(private val vsmClient: VsmClient) : RepositoryProv
             organizationName = assignment.organizationName
         )
 
-        vsmClient.saveService(service)
+        vsmClient.saveService(eventType.type, service)
     }
 }
