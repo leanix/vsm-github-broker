@@ -3,7 +3,7 @@ package net.leanix.vsm.githubbroker.logs.adapter.feign.data
 import net.leanix.vsm.githubbroker.logs.domain.AdminLog
 import net.leanix.vsm.githubbroker.logs.domain.LogLevel
 import java.util.UUID
-import javax.validation.constraints.NotNull
+import jakarta.validation.constraints.NotNull
 
 data class AdminRequest(
     @field:NotNull(message = "Field \"runId\" cannot be empty")
