@@ -2,6 +2,7 @@ package net.leanix.vsm.githubbroker.connector.domain
 
 data class Dora(
     val repositoryName: String,
+    val repositoryUrl: String,
     val pullRequest: PullRequest
 )
 
