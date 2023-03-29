@@ -10,6 +10,5 @@ data class DoraReleaseEventRequest(
 
 data class DoraReleaseEventData(
     val changeIds: List<String>,
-    val releaseTime: String,
-    val repositoryUrl: String
+    val releaseTime: String
 )

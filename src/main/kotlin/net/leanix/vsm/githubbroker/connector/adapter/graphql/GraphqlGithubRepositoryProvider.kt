@@ -99,7 +99,6 @@ class GraphqlGithubRepositoryProvider(vsmProperties: VsmProperties) : GithubRepo
                 .map {
                     Dora(
                         repositoryName = repository.name,
-                        repositoryUrl = repository.url,
                         pullRequest = it.copy(
                             commits = githubPullRequestParser.getPullRequestsCommits(it)
                         )
