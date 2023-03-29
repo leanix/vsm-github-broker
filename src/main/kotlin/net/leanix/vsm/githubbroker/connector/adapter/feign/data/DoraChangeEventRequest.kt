@@ -12,5 +12,6 @@ data class DoraChangeEventData(
     val name: String,
     val email: String,
     val username: String?,
-    val changeTime: String
+    val changeTime: String,
+    val repositoryUrl: String
 )
