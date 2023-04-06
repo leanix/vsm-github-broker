@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 
 @SpringBootTest(properties = ["application.runner.enabled=true"])
-@AutoConfigureWireMock(port = 0)
+@AutoConfigureWireMock(port = 6666)
 class InitialStateTest {
 
     @Test
@@ -20,8 +20,9 @@ class InitialStateTest {
                 1,
                 getRequestedFor(
                     urlEqualTo(
-                        "/broker/assignments?" +
-                            "integrationName=github-enterprise-repository-connector"
+                        "/assignments?" +
+                            "integrationName=github-enterprise-repository-connector&" +
+                            "configSetName=mock-config-set"
                     )
                 )
             )

@@ -1,6 +1,6 @@
 {
   "request": {
-    "url": "/broker/assignments?integrationName=github-enterprise-repository-connector",
+    "url": "/assignments?integrationName=github-enterprise-repository-connector&configSetName=mock-config-set",
     "method": "GET"
   },
   "response": {
@@ -9,6 +9,6 @@
       "X-LX-VsmGitHubBroker-Version": "v1.1.2",
       "Content-Type": "application/json"
     },
-    "body": "[{\"runId\": \"caa2e4d7-c413-4c58-b236-8c35c9607def\",\"configurationId\": \"e3ea8e1a-98b9-4fb0-9560-79960ffed4a0\",\"workspaceId\": \"e698cf0c-7350-4378-b784-1514d2a795b7\",\"phase\": \"FULL\",\"connectorConfiguration\": [{\"id\": \"orgName\",\"value\": \"super-repo\",\"type\": \"String\"}]}, {\"runId\": \"c0cc4759-92b0-4cc4-96d9-e5789a44cd45\",\"configurationId\": \"d0eb9ce6-50d6-4dad-8838-e98dd6ae8e86\",\"workspaceId\": \"e698cf0c-7350-4378-b784-1514d2a795b7\",\"phase\": \"FULL\",\"connectorConfiguration\": [{\"id\": \"orgName\",\"value\": \"super-duper-repo\",\"type\": \"String\"}]}]"
+    "body": "{ \"runId\": \"f1abfae5-f144-47e1-9cda-3eaa94e5286d\", \"configurationId\": \"a7a74e83-dde9-48a0-8b0d-c74f954671fb\", \"workspaceId\": \"38718fc9-d106-47a5-a25c-e4e595c8c2d4\", \"organizationNameList\": [ \"super-repo\", \"super-duper-repo\" ] }"
   }
 }

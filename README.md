@@ -82,7 +82,7 @@ docker run --pull=always --restart=always \
            -p 8080:8080 \
            -e LEANIX_DOMAIN=<region>.leanix.net \
            -e LEANIX_API_TOKEN=<technical_user-token>\
-           -e LEANIX_CONFIGURATION_NAME=<config-name>\
+           -e LEANIX_CONFIGURATION_SET_NAME=<config-set-name>\
            -e GITHUB_TOKEN=<secret-github-token> \
            -e GITHUB_URL=<GitHub Ent URL(https://ghe.domain.com)> \
            -e BROKER_URL=<vsm-github-broker URL(http://my.vsm.broker.client:8080)> \

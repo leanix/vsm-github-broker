@@ -10,8 +10,7 @@ leanix:
       base-url: ${leanix.base-url}/vsm-dora-events/v1/dora
     connector:
       api-token: ${LEANIX_API_TOKEN}
-      user-token: ${LEANIX_USER_TOKEN}
-      config-name: ${LEANIX_CONFIGURATION_NAME}
+      config-set-name: ${LEANIX_CONFIGURATION_SET_NAME}
       github-token: ${GITHUB_TOKEN}
       github-url: ${GITHUB_URL}
       github-version: ${GITHUB_VERSION:v3}
