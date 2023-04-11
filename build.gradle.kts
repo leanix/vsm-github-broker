@@ -19,8 +19,6 @@ repositories {
     mavenCentral()
 }
 
-ext["snakeyaml.version"] = "1.33"
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -53,6 +51,7 @@ dependencyManagement {
         dependency("com.google.protobuf:protobuf-java:3.21.7")
         dependency("io.ktor:ktor-client-apache:2.1.3")
         dependency("org.codehaus.plexus:plexus-utils:3.0.24")
+        dependency("org.yaml:snakeyaml:1.33")
     }
 }
 
