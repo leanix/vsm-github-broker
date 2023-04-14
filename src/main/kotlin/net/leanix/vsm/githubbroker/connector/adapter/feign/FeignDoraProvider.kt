@@ -34,7 +34,6 @@ class FeignDoraProvider(private val doraClient: DoraClient) : DoraProvider {
                             repositoryUrl = dora.repositoryUrl
                         )
                     )
-                    doraClient.saveChangeEvent(changeEventRequest)
                 }
             val releaseEventRequest = DoraReleaseEventRequest(
                 id = dora.pullRequest.id,
@@ -47,7 +46,6 @@ class FeignDoraProvider(private val doraClient: DoraClient) : DoraProvider {
                     repositoryUrl = dora.repositoryUrl
                 )
             )
-            doraClient.saveReleaseEvent(releaseEventRequest)
         }.onFailure { logger.error("Failed save dora events: ${dora.repositoryName}", it) }
     }
 }
