@@ -8,8 +8,7 @@ leanix:
       base-url: http://localhost:${wiremock.server.port:6666}/dora
     connector:
       api-token: api-token
-      user-token: user-token
-      config-name: git-on-prem-config
+      config-set-name: mock-config-set
       github-token: github-token
       github-version: v3
       github-url: http://localhost:${wiremock.server.port:6666}

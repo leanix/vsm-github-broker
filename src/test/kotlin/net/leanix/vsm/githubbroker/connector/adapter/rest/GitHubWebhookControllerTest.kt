@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 
 @SpringBootTest
-@AutoConfigureWireMock(port = 0)
+@AutoConfigureWireMock(port = 6666)
 class GitHubWebhookControllerTest {
 
     @Autowired
@@ -72,7 +72,7 @@ class GitHubWebhookControllerTest {
             )
                 .andExpect(MockMvcResultMatchers.status().isAccepted)
 
-            Thread.sleep(2000)
+            Thread.sleep(3000)
             WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
             WireMock.verify(
                 2,

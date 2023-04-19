@@ -5,19 +5,20 @@ import java.util.*
 
 data class AssignmentResponse(
     val runId: UUID,
-    val workspaceId: UUID,
     val configurationId: UUID,
-    val connectorConfiguration: List<ConfigField>
+    val workspaceId: UUID,
+    var status: String? = null,
+    val organizationNameList: List<String>
 ) {
 
-    fun toDomain(): Assignment {
-        val organizationName = connectorConfiguration.first { it.id == "orgName" }
-
-        return Assignment(
-            runId = runId,
-            workspaceId = workspaceId,
-            configurationId = configurationId,
-            organizationName = organizationName.value as String
-        )
+    fun toDomain(): List<Assignment> {
+        return organizationNameList.map { organizationName ->
+            Assignment(
+                runId = runId,
+                workspaceId = workspaceId,
+                configurationId = configurationId,
+                organizationName = organizationName
+            )
+        }
     }
 }

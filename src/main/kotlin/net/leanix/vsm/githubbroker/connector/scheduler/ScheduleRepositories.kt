@@ -31,12 +31,13 @@ class ScheduleRepositories(
             }
         }
     }
+
     private fun getAssignments(): List<Assignment>? {
-        kotlin.runCatching {
+        return kotlin.runCatching {
             return assignmentService.getAssignments()
-        }.onFailure {
+        }.getOrElse {
             logger.error("Failed to get initial state. No assignment found for this workspace id")
+            null
         }
-        return null
     }
 }
