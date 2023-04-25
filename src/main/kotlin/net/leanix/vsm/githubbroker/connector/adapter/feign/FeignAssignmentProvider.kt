@@ -8,11 +8,10 @@ import org.springframework.stereotype.Component
 class FeignAssignmentProvider(private val vsmClient: VsmClient) : AssignmentProvider {
     override fun getAssignments(
         integrationName: String,
-        configSetName: String,
-        brokerVersion: String
+        configSetName: String
     ): Result<List<Assignment>> {
         return kotlin.runCatching {
-            vsmClient.getAssignments(integrationName, configSetName, brokerVersion).toDomain()
+            vsmClient.getAssignments(integrationName, configSetName).toDomain()
         }
     }
 }

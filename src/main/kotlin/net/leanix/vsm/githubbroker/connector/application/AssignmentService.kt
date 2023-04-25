@@ -3,7 +3,6 @@ package net.leanix.vsm.githubbroker.connector.application
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.AssignmentProvider
 import net.leanix.vsm.githubbroker.shared.Constants.GITHUB_ENTERPRISE_CONNECTOR
-import net.leanix.vsm.githubbroker.shared.properties.GradleProperties.Companion.GITHUB_ENTERPRISE_VERSION
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -18,7 +17,7 @@ class AssignmentService(
 
     fun getAssignments(): List<Assignment> {
         return assignmentProvider.getAssignments(
-            GITHUB_ENTERPRISE_CONNECTOR, vsmProperties.configSetName, GITHUB_ENTERPRISE_VERSION
+            GITHUB_ENTERPRISE_CONNECTOR, vsmProperties.configSetName
         ).onFailure {
             logger.error("Failed to retrieve assignment list: ", it)
         }.onSuccess {
