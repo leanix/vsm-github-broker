@@ -2,6 +2,7 @@ package net.leanix.vsm.githubbroker.connector.adapter.feign
 
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.AssignmentResponse
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.CommandRequest
+import net.leanix.vsm.githubbroker.connector.adapter.feign.data.DoraRequest
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.LanguageRequest
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.ServiceRequest
 import net.leanix.vsm.githubbroker.connector.adapter.feign.data.TopicRequest
@@ -38,10 +39,12 @@ interface VsmClient {
     @PostMapping("/topics")
     fun saveTopic(topicRequest: TopicRequest)
 
+    @PostMapping("/dora")
+    fun saveDora(doraRequest: DoraRequest)
+
     @GetMapping("/assignments")
     fun getAssignments(
         @RequestParam("integrationName") integrationName: String,
-        @RequestParam("configSetName") configSetName: String,
-        @RequestHeader(name = "X-LX-VsmGitHubBroker-Version") version: String
+        @RequestParam("configSetName") configSetName: String
     ): AssignmentResponse
 }

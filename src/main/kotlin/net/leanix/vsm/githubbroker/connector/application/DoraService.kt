@@ -33,7 +33,7 @@ class DoraService(
                     )
                 } else {
                     it.forEach { dora ->
-                        doraProvider.saveDora(dora, assignment)
+                        doraProvider.saveDora(dora, assignment, repository)
                     }
                 }
             }
