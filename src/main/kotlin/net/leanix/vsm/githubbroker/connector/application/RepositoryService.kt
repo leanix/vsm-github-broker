@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service
 @Service
 class RepositoryService(
     private val repositoryProvider: RepositoryProvider,
-    private val languageService: LanguageService,
-    private val topicService: TopicService,
     private val doraService: DoraService
 ) {
 
@@ -24,8 +22,6 @@ class RepositoryService(
             logger.error("Failed save service", it)
         }
 
-        repository.languages?.forEach { language -> languageService.save(language, assignment) }
-        repository.topics?.forEach { topic -> topicService.save(topic, assignment) }
         doraService.generateDoraEvents(repository, assignment)
     }
 }
