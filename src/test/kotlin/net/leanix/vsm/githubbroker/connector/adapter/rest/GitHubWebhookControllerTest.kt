@@ -126,8 +126,8 @@ class GitHubWebhookControllerTest {
                     WireMock.postRequestedFor(WireMock.urlEqualTo("/services"))
                         .withRequestBody(WireMock.containing("\"description\":\"add new description\""))
                 )
-                WireMock.verify(3, WireMock.postRequestedFor(WireMock.urlEqualTo("/languages")))
-                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/topics")))
+                WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/languages")))
+                WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/topics")))
                 WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
             }
         }
