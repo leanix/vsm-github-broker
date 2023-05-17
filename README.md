@@ -28,9 +28,6 @@ data to VSM SaaS Application.
 
 ## Usage
 
-> ⚠️ This integration is currently in early access mode. See the details on what this means [here](https://docs-vsm.leanix.net/docs/release-stages). Feel free to open an issue should you hit a problem.
-
-
 The VSM GitHub Broker is published as a Docker image. The configuration is performed with environment variables as
 described below.
 
