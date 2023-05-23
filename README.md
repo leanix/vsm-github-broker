@@ -37,6 +37,7 @@ To use the Broker client with a GitHub Enterprise deployment, run `docker pull l
 - `LEANIX_API_TOKEN` - the LeanIX token, obtained from your admin panel. :warning: Make sure the api token has `ADMIN`rights. 
 - `GITHUB_TOKEN` - a [personal access token](#personal-access-token) with full `repo`, `read:org` and `admin:org_hook` scopes.
 - `GITHUB_URL` - the hostname of your GitHub Enterprise deployment, such as `https://ghe.domain.com`. This must include the protocol (http vs https) of the GitHub Enterprise deployment.
+- `LEANIX_CONFIGURATION_SET_NAME`: the configuration name that needs to be set in the VSM admin UI which will work as a wrapper around the GitHub organisations to be scanned.  
 - `BROKER_URL` - the full URL of the vsm client as it will be accessible by your GitHub Enterprise deployment webhooks, such as http://vsm.client:8080
 - `VSM_WEBHOOK` - a boolean switch to turn off the webhook capability of the broker. When set to false, the broker won't place any webhook and will just run on a 1x day schedule. Default: `true`. 
 
@@ -62,6 +63,7 @@ docker run --pull=always --restart=always \
            -e LEANIX_DOMAIN=<region>.leanix.net \
            -e LEANIX_API_TOKEN=<technical_user-token>\
            -e GITHUB_TOKEN=<secret-github-token> \
+           -e LEANIX_CONFIGURATION_SET_NAME=<configuration-set-name-from-VSM-UI> \ 
            -e GITHUB_URL=<GitHub Ent URL(https://ghe.domain.com)> \
            -e BROKER_URL=<vsm-github-broker URL(http://my.vsm.broker.client:8080)> \
         leanixacrpublic.azurecr.io/vsm-github-broker
@@ -79,7 +81,7 @@ docker run --pull=always --restart=always \
            -p 8080:8080 \
            -e LEANIX_DOMAIN=<region>.leanix.net \
            -e LEANIX_API_TOKEN=<technical_user-token>\
-           -e LEANIX_CONFIGURATION_SET_NAME=<config-set-name>\
+           -e LEANIX_CONFIGURATION_SET_NAME=<configuration-set-name-from-VSM-UI>\
            -e GITHUB_TOKEN=<secret-github-token> \
            -e GITHUB_URL=<GitHub Ent URL(https://ghe.domain.com)> \
            -e BROKER_URL=<vsm-github-broker URL(http://my.vsm.broker.client:8080)> \
