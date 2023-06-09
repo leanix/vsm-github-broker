@@ -160,6 +160,7 @@ Should there be any open questions feel free to open an [issue](https://github.c
 1. The integration (vsm-github-broker) is packaged as a docker container which shall be deployed on the customer premises
 
 2. The container runs a live service, which runs continuously
+   - it exposes a health endpoint on path `/actuator/health` which can be used to check the health of the service
 
 3. On startup:
    - the service will reach out to VSM to fetch the configured GitHub organizations
@@ -175,7 +176,7 @@ Should there be any open questions feel free to open an [issue](https://github.c
 
    - to account for any intermittent interruptions (e.g. network issues, docker container failure etc.) between the agent and the GitHub instance, the service will do a full scan every week to ensure eventual consistency in VSM
 
-5. After collecting the GitHub data (either by a full scan or by webhooks) the service relays the service data to the VSM workspace via REST API calls 
+5. After collecting the GitHub data (either by a full scan or by webhooks) the service relays the service data to the VSM workspace via REST API calls
 
 
 The docker container as well as the source code is scanned daily with snyk to check for known vulnerabilities.
