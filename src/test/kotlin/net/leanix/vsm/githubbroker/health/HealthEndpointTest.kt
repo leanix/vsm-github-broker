@@ -31,7 +31,7 @@ class HealthEndpointTest {
     }
 
     @Test
-    fun `it respond with http status ok`() {
+    fun `it responds with http status ok`() {
         mockMvc.perform(
             MockMvcRequestBuilders.get("/actuator/health")
         )
