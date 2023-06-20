@@ -9,6 +9,7 @@ import net.leanix.vsm.githubbroker.connector.domain.CommandProvider
 import net.leanix.vsm.githubbroker.logs.application.LoggingService
 import net.leanix.vsm.githubbroker.logs.domain.LogStatus
 import net.leanix.vsm.githubbroker.logs.domain.StatusLog
+import net.leanix.vsm.githubbroker.shared.cache.AssignmentCache
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
@@ -54,7 +55,9 @@ class InitialStateRunner(
     }
     private fun getAssignments(): List<Assignment>? {
         kotlin.runCatching {
-            return assignmentService.getAssignments()
+            val assignments = assignmentService.getAssignments()
+            AssignmentCache.addAll(assignments)
+            return assignments
         }.onFailure {
             logger.error("Failed to get initial state. No assignment found for this workspace id")
         }
