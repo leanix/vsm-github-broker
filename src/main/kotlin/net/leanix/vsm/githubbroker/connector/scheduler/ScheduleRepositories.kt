@@ -5,6 +5,7 @@ import net.leanix.vsm.githubbroker.connector.application.RepositoriesService
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.CommandEventAction
 import net.leanix.vsm.githubbroker.connector.domain.CommandProvider
+import net.leanix.vsm.githubbroker.shared.cache.AssignmentCache
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
@@ -34,7 +35,9 @@ class ScheduleRepositories(
 
     private fun getAssignments(): List<Assignment>? {
         return kotlin.runCatching {
-            return assignmentService.getAssignments()
+            val assignments = assignmentService.getAssignments()
+            AssignmentCache.addAll(assignments)
+            return assignments
         }.getOrElse {
             logger.error("Failed to get initial state. No assignment found for this workspace id")
             null

@@ -1,13 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.0.5"
+    id("org.springframework.boot") version "3.1.0"
     id("io.spring.dependency-management") version "1.1.0"
-    id("io.gitlab.arturbosch.detekt") version "1.21.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.0"
     id("com.expediagroup.graphql") version "6.3.1"
     id("org.cyclonedx.bom") version "1.7.2"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
+    kotlin("jvm") version "1.8.21"
+    kotlin("plugin.spring") version "1.8.21"
     jacoco
 }
 
@@ -45,7 +45,7 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2022.0.1")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2022.0.3")
     }
     dependencies {
         dependency("com.google.guava:guava:30.0-jre")
