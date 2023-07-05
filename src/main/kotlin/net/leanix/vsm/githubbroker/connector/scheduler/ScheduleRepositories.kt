@@ -15,21 +15,26 @@ import org.springframework.stereotype.Component
 class ScheduleRepositories(
     private val assignmentService: AssignmentService,
     private val repositoriesService: RepositoriesService,
-    private val commandProvider: CommandProvider
+    private val commandProvider: CommandProvider,
 ) {
     private val logger: Logger = LoggerFactory.getLogger(ScheduleRepositories::class.java)
 
     @Scheduled(cron = "\${leanix.vsm.schedule:0 0 4 * * *}")
     fun getAllRepositories() {
         logger.info("Started schedule")
-        getAssignments()?.forEach { assignment ->
-            kotlin.runCatching {
+        runCatching {
+            getAssignments()?.forEach { assignment ->
                 repositoriesService.getAllRepositories(assignment)
-                commandProvider.sendCommand(assignment, CommandEventAction.FINISHED)
-            }.onFailure {
-                commandProvider.sendCommand(assignment, CommandEventAction.FAILED)
-                logger.error("Schedule failed", it)
             }
+        }.onSuccess {
+            AssignmentCache.getAll().firstNotNullOf {
+                commandProvider.sendCommand(it.value, CommandEventAction.FINISHED)
+            }
+        }.onFailure { error ->
+            AssignmentCache.getAll().firstNotNullOf {
+                commandProvider.sendCommand(it.value, CommandEventAction.FAILED)
+            }
+            logger.error("Schedule failed", error)
         }
     }
 

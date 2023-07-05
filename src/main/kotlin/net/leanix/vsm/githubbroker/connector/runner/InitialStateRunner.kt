@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component
     prefix = "application.runner",
     value = ["enabled"],
     havingValue = "true",
-    matchIfMissing = true
+    matchIfMissing = true,
 )
 @Component
 class InitialStateRunner(
@@ -29,27 +29,33 @@ class InitialStateRunner(
     private val repositoriesService: RepositoriesService,
     private val webhookService: WebhookService,
     private val loggingService: LoggingService,
-    private val commandProvider: CommandProvider
+    private val commandProvider: CommandProvider,
 ) : ApplicationRunner {
     private val logger: Logger = LoggerFactory.getLogger(InitialStateRunner::class.java)
     override fun run(args: ApplicationArguments?) {
         logger.info("Started get initial state")
-        getAssignments()?.forEach { assignment ->
-            kotlin.runCatching {
+
+        runCatching {
+            getAssignments()?.forEach { assignment ->
                 repositoriesService.getAllRepositories(assignment)
-                commandProvider.sendCommand(assignment, CommandEventAction.FINISHED)
                 logger.info("Initializing webhooks registration steps")
                 webhookService.registerWebhook(assignment.organizationName)
-            }.onFailure { e ->
-                logger.error("Failed to get initial state", e)
+            }
+        }.onSuccess {
+            AssignmentCache.getAll().firstNotNullOf {
+                commandProvider.sendCommand(it.value, CommandEventAction.FINISHED)
+            }
+        }.onFailure { e ->
+            logger.error("Failed to get initial state", e)
+            AssignmentCache.getAll().firstNotNullOf {
                 loggingService.sendStatusLog(
                     StatusLog(
-                        assignment.runId,
+                        it.value.runId,
                         LogStatus.FAILED,
-                        "Failed to get initial state. Error: ${e.message}"
-                    )
+                        "Failed to get initial state. Error: ${e.message}",
+                    ),
                 )
-                commandProvider.sendCommand(assignment, CommandEventAction.FAILED)
+                commandProvider.sendCommand(it.value, CommandEventAction.FAILED)
             }
         }
     }

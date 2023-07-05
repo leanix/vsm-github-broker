@@ -1,0 +1,13 @@
+{
+  "request": {
+    "urlPattern": "/api/v3/orgs/.*/hooks",
+    "method": "POST"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"id\": 12345678,\n  \"name\": \"web\",\n  \"active\": true,\n  \"events\": [\n    \"push\",\n    \"pull_request\"\n  ],\n  \"config\": {\n    \"content_type\": \"json\",\n    \"insecure_ssl\": \"0\",\n    \"url\": \"https://example.com/webhook\"\n  }}"
+  }
+}
