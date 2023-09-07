@@ -56,13 +56,13 @@ open class BaseConnectorService {
     fun logInfoMessages(message: String, assignment: Assignment) {
         logger.info(message)
         loggingService.sendAdminLog(
-                AdminLog(
-                        runId = assignment.runId,
-                        configurationId = assignment.configurationId,
-                        subject = LogLevel.INFO.toString(),
-                        level = LogLevel.INFO,
-                        message = message
-                )
+            AdminLog(
+                runId = assignment.runId,
+                configurationId = assignment.configurationId,
+                subject = LogLevel.INFO.toString(),
+                level = LogLevel.INFO,
+                message = message
+            )
         )
     }
 

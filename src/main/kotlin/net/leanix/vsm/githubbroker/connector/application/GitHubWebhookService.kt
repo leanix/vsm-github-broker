@@ -42,8 +42,8 @@ class GitHubWebhookService(
     override fun registerWebhook(assignment: Assignment) {
         val orgName = assignment.organizationName
         logInfoMessages(
-                message = "Initializing webhooks registration steps. orgName: $orgName",
-                assignment = assignment
+            message = "Initializing webhooks registration steps. orgName: $orgName",
+            assignment = assignment
         )
 
         runCatching {
@@ -51,8 +51,8 @@ class GitHubWebhookService(
         }.onFailure {
             if (it.message?.contains("404") == true) {
                 logInfoMessages(
-                        message = "No hooks identified. Attempting to create a new one. orgName: $orgName",
-                        assignment = assignment
+                    message = "No hooks identified. Attempting to create a new one. orgName: $orgName",
+                    assignment = assignment
                 )
             } else {
                 logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
@@ -79,8 +79,8 @@ class GitHubWebhookService(
             )
         }.onSuccess {
             logInfoMessages(
-                    message = "Successfully registered webhook. Real time updates are now available. orgName: $orgName",
-                    assignment = assignment
+                message = "Successfully registered webhook. Real time updates are now available. orgName: $orgName",
+                assignment = assignment
             )
         }
     }
