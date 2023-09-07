@@ -48,7 +48,7 @@ class InitialStateTest {
             WireMock.verify(4, postRequestedFor(urlEqualTo("/services")))
             WireMock.verify(0, postRequestedFor(urlEqualTo("/languages")))
             WireMock.verify(0, postRequestedFor(urlEqualTo("/topics")))
-            WireMock.verify(2, postRequestedFor(urlEqualTo("/logs/admin")))
+            WireMock.verify(8, postRequestedFor(urlEqualTo("/logs/admin")))
             WireMock.verify(4, postRequestedFor(urlEqualTo("/dora")))
         }
     }
