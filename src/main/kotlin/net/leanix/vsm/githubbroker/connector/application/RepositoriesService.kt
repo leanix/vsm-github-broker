@@ -6,6 +6,7 @@ import net.leanix.vsm.githubbroker.connector.domain.GithubRepositoryProvider
 import net.leanix.vsm.githubbroker.logs.domain.LogStatus
 import net.leanix.vsm.githubbroker.shared.exception.VsmException
 import org.springframework.stereotype.Service
+import java.net.InetAddress
 
 @Service
 class RepositoriesService(
@@ -15,6 +16,7 @@ class RepositoriesService(
 ) : BaseConnectorService() {
 
     fun getAllRepositories(assignment: Assignment) {
+        InetAddress.getLocalHost()
         logInfoStatus(runId = assignment.runId, status = LogStatus.IN_PROGRESS)
         getRepositoriesPaginated(assignment)
         logInfoStatus(runId = assignment.runId, status = LogStatus.SUCCESSFUL)

@@ -39,7 +39,7 @@ class InitialStateRunner(
             getAssignments()?.forEach { assignment ->
                 repositoriesService.getAllRepositories(assignment)
                 logger.info("Initializing webhooks registration steps")
-                webhookService.registerWebhook(assignment.organizationName)
+                webhookService.registerWebhook(assignment)
             }
         }.onSuccess {
             AssignmentCache.getAll().firstNotNullOf {

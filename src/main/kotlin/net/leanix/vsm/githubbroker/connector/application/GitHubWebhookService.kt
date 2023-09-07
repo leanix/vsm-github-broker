@@ -39,14 +39,21 @@ class GitHubWebhookService(
     private val mapper = jacksonObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-    override fun registerWebhook(orgName: String) {
-        logger.info("Initializing webhooks registration steps. orgName: $orgName")
+    override fun registerWebhook(assignment: Assignment) {
+        val orgName = assignment.organizationName
+        logInfoMessages(
+                message = "Initializing webhooks registration steps. orgName: $orgName",
+                assignment = assignment
+        )
 
         runCatching {
-            cleanHooks(orgName)
+            cleanHooks(assignment.organizationName)
         }.onFailure {
             if (it.message?.contains("404") == true) {
-                logger.info("No hooks identified. Attempting to create a new one. orgName: $orgName")
+                logInfoMessages(
+                        message = "No hooks identified. Attempting to create a new one. orgName: $orgName",
+                        assignment = assignment
+                )
             } else {
                 logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
                 throw VsmException.WebhookRegistrationFailed(
@@ -71,7 +78,10 @@ class GitHubWebhookService(
                     " Error: ${it.message}"
             )
         }.onSuccess {
-            logger.info("Successfully registered webhook. Real time updates are now available.")
+            logInfoMessages(
+                    message = "Successfully registered webhook. Real time updates are now available. orgName: $orgName",
+                    assignment = assignment
+            )
         }
     }
 
