@@ -11,6 +11,7 @@ import net.leanix.vsm.githubbroker.connector.adapter.feign.data.GitHubWebhookReq
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
 import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
+import net.leanix.vsm.githubbroker.shared.cache.AssignmentCache
 import net.leanix.vsm.githubbroker.shared.exception.VsmException
 import net.leanix.vsm.githubbroker.shared.exception.VsmException.WebhookEventValidationFailed
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
@@ -30,7 +31,6 @@ import java.util.UUID
 class GitHubWebhookService(
     private val vsmProperties: VsmProperties,
     private val gitHubClient: GitHubClient,
-    private val assignmentService: AssignmentService,
     private val webhookParseProvider: WebhookParseProvider,
     private val repositoryService: RepositoryService
 ) : WebhookService, BaseConnectorService() {
@@ -109,8 +109,7 @@ class GitHubWebhookService(
         logger.info("new webhook event received: $eventType")
 
         runCatching {
-            val assignmentList = assignmentService.getAssignments()
-            assignmentList.forEach { assignment ->
+            AssignmentCache.getAll().values.forEach { assignment ->
                 validateRequest(apiToken, payload, assignment)
                     .onSuccess {
                         val repository = webhookParseProvider.parsePayload(eventType, payload, assignment)

@@ -10,19 +10,18 @@ import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class GitHubWebhookServiceTest {
 
     private val gitHubClientMock = mockk<GitHubClient>()
     private val vsmPropertiesMock = mockk<VsmProperties>()
-    private val assignmentService = mockk<AssignmentService>()
     private val webhookParseProvider = mockk<WebhookParseProvider>()
     private val repositoryService = mockk<RepositoryService>()
 
     private val service = GitHubWebhookService(
         vsmPropertiesMock,
         gitHubClientMock,
-        assignmentService,
         webhookParseProvider,
         repositoryService
     )

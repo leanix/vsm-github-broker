@@ -1,8 +1,6 @@
 package net.leanix.vsm.githubbroker.connector.scheduler
 
-import net.leanix.vsm.githubbroker.connector.application.AssignmentService
 import net.leanix.vsm.githubbroker.connector.application.RepositoriesService
-import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.CommandEventAction
 import net.leanix.vsm.githubbroker.connector.domain.CommandProvider
 import net.leanix.vsm.githubbroker.shared.cache.AssignmentCache
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class ScheduleRepositories(
-    private val assignmentService: AssignmentService,
     private val repositoriesService: RepositoriesService,
     private val commandProvider: CommandProvider,
 ) {
@@ -23,7 +20,7 @@ class ScheduleRepositories(
     fun getAllRepositories() {
         logger.info("Started schedule")
         runCatching {
-            getAssignments()?.forEach { assignment ->
+            AssignmentCache.getAll().values.forEach { assignment ->
                 repositoriesService.getAllRepositories(assignment)
             }
         }.onSuccess {
@@ -35,17 +32,6 @@ class ScheduleRepositories(
                 commandProvider.sendCommand(it.value, CommandEventAction.FAILED)
             }
             logger.error("Schedule failed", error)
-        }
-    }
-
-    private fun getAssignments(): List<Assignment>? {
-        return kotlin.runCatching {
-            val assignments = assignmentService.getAssignments()
-            AssignmentCache.addAll(assignments)
-            return assignments
-        }.getOrElse {
-            logger.error("Failed to get initial state. No assignment found for this workspace id")
-            null
         }
     }
 }
