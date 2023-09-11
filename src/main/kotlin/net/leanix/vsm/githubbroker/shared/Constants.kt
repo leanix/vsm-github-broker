@@ -7,4 +7,5 @@ object Constants {
     const val API_USER = "apitoken"
     const val GITHUB_BROKER_VERSION_HEADER = "X-LX-VsmGitHubBroker-Version"
     const val EVENT_TYPE_HEADER = "X-LX-CanopyItem-EventType"
+    const val HOSTNAME_HEADER = "X-LX-Hostname"
 }

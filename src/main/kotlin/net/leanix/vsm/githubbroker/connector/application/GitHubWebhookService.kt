@@ -11,6 +11,7 @@ import net.leanix.vsm.githubbroker.connector.adapter.feign.data.GitHubWebhookReq
 import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.WebhookEventType
 import net.leanix.vsm.githubbroker.connector.domain.WebhookParseProvider
+import net.leanix.vsm.githubbroker.shared.cache.AssignmentCache
 import net.leanix.vsm.githubbroker.shared.exception.VsmException
 import net.leanix.vsm.githubbroker.shared.exception.VsmException.WebhookEventValidationFailed
 import net.leanix.vsm.githubbroker.shared.properties.VsmProperties
@@ -30,7 +31,6 @@ import java.util.UUID
 class GitHubWebhookService(
     private val vsmProperties: VsmProperties,
     private val gitHubClient: GitHubClient,
-    private val assignmentService: AssignmentService,
     private val webhookParseProvider: WebhookParseProvider,
     private val repositoryService: RepositoryService
 ) : WebhookService, BaseConnectorService() {
@@ -39,14 +39,21 @@ class GitHubWebhookService(
     private val mapper = jacksonObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-    override fun registerWebhook(orgName: String) {
-        logger.info("Initializing webhooks registration steps. orgName: $orgName")
+    override fun registerWebhook(assignment: Assignment) {
+        val orgName = assignment.organizationName
+        logInfoMessages(
+            message = "Initializing webhooks registration steps. orgName: $orgName",
+            assignment = assignment
+        )
 
         runCatching {
-            cleanHooks(orgName)
+            cleanHooks(assignment.organizationName)
         }.onFailure {
             if (it.message?.contains("404") == true) {
-                logger.info("No hooks identified. Attempting to create a new one. orgName: $orgName")
+                logInfoMessages(
+                    message = "No hooks identified. Attempting to create a new one. orgName: $orgName",
+                    assignment = assignment
+                )
             } else {
                 logger.error("Failed to register webhooks for $orgName. Error: ${it.message}")
                 throw VsmException.WebhookRegistrationFailed(
@@ -71,7 +78,10 @@ class GitHubWebhookService(
                     " Error: ${it.message}"
             )
         }.onSuccess {
-            logger.info("Successfully registered webhook. Real time updates are now available.")
+            logInfoMessages(
+                message = "Successfully registered webhook. Real time updates are now available. orgName: $orgName",
+                assignment = assignment
+            )
         }
     }
 
@@ -109,8 +119,7 @@ class GitHubWebhookService(
         logger.info("new webhook event received: $eventType")
 
         runCatching {
-            val assignmentList = assignmentService.getAssignments()
-            assignmentList.forEach { assignment ->
+            AssignmentCache.getAll().values.forEach { assignment ->
                 validateRequest(apiToken, payload, assignment)
                     .onSuccess {
                         val repository = webhookParseProvider.parsePayload(eventType, payload, assignment)

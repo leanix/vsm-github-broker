@@ -1,6 +1,8 @@
 package net.leanix.vsm.githubbroker.connector.adapter.rest
 
 import com.github.tomakehurst.wiremock.client.WireMock
+import net.leanix.vsm.githubbroker.connector.domain.Assignment
+import net.leanix.vsm.githubbroker.shared.cache.AssignmentCache
 import org.awaitility.kotlin.await
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -15,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
+import java.util.*
 
 @SpringBootTest
 @AutoConfigureWireMock(port = 6666)
@@ -31,6 +34,23 @@ class GitHubWebhookControllerTest {
             .webAppContextSetup(context)
             .build()
         WireMock.resetAllRequests()
+        AssignmentCache.deleteAll()
+        AssignmentCache.addAll(
+            listOf(
+                Assignment(
+                    runId = UUID.fromString("f1abfae5-f144-47e1-9cda-3eaa94e5286d"),
+                    configurationId = UUID.fromString("a7a74e83-dde9-48a0-8b0d-c74f954671fb"),
+                    workspaceId = UUID.fromString("38718fc9-d106-47a5-a25c-e4e595c8c2d4"),
+                    organizationName = "super-repo"
+                ),
+                Assignment(
+                    runId = UUID.fromString("f1abfae5-f144-47e1-9cda-3eaa94e5286d"),
+                    configurationId = UUID.fromString("a7a74e83-dde9-48a0-8b0d-c74f954671fb"),
+                    workspaceId = UUID.fromString("38718fc9-d106-47a5-a25c-e4e595c8c2d4"),
+                    organizationName = "super-duper-repo"
+                )
+            )
+        )
     }
 
     @Nested
