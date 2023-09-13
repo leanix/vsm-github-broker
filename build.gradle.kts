@@ -106,3 +106,4 @@ tasks.processResources {
         file("build/resources/main/gradle.properties").writeText("version=${project.version}")
     }
 }
+ext["snakeyaml.version"] = "2.2"
