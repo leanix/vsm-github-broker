@@ -52,7 +52,6 @@ dependencyManagement {
         dependency("com.google.protobuf:protobuf-java:3.21.7")
         dependency("io.ktor:ktor-client-apache:2.1.3")
         dependency("org.codehaus.plexus:plexus-utils:3.0.24")
-        dependency("org.yaml:snakeyaml:1.33")
     }
 }
 
