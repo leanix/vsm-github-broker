@@ -98,9 +98,13 @@ docker run --pull=always --restart=always \
 
 #### Limitations on Running Multiple Instances of GitLab Broker
 
-It is important to note that running multiple instances of the GitLab Broker simultaneously is not supported.
+We only support a single broker instance to be run at any given time. Any additional instance trying to communicate with VSM will be rejected to prevent race conditions. Please ensure a single instance is running at any time for optimal performance.
+
+#### Limitations on Running Multiple Instances of GitHub Broker
+
+It is important to note that running multiple instances of the GitHub Broker simultaneously is not supported.
 If a second instance is launched while there's an existing instance already in operation, the second instance will not function as intended. However, the presence of the second instance will not interfere with or halt the operations of the first instance.
-Please ensure only one instance of the GitLab Broker is running at any given time to maintain smooth and optimal performance.
+Please ensure only one instance of the GitHub Broker is running at any given time to maintain smooth and optimal performance.
 
 #### Multi-org support
 
