@@ -98,7 +98,7 @@ docker run --pull=always --restart=always \
 
 #### Limitations on Running Multiple Instances of GitHub Broker
 
-We only support a single broker instance to be run at any given time. Any additional instance trying to communicate with VSM will be rejected to prevent race conditions. Please ensure a single instance is running at any time for optimal performance.
+For a given configuration name, we only support a single broker instance to be run at any given time. Any additional instance trying to communicate with VSM will be rejected to prevent race conditions. Please ensure a single instance is running at any time for optimal performance.
 
 #### Multi-org support
 
