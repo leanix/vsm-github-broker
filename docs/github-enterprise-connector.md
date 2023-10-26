@@ -91,10 +91,14 @@ docker run --pull=always --restart=always \
         leanixacrpublic.azurecr.io/vsm-github-broker
 ```
 
-
-
 5. Deploy the docker container in your preferred deployment mode (e.g. via K8s, via virtual machine ...)
 6. Shortly after initialization the agent will connect with VSM and you should see logs appearing in the log section of the integration panel in VSM.
+
+#### Limitations on Running Multiple Instances of GitLab Broker
+
+It is important to note that running multiple instances of the GitLab Broker simultaneously is not supported.
+If a second instance is launched while there's an existing instance already in operation, the second instance will not function as intended. However, the presence of the second instance will not interfere with or halt the operations of the first instance.
+Please ensure only one instance of the GitLab Broker is running at any given time to maintain smooth and optimal performance.
 
 #### Multi-org support
 
