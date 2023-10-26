@@ -91,6 +91,8 @@ docker run --pull=always --restart=always \
         leanixacrpublic.azurecr.io/vsm-github-broker
 ```
 
+
+
 5. Deploy the docker container in your preferred deployment mode (e.g. via K8s, via virtual machine ...)
 6. Shortly after initialization the agent will connect with VSM and you should see logs appearing in the log section of the integration panel in VSM.
 
