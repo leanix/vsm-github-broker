@@ -96,6 +96,10 @@ docker run --pull=always --restart=always \
 5. Deploy the docker container in your preferred deployment mode (e.g. via K8s, via virtual machine ...)
 6. Shortly after initialization the agent will connect with VSM and you should see logs appearing in the log section of the integration panel in VSM.
 
+#### Limitations on Running Multiple Instances of GitHub Broker
+
+For a given configuration name, we only support a single broker instance to be run at any given time. Any additional instance trying to communicate with VSM will be rejected to prevent race conditions. Please ensure a single instance per configuration name is running at any time for optimal performance.
+
 #### Multi-org support
 
 VSM allows you to scan multiple GitHub organizations with the VSM GitHub broker. There are two scenarios:
