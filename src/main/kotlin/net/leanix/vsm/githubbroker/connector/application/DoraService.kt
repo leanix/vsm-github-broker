@@ -13,8 +13,8 @@ import java.time.LocalDate
 @Service
 class DoraService(
     private val githubRepositoryProvider: GithubRepositoryProvider,
-    private val doraProvider: DoraProvider
-) {
+    private val doraProvider: DoraProvider,
+) : BaseConnectorService() {
 
     private val logger = LoggerFactory.getLogger(DoraService::class.java)
 
@@ -29,9 +29,14 @@ class DoraService(
                 if (it.isEmpty()) {
                     logger.info(
                         "Repository does not have any valid pull requests for DORA metrics. " +
-                            "Repository: ${repository.name}"
+                            "Repository: ${repository.name}",
                     )
                 } else {
+                    logInfoMessages(
+                        code = "vsm.dora.success",
+                        arguments = arrayOf(repository.name),
+                        assignment = assignment,
+                    )
                     it.forEach { dora ->
                         doraProvider.saveDora(dora, assignment, repository)
                     }
