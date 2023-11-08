@@ -21,9 +21,12 @@ class RepositoriesService(
     }
 
     private fun getRepositoriesPaginated(assignment: Assignment) {
+        logInfoMessages("vsm.repos.started", arrayOf(assignment.organizationName), assignment)
         var cursor: String? = null
         var totalRepos = 0
+        var page = 1
         do {
+            logInfoMessages("vsm.repos.page", arrayOf(page), assignment)
             val repos = githubRepositoryProvider
                 .getAllRepositories(assignment.organizationName, cursor)
                 .getOrElse {
@@ -35,8 +38,10 @@ class RepositoriesService(
             repositories
                 .forEach { repositoryService.save(it, assignment, STATE) }
             cursor = repos.cursor
+            page++
         } while (repos.hasNextPage)
         logInfoMessages("vsm.repos.total", arrayOf(totalRepos), assignment)
+        logInfoMessages("vsm.repos.finished", arrayOf(assignment.organizationName), assignment)
     }
 
     private fun handleExceptions(exception: Throwable, assignment: Assignment) {

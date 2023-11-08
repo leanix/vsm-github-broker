@@ -122,7 +122,7 @@ class GitHubWebhookControllerTest {
 
             await.untilAsserted {
                 WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
-                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+                WireMock.verify(2, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
             }
         }
 
@@ -148,7 +148,7 @@ class GitHubWebhookControllerTest {
                 )
                 WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/languages")))
                 WireMock.verify(0, WireMock.postRequestedFor(WireMock.urlEqualTo("/topics")))
-                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+                WireMock.verify(2, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
             }
         }
     }
@@ -173,7 +173,7 @@ class GitHubWebhookControllerTest {
 
             await.untilAsserted {
                 WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/services")))
-                WireMock.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
+                WireMock.verify(2, WireMock.postRequestedFor(WireMock.urlEqualTo("/logs/admin")))
             }
         }
 
