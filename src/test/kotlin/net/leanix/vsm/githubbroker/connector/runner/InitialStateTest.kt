@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import net.leanix.vsm.githubbroker.shared.cache.AssignmentCache
 import org.awaitility.kotlin.await
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -15,6 +16,7 @@ class InitialStateTest {
 
     @Test
     fun `it should get the assignments`() {
+        AssignmentCache.deleteAll()
         await.untilAsserted {
             WireMock.verify(
                 1,
