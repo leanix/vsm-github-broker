@@ -1,6 +1,7 @@
 package net.leanix.vsm.githubbroker.connector.scheduler
 
 import net.leanix.vsm.githubbroker.connector.application.RepositoriesService
+import net.leanix.vsm.githubbroker.connector.application.RunService
 import net.leanix.vsm.githubbroker.connector.domain.CommandEventAction
 import net.leanix.vsm.githubbroker.connector.domain.CommandProvider
 import net.leanix.vsm.githubbroker.shared.cache.AssignmentCache
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class ScheduleRepositories(
+    private val runService: RunService,
     private val repositoriesService: RepositoriesService,
     private val commandProvider: CommandProvider,
 ) {
@@ -20,7 +22,7 @@ class ScheduleRepositories(
     fun getAllRepositories() {
         logger.info("Started schedule")
         runCatching {
-            AssignmentCache.getAll().values.forEach { assignment ->
+            runService.getAssignments()?.forEach { assignment ->
                 repositoriesService.getAllRepositories(assignment)
             }
         }.onSuccess {

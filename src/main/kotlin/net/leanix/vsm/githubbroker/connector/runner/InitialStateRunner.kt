@@ -1,9 +1,8 @@
 package net.leanix.vsm.githubbroker.connector.runner
 
-import net.leanix.vsm.githubbroker.connector.application.AssignmentService
 import net.leanix.vsm.githubbroker.connector.application.RepositoriesService
+import net.leanix.vsm.githubbroker.connector.application.RunService
 import net.leanix.vsm.githubbroker.connector.application.WebhookService
-import net.leanix.vsm.githubbroker.connector.domain.Assignment
 import net.leanix.vsm.githubbroker.connector.domain.CommandEventAction
 import net.leanix.vsm.githubbroker.connector.domain.CommandProvider
 import net.leanix.vsm.githubbroker.logs.application.LoggingService
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Component
 )
 @Component
 class InitialStateRunner(
-    private val assignmentService: AssignmentService,
+    private val runService: RunService,
     private val repositoriesService: RepositoriesService,
     private val webhookService: WebhookService,
     private val loggingService: LoggingService,
@@ -36,7 +35,7 @@ class InitialStateRunner(
         logger.info("Started get initial state")
 
         runCatching {
-            getAssignments()?.forEach { assignment ->
+            runService.getAssignments()?.forEach { assignment ->
                 repositoriesService.getAllRepositories(assignment)
                 logger.info("Initializing webhooks registration steps")
                 webhookService.registerWebhook(assignment)
@@ -58,15 +57,5 @@ class InitialStateRunner(
                 commandProvider.sendCommand(it.value, CommandEventAction.FAILED)
             }
         }
-    }
-    private fun getAssignments(): List<Assignment>? {
-        kotlin.runCatching {
-            val assignments = assignmentService.getAssignments()
-            AssignmentCache.addAll(assignments)
-            return assignments
-        }.onFailure {
-            logger.error("Failed to get initial state. No assignment found for this workspace id")
-        }
-        return null
     }
 }
