@@ -18,7 +18,7 @@ class ScheduleRepositories(
 ) {
     private val logger: Logger = LoggerFactory.getLogger(ScheduleRepositories::class.java)
 
-    @Scheduled(cron = "\${leanix.vsm.schedule:0 */3 * ? * *}")
+    @Scheduled(cron = "\${leanix.vsm.schedule:0 0 4 * * *}")
     fun getAllRepositories() {
         logger.info("Started schedule")
         runCatching {
