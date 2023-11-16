@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-The following table details the versions of the github-broker that are currently being supported with security updates.
+The following table details the versions of the vsm-github-broker that are currently being supported with security updates.
 
 | Version | Supported          |
 |---------| ------------------ |
