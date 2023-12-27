@@ -17,7 +17,8 @@ class AssignmentService(
 
     fun getAssignments(): List<Assignment> {
         return assignmentProvider.getAssignments(
-            GITHUB_ENTERPRISE_CONNECTOR, vsmProperties.configSetName
+            GITHUB_ENTERPRISE_CONNECTOR,
+            vsmProperties.configSetName
         ).onFailure {
             logger.error("Failed to retrieve assignment list: ", it)
         }.onSuccess {
