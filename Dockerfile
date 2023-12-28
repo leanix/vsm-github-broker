@@ -1,6 +1,6 @@
 FROM --platform=linux/x86_64 eclipse-temurin:17-jre-alpine
 
-RUN apk -U add curl ca-certificates && rm -f /var/cache/apk/*
+RUN apk --no-cache upgrade && apk --no-cache add curl ca-certificates
 
 USER 65534
 EXPOSE 8080

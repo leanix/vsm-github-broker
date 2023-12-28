@@ -15,7 +15,6 @@ class FeignDoraProvider(private val vsmClient: VsmClient) : DoraProvider {
     private val logger = LoggerFactory.getLogger(FeignDoraProvider::class.java)
 
     override fun saveDora(dora: Dora, assignment: Assignment, repository: Repository) {
-
         kotlin.runCatching {
             vsmClient.saveDora(
                 DoraRequest(

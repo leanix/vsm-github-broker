@@ -15,6 +15,7 @@ class LoggingServiceTest {
 
     private val logProvider = mockk<LogProvider>()
     private val loggingService = LoggingService(logProvider)
+
     @Test
     fun `sending status log should call correct client`() {
         val statusLog = StatusLog(
@@ -26,6 +27,7 @@ class LoggingServiceTest {
         loggingService.sendStatusLog(statusLog)
         verify(exactly = 1) { logProvider.sendStatusLog(statusLog) }
     }
+
     @Test
     fun `sending admin log should call correct client`() {
         val adminLog = AdminLog(
