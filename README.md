@@ -1,3 +1,4 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/leanIX/vsm-github-broker)](https://api.reuse.software/info/github.com/leanIX/vsm-github-broker)
 # VSM GitHub Broker
 
 VSM GitHub Broker is used to establish the communication between VSM SaaS Application and GitHub Enterprise on premise
