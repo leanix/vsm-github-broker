@@ -16,5 +16,5 @@ jobs:
         with:
           command: monitor
           args: -d --severity-threshold=high --org=leanix --project-name=net.leanix:vsm-github-broker --project-tags=Team=Cider
-          env:
+        env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
