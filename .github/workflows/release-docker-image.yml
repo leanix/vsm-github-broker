@@ -55,12 +55,6 @@ jobs:
             });
             console.log(`Published draft release for tag ${tag}`);     
 
-      - name: Inject secret store credentials
-        uses: leanix/secrets-action@master
-        if: (steps.tag-action.outputs.tag != '')
-        with:
-          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
-
       - name: Checkout
         uses: actions/checkout@v3
         if: (steps.tag-action.outputs.tag != '')
